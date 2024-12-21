@@ -1,0 +1,278 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+# This document contains Open Game Content, subject to the Open Game License,
+# released un the Open Game License, Version 1.0a (enclosed in the LICENSE
+# file), as described in Section 1(d) of the License.
+#
+RandomPotion {
+  Item @ [
+    *(x3) Potion of Clairaudience
+    *(x4) Potion of Clairvoyance
+    *(x3) Potion of Control Animal
+    *(x3) Potion of Control Dragon
+    *(x3) Potion of Control Giant
+    *(x3) Potion of Control Human
+    *(x3) Potion of Control Plant
+    *(x3) Potion of Control Undead
+    *(x6) Potion of Delusion
+    *(x3) Potion of Diminution
+    *(x4) Potion of ESP
+    *(x4) Potion of Fire Resistance
+    *(x4) Potion of Flying
+    *(x4) Potion of Gaseous Form
+    *(x4) Potion of Giant Strength
+    *(x4) Potion of Growth
+    *(x4) Potion of Healing
+    *(x5) Potion of Heroism
+    *(x4) Potion of Invisibility
+    *(x4) Potion of Invulnerability
+    *(x4) Potion of Levitation
+    *(x4) Potion of Longevity
+    *(x2) Potion of Poison
+    *(x3) Potion of Polymorph Self
+    *(x8) Potion of Speed
+    *(x3) Potion of Treasure Finding
+    ]
+  Description! = "{{Item}}"
+}
+
+RandomMagicArmor {
+  Item @ [
+    *(x15) Armour +1
+    *(x11) Armour +1, Shield +1
+    *(x3) Armour +1, Shield +2
+    *(x1) Armour +1, Shield +3
+    *(x4) Armour +2
+    *(x3) Armour +2, Shield +1
+    *(x5) Armour +2, Shield +2
+    *(x1) Armour +2, Shield +3
+    *(x3) Armour +3
+    *(x1) Armour +3, Shield +1
+    *(x1) Armour +3, Shield +2
+    *(x1) Armour +3, Shield +3
+    *(x3) Cursed Armour -1
+    *(x2) Cursed Armour -2
+    *(x1) Cursed Armour -2 with Shield +1
+    *(x2) Cursed Armour, AC 9 (10)
+    *(x6) Cursed Shield -2
+    *(x3) Cursed Shield, AC 9 (10)
+    *(x20) Shield +1
+    *(x10) Shield +2
+    *(x5) Shield +3
+]
+  Description! = "{{Item}}"
+}
+
+RandomRing {
+  Item @ [
+    *(x5) Ring of Control Animals
+    *(x5) Ring of Control Humans
+    *(x5) Ring of Control Plants
+    *(x10) Ring of Delusion
+    *(x3) Ring of Djinni Summoning
+    *(x10) Ring of Fire Resistance
+    *(x10) Ring of Invisibility
+    *(x5) Ring of Protection +1, 5’ radius
+    *(x15) Ring of Protection +1
+    *(x2) Ring of Regeneration
+    *(x2) Ring of Spell Storing
+    *(x6) Ring of Spell Turning
+    *(x2) Ring of Telekinesis
+    *(x6) Ring of Water Walking
+    *(x6) Ring of Weakness
+    *(x2) Ring of Wishes, 1–2
+    *(x1) Ring of Wishes, 1–3
+    *(x1) Ring of Wishes, 2–4
+    *(x2) Ring of X-Ray Vision
+]
+  Description! = "{{Item}}"
+}
+
+RandomRodStaffWand {
+  Item @ [
+    *(x8) Rod of Cancellation
+    *(x3) Staff of Commanding
+    *(x10) Staff of Healing
+    *(x2) Staff of Power
+    *(x5) Staff of Snakes
+    *(x3) Staff of Striking
+    *(x3) Staff of Withering
+    *(x1) Staff of Wizardry
+    *(x5) Wand of Cold
+    *(x5) Wand of Enemy Detection
+    *(x5) Wand of Fear
+    *(x5) Wand of Fire Balls
+    *(x5) Wand of Illusion
+    *(x5) Wand of Lightning Bolts
+    *(x10) Wand of Magic Detection
+    *(x5) Wand of Negation
+    *(x5) Wand of Paralysation
+    *(x5) Wand of Polymorph
+    *(x5) Wand of Secret Door Detection
+    *(x5) Wand of Trap Detection
+  ]
+  Description! = "{{Item}}"
+}
+
+RandomMagicSword {
+  Item @ [
+    *(x2) Sword –1, Cursed
+    *(x2) Sword –2, Cursed
+    *(x39) Sword +1
+    *(x6) Sword +1, +2 vs Lycanthropes
+    *(x6) Sword +1, +2 vs Spell Users
+    *(x6) Sword +1, +3 vs Dragons
+    *(x5) Sword +1, +3 vs Enchanted Creatures
+    *(x6) Sword +1, +3 vs Regenerating Creatures
+    *(x6) Sword +1, +3 vs Undead
+    *(x1) Sword +1, Energy Drain
+    *(x4) Sword +1, Flaming
+    *(x8) Sword +1, Light
+    *(x4) Sword +1, Locate Objects
+    *(x1) Sword +1, Wishes
+    *(x3) Sword +2
+    *(x2) Sword +2, Charm Person
+    *(x2) Sword +3
+]
+  Description! = "{{Item}}"
+}
+
+RandomMagicWeapon {
+  Item @ [
+    *(x2) Arrows +1(3d10 arrows)
+    *(x10) Arrows +1 (Basic: 10; Expert: 2d6 arrows)
+    *(x6) Arrows +2(1d6 arrows)
+    *(x9) Axe +1
+    *(x3) Axe +2
+    *(x3) Bow +1
+    *(x10) Crossbow Bolts +1 (2d6 bolts)
+    *(x2) Crossbow Bolts +1 (3d10 bolts)
+    *(x7) Crossbow Bolts +2 (1d6 bolts)
+    *(x3) Dagger +1
+    *(x1) Dagger +2, +3 vs orcs, goblins, and kobolds
+    *(x8) Mace +1
+    *(x3) Mace +2
+    *(x1) Mace +3
+    *(x6) Sling +1
+    *(x8) Spear +1
+    *(x4) Spear +2
+    *(x1) Spear +3
+    *(x7) War Hammer +1
+    *(x5) War Hammer +2
+    *(x1) War Hammer +3, Dwarven Thrower
+]
+  Description! = "{{Item}}"
+}
+
+RandomMagicItem {
+  Item @ [
+    *(x3) Amulet of Protection Against Scrying
+    *(x2) Bag of Devouring
+    *(x6) Bag of Holding
+    *(x5) Boots of Levitation
+    *(x5) Boots of Speed
+    *(x5) Boots of Travelling and Leaping
+    *(x5) Broom of Flying
+    *(x4) Crystal Ball
+    *(x2) Crystal Ball with Clairaudience
+    *(x1) Crystal Ball with ESP
+    *(x2) Displacer Cloak
+    *(x1) Drums of Panic
+    *(x1) Efreeti Bottle
+    *(x1) "Elemental Summoning Device: Air"
+    *(x1) "Elemental Summoning Device: Earth"
+    *(x1) "Elemental Summoning Device: Fire"
+    *(x1) "Elemental Summoning Device: Water"
+    *(x10) Elven Cloak and Boots
+    *(x1) Flying Carpet
+    *(x7) Gauntlets of Ogre Power
+    *(x2) Girdle of Giant Strength
+    *(x11) Helm of Alignment Changing
+    *(x5) Helm of Reading Languages and Magic
+    *(x1) Helm of Telepathy
+    *(x1) Helm of Teleportation
+    *(x1) Horn of Blasting
+    *(x6) Medallion of ESP 30’
+    *(x3) Medallion of ESP 90’
+    *(x1) Mirror of Life Trapping
+    *(x3) Rope of Climbing
+    *(x3) Scarab of Protection
+]
+  Description! = "{{Item}}"
+}
+
+RandomMagicItemsOnBody {
+  Item @ [
+    *(x15) Armour +1
+    *(x11) Armour +1, Shield +1
+    *(x3) Armour +1, Shield +2
+    *(x1) Armour +1, Shield +3
+    *(x4) Armour +2
+    *(x3) Armour +2, Shield +1
+    *(x2) Armour +2, Shield +2
+    *(x1) Armour +2, Shield +3
+    *(x3) Armour +3
+    *(x1) Armour +3, Shield +1
+    *(x1) Armour +3, Shield +2
+    *(x1) Armour +3, Shield +3
+    *(x3) Cursed Armour -1
+    *(x2) Cursed Armour -2
+    *(x1) Cursed Armour -2 with Shield +1
+    *(x2) Cursed Armour, AC 9 (10)
+    *(x6) Cursed Shield -2
+    *(x3) Cursed Shield, AC 9 (10)
+    *(x20) Shield +1
+    *(x10) Shield +2
+    *(x5) Shield +3
+    *(x3) Potion of Clairaudience
+    *(x4) Potion of Clairvoyance
+    *(x3) Potion of Control Animal
+    *(x3) Potion of Control Dragon
+    *(x3) Potion of Control Giant
+    *(x3) Potion of Control Human
+    *(x3) Potion of Control Plant
+    *(x3) Potion of Control Undead
+    *(x6) Potion of Delusion
+    *(x3) Potion of Diminution
+    *(x4) Potion of ESP
+    *(x4) Potion of Fire Resistance
+    *(x4) Potion of Flying
+    *(x4) Potion of Gaseous Form
+    *(x4) Potion of Giant Strength
+    *(x4) Potion of Growth
+    *(x4) Potion of Healing
+    *(x5) Potion of Heroism
+    *(x4) Potion of Invisibility
+    *(x4) Potion of Invulnerability
+    *(x4) Potion of Levitation
+    *(x4) Potion of Longevity
+    *(x2) Potion of Poison
+    *(x3) Potion of Polymorph Self
+    *(x8) Potion of Speed
+    *(x3) Potion of Treasure Finding
+]
+  Description! = "{{Item}}"
+}
+

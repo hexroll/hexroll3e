@@ -1,0 +1,186 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+CastleLocation {
+  # RulerTitlex = <{{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.Full}}>
+  RulerTitle= "Asd"
+  [1..1 castles!] % Castle {
+    Used = true
+    RealmType = &RealmType
+  }
+  Details! ~ <%
+    {% if castles %}
+    {{castles.Title}}
+    {%endif %}
+  %>
+}
+
+Ruler { ^ [ * Noble
+            * Bishop
+            * Monarch
+            * Warexpert
+            * Necromancer ]
+
+  RealmUUID = :Realm.uuid
+
+  EntourageChiefCommand! @ EntourageChiefCommander {
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+    Profession = "entourage chief"
+  }
+
+  EntourageClergy! @ EntourageCleric {
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+    Profession = "entourage cleric"
+  }
+  
+
+  EntourageSage! @ EntourageSage {
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+    Profession = "entourage sage"
+  }
+
+  EntourageConfidant! @ EntourageConfidant {
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+    Profession = "entourage confidant"
+  }
+
+}
+
+NoblePerson (Ruler){
+    | Ruler
+    Weapon! @ RulerSword
+    NPC! @ NobleRuler {
+      Weapon = &Weapon
+      HostingEntity := &RealmUUID
+      URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+    }
+    HasChiefCommander! = true
+    HasClergy! = true
+    HasSage! = true
+    HasConfidant! = true
+    Title! = <%
+        {%if NPC.Gender.class=="Male"%}
+        duke
+        {%elif NPC.Gender.class=="Female"%}
+        duchess
+        {%else%}
+        duches
+        {%endif%} %>
+}
+
+Bishop (Ruler){
+    | Ruler
+  Title! = bishop
+  Weapon! @ RulerWarhammer
+  NPC! @ BishopRuler {
+    Weapon = &Weapon
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+  }
+  HasChiefCommander! = true
+  HasClergy! = false
+  HasSage! = true
+  HasConfidant! = true
+}
+
+RulerSword (ArmorWeapon) {
+  Title! = Sword + 3
+  Damage = "1d8+3"
+}
+
+RulerWarhammer (ArmorWeapon){
+  Title! = Warhammer + 3
+  Damage! = "1d6+3"
+}
+
+RulerStaff (ArmorWeapon) {
+  Title! = Staff of Wizardry
+  Damage! = see item description
+}
+
+Monarch (Ruler){
+    | Ruler
+  Weapon! @ RulerSword
+  NPC! @ MonarchRuler {
+    Weapon = &Weapon
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+  }
+  HasChiefCommander! = true
+  HasClergy! = true
+  HasSage! = true
+  HasConfidant! = true
+  Title! = <%
+    {%if NPC.Gender.class=="Male"%}
+    king
+    {%elif NPC.Gender.class=="Female"%}
+    queen
+    {%else%}
+    monarch
+    {%endif%}
+    %>
+}
+
+Warexpert (Ruler){
+    | Ruler
+  Weapon! @ RulerSword
+  NPC! @ WarexpertRuler {
+    Weapon = &Weapon
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+  }
+  HasChiefCommander! = false
+  HasClergy! = true
+  HasSage! = true
+  HasConfidant! = true
+  Title! = <%
+    {%if NPC.Gender.class=="Male"%}
+    warlord
+    {%elif NPC.Gender.class=="Female"%}
+    warlady
+    {%else%}
+    Warexpert
+    {%endif%} %>
+}
+
+Necromancer (Ruler){
+    | Ruler
+  Title! = necromancer
+  Weapon! @ RulerStaff
+  NPC! @ NecromancerRuler {
+    Weapon = &Weapon
+    HostingEntity := &RealmUUID
+    URLExt = "/realm/{{HostingEntity}}/npc/{{uuid}}"
+  }
+  HasChiefCommander! = true
+  HasClergy! = true
+  HasSage! = false
+  HasConfidant! = true
+}
+

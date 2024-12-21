@@ -1,0 +1,124 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+RandomEquipmentOnBody {
+  ^ [
+    * Club
+    * Dagger
+    * Mace
+    * ShortBow
+    * SilverDagger
+    * Sling
+    * Sword
+    * IronRations
+    * Mirror
+    * IronSpikes
+    * HolySymbol
+    * Garlic
+    * SmallSack
+    * Rope
+    * Pole
+    * Oil
+    * SmallHammer
+    * ThieveTools
+    * ClothingAdventurerBoots
+    * ClothingHighBoots
+    * ClothingWarmCloak
+    * ClothingLeatherHat
+    ]
+}
+
+RandomEquipmentOnBodyState = [
+  * Usable
+  * Unusable
+]
+
+DungeonRemains {
+  # TODO: add foreshadow?
+  Foreshadow! = none 
+  Hint! @ [
+    *(x2) There’s something lying on the floor
+    *(x2) You spot something quite big lying on the floor
+    * There’s a dead body here
+    ]
+
+  AreaTrap! @  AreaTrap
+
+  Treasure @ TreasureTypeBody
+
+  EquipmentItems @ 1d4-1
+  EquipmentItem1 @ RandomEquipmentOnBody
+  EquipmentItem1State @ $RandomEquipmentOnBodyState
+  EquipmentItem2 @ RandomEquipmentOnBody
+  EquipmentItem2State @ $RandomEquipmentOnBodyState
+  EquipmentItem3 @ RandomEquipmentOnBody
+  EquipmentItem3State @ $RandomEquipmentOnBodyState
+
+  RoomNumber = :AreaDescription.RoomNumber
+  AreaUUID = :AreaDescription.uuid
+  Key @ DungeonDoorKey {
+    AreaNumber = &RoomNumber
+    AreaUUID = &AreaUUID
+  }
+
+  Remains @ [
+    *(x2) a dust covered human skeleton
+    * the dust covered skeleton of an orc
+    * the dust covered skeleton of a goblin
+    *(x2) a rotting human corpse
+    * a rotting orc corpse
+    * a rotting goblin corpse
+    ]
+  Description! ~ <%
+      Lying on the floor is <strong>{{Remains}}</strong>.
+    {%if (trim(Treasure.Details))=="" and EquipmentItems < 1 and not Key.Active%}
+      Searching it will uncover <strong>nothing</strong>.
+    {%else%}
+    Searching it will uncover: 
+    <ul>
+    {{Treasure.Details}}
+    {%-if EquipmentItems > 0%}
+    <li>
+    <strong>{{nobrackets(EquipmentItem1.Title)}}</strong> ({{EquipmentItem1State}}){%endif%}
+    </li>
+    {%-if EquipmentItems > 1%}
+    <li>
+    <strong>{{nobrackets(EquipmentItem2.Title)}}</strong> ({{EquipmentItem2State}}){%endif%}
+    </li>
+    {%-if EquipmentItems > 2%}
+    <li>
+    <strong>{{nobrackets(EquipmentItem3.Title)}}</strong> ({{EquipmentItem3State}}){%endif%}
+    </li>
+    {%endif%}
+    {%-if Key.Active%}
+    <li>
+    The {{Key.Active}} 
+    </li>
+    {%endif%}
+    </ul>
+  %>
+
+}
+

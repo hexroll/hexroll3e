@@ -1,0 +1,213 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+LostItem {
+  ^ [
+    *(x10) LostItemSword
+    *(x7) LostItemArmor
+    *(x4) LostItemMagical
+    ]
+  Folk! = null
+  FolkUUID! = :Folk.uuid
+  FolkLocationUUID! = :SettlementLocation.uuid
+  Description! = <%
+    <strong>{{title(Appearance)}}</strong> .It is actually {{begin_spoiler()}}<strong>{{articlize(ActualItem)}}</strong>{{end_spoiler()}} %>
+}
+
+Advert {
+  Details! = ""
+}
+
+QuestTreasureHiding {
+  AreaNumber = none
+  DungeonName! = :Dungeon.Name
+  DungeonUUID! = :Dungeon.uuid
+  AreaUUID! = :AreaDescription.uuid
+  QuestLink = none
+  QuestFolk = none
+  QuestTreasureContainer = none
+  QuestArtifact = none
+  QuestSettlementName = none
+  Active! = false
+  Conspectus! = null
+  Listening = ""
+  Hint = "There’s a chest"
+  Description! = "Inside the chest you find a treasure"
+}
+
+NoQuest {
+  Description! = ""
+}
+
+RevengeQuest(Quest) {
+}
+
+MissingItemQuest(Quest) {
+}
+
+Secret {
+  Details! = "[..]"
+}
+
+QuestSecret(Secret) {
+}
+
+TreasureQuestSecret(QuestSecret) {
+  Details! = <%
+    * {{FolkContext.Name.Full}}’s {{Artifact.Appearance}}
+    is in area {{Location.RoomContext.Ref}} in the
+    {{Location.DungeonContext.Name.Title}}
+  %>
+}
+
+TreasureRumor(LocalRumor) {
+  QuestFolk = false
+  QuestLink = false
+  QuestArtifact = false
+  QuestLocation = false
+  | LocalRumor
+}
+
+LostTreasureAdvert(Advert) {
+  QuestFolk = false
+  QuestLink = false
+  | Advert
+}
+
+
+TreasureQuest(Quest) {
+
+  TreasureContainer @ [
+    * A plain looking wooden chest
+    * An old dark leather bag
+    * A wooden barrel
+  ]
+
+  QuestgiverName = :Folk.Name
+  QuestgiverLink = :Folk.HostingEntity
+  QuestgiverLinkURL = :Folk.LinkURL
+  QuestSettlementName = *Settlement.NamePart
+
+  Artifact @ LostItem {
+    Folk = *QuestgiverName
+  }
+
+  Location ? QuestTreasureHiding {
+    QuestFolk = *QuestgiverName
+    QuestLink = &QuestgiverLink
+    QuestTreasureContainer = &TreasureContainer
+    QuestArtifact = *Artifact
+    QuestSettlementName = &QuestSettlementName
+    Active = <%
+      {{QuestTreasureContainer}} contains
+      <a href="{{sandbox()}}/location/{{QuestLink}}">
+      <strong>
+      {{QuestFolk.Full}}’s
+      </strong>
+      </a>
+      {%if QuestSettlementName%}
+      from {{title(QuestSettlementName)}}
+      {%endif%}
+      <strong>
+      {{QuestArtifact.Appearance}}
+      </strong>
+      (actually {{begin_spoiler()}}<strong>{{articlize(QuestArtifact.ActualItem)}}</strong>{{end_spoiler()}})
+    %>
+
+    Conspectus = <%
+      {{begin_spoiler()}}
+      <a href="{{sandbox()}}/location/{{QuestLink}}">
+      <strong>
+      {{QuestFolk.Full}}’s
+      </strong>
+      </a>
+      <strong>
+      {{QuestArtifact.Appearance}}
+      </strong>
+      {{end_spoiler()}}
+      is in
+      <a href="{{sandbox()}}/location/{{AreaUUID}}">
+      <strong>
+      area {{AreaNumber}}
+      </strong>
+      </a>
+    %>
+
+  }
+
+  Description! ~ <%
+    {% if Location %}
+    <strong>{{title(Artifact.Appearance)}}</strong> is lost (or so claimed).
+    Secret: This is actually {{begin_spoiler()}}<strong>{{articlize(Artifact.ActualItem)}}</strong>{{end_spoiler()}}
+    and it is currently somewhere in {{begin_spoiler()}}the
+    <a href="{{sandbox()}}/location/{{Location.AreaUUID}}">
+    <strong>{{Location.DungeonName.Title}}</strong></a>{{end_spoiler()}}
+        <ul><li>
+        Finder’s reward is <strong>{{currency(Artifact.Reward)}}</strong>
+        </li></ul>
+    {% endif %}
+  %>
+
+  Rumor @ TreasureRumor {
+    QuestFolk = *QuestgiverName
+    QuestLink = &QuestgiverLink
+    QuestArtifact = *Artifact
+    QuestLocation = *Location
+    Details = <%
+      {% if QuestLocation%}
+      <a href="{{sandbox()}}/location/{{QuestLink}}"><strong>{{QuestFolk.Full}}’s</strong></a>
+      <strong>{{QuestArtifact.Appearance}}</strong> (actually
+      <strong>{{articlize(QuestArtifact.ActualItem)}}</strong>) is somewhere in the
+      <a href="{{sandbox()}}/location/{{QuestLocation.AreaUUID}}">
+      <strong>{{QuestLocation.DungeonName.Title}}
+      </a>
+      {%endif%}
+      %>
+  }
+
+  Advert @ LostTreasureAdvert {
+    QuestFolk = *QuestgiverName
+    QuestLink = &QuestgiverLink
+    Details @ [
+      * “<strong>Help requested!</strong>
+        A heirloom of sentimental value was stolen
+        from me.  I will reward anyone who is kind enough to get it back.
+        Yours,
+        <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Full}}</strong></a>”
+      * “<strong>Item LOST!</strong>
+        A possession of mine was lost.
+        Finders reward is guaranteed.
+        <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Full}}</strong></a>”
+      * “<strong>Stolen!</strong>
+        Something very dear to me was stolen.
+        Please reach out if you can help.
+        <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Full}}</strong></a>”
+    ]
+  }
+}
+

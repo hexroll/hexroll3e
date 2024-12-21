@@ -1,0 +1,183 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+CharacterExtension {
+  Inscript! ~ ""
+  Postscript! ~ ""
+}
+
+Character {
+    Gender! @ Gender
+    Name! @ Name {
+        Gender := &Gender.NameClass
+    }
+
+    # HostingEntity = none
+    LinkedName = none
+    URLExt! = none
+    SettlementName! = *Settlement.NamePart
+
+    FactionName = none
+    FactionUUID = none
+    Association! = ""
+
+    TavernOfChoice = none
+    TavernOfChoiceUUID = none
+    TavernText! @ [
+          * {%if TavernOfChoice%}
+            <li>
+            {{Name.First}} is frequenting the
+            <a href="{{sandbox()}}/location/{{TavernOfChoiceUUID}}">
+            {{TavernOfChoice}}
+            </a>
+            on {{Gender.PronounPossessive}} time off.
+            </li>
+            {%endif%}
+          * {%if TavernOfChoice%}
+            <li>
+            {{Name.First}} likes spending {{Gender.PronounPossessive}} time
+            in the
+            <a href="{{sandbox()}}/location/{{TavernOfChoiceUUID}}">
+            {{TavernOfChoice}}</a>.
+            </li>
+            {%endif%}
+          * {%if TavernOfChoice%}
+            <li>
+            {{Name.First}} enjoys dining with {{Gender.PronounPossessive}} friends
+            in the
+            <a href="{{sandbox()}}/location/{{TavernOfChoiceUUID}}">
+            {{TavernOfChoice}}</a>.
+            </li>
+            {%endif%}
+          * {%if TavernOfChoice%}
+            <li>
+            On {{Gender.PronounPossessive}} time off, {{Name.First}} will enjoy
+            a drink or two in the
+            <a href="{{sandbox()}}/location/{{TavernOfChoiceUUID}}">
+            {{TavernOfChoice}}</a>.
+            </li>
+            {%endif%}
+          * {%if TavernOfChoice%}
+            <li>
+            {{Name.First}} is usually eating {{Gender.PronounPossessive}} meals
+            in the
+            <a href="{{sandbox()}}/location/{{TavernOfChoiceUUID}}">
+            {{TavernOfChoice}}</a>.
+            </li>
+            {%endif%}
+    ]
+
+    InThePocket! @ InThePocket
+    State! @ $kNPCState
+    Feature1 @ [
+        *(x2) wise dark eyes
+        *(x2) cold dark eyes
+        *(x2) crystal blue eyes
+        *(x2) deep blue eyes
+        *(x2) enchanting green eyes
+        *(x2) wild green eyes
+        *(x2) wise brown eyes
+        *(x2) piercing blue eyes
+        *(x2) piercing black eyes
+        *(x2) piercing green eyes
+        *(x2) piercing dark eyes
+        *(x2) piercing brown eyes
+        *(x2) glowing blue eyes
+        *(x2) glowing black eyes
+        *(x2) glowing green eyes
+        *(x2) glowing dark eyes
+        *(x2) glowing brown eyes
+        *(x1) haunted blue eyes
+        *(x1) haunted dark eyes
+        *(x1) haunted brown eyes
+        *(x1) bulging dark eyes
+        *(x1) bulging blue eyes
+        *(x1) bulging red eyes
+        *(x1) tiny eyes
+        *(x1) crazy-looking eyes
+        *(x1) tired brown eyes
+        *(x1) tired looking eyes
+        *(x2) tired red-looking eyes
+        *(x1) sleepy brown eyes
+        *(x1) sleepy looking eyes
+        *(x1) sleepy red-looking eyes
+    ]
+    Feature2 @ [
+        * a nose ring
+        * a deep scar on the cheek
+        * freckles
+        * a face tattoo
+        * an earring
+        * a neck band
+        * big round spectacles
+        * a limp
+        * a missing tooth
+        * a peg leg
+        * a golden tooth
+        * a missing tooth
+        * a smelly breath
+        * a double chin
+        * stained clothes
+        * crooked smile
+        * lip ring
+        * elegant posture
+        * gap teeth
+
+    ]
+
+    Appearance! @ [
+      * {{Gender.Feature}}, {{Feature1}} and {{Feature2}}
+      * {{Feature1}}, {{Gender.Feature}} and {{Feature2}}
+    ]
+
+    Extension @ CharacterExtension {
+      Name := *Name
+    }
+    DescriptionInscript ~ "{{Extension.Inscript}}"
+    DescriptionPostscript ~ "{{Extension.Postscript}}"
+    Description! ~ <%
+      <strong>{{Name.Full}}</strong>.
+      {{DescriptionInscript}}
+      {{capitalize(Gender.PronounSubject)}} {{Gender.Possession}} {{Appearance}}
+      <em>({{State}})</em>. {{InThePocket.Details}}
+      {{DescriptionPostscript}}
+    %>
+
+  HexLink = :Populated.HexLink
+
+  LinkedName! ~ <%
+    <a href="{{sandbox()}}/location/{{HostingEntity}}/npc/{{uuid}}"><strong>{{Name.Full}}</strong></a>
+  %>
+
+  $IndexRef @ IndexedEntity {
+    Render = "Name"
+    Anchor = &uuid
+    Link = &HostingEntity
+    Type = "location"
+    Full = ""
+    Search = "{{Full}}"
+    Icon = "user"
+  }
+}

@@ -1,0 +1,323 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+InThePocket {
+	^ [
+    *(x01) EmptyPocket
+    *(x10) PocketContent
+	]
+}
+EmptyPocket {
+  Details! = ""
+}
+
+PocketContent {
+  Item1 @ [
+    * a quill
+    * a comb
+    * dice
+    * a deck of cards
+    * a dirty handkerchief
+    * 1 cp
+    * 2 cp
+    * 3 cp
+  ]
+
+  Item2 @ [
+    * a magnifying glass
+    * spectacles
+    * an empty vial
+    * a smoking pipe
+    * 2 sp
+    * 3 sp
+    * 4 sp
+    * 5 sp
+  ]
+
+  Item3 @ [
+    * a dagger
+    * a key
+    * a vial with a dark liquid
+    * a small flute
+    * 1 gp
+    * 2 gp
+    * a small gem (worth 10 gp)
+    * a death threat note
+    * a love note
+    * a ransom note
+    * a passphrase note
+  ]
+  Items @ [
+    * <strong>{{Item1}}</strong>, <strong>{{Item2}}</strong> and <strong>{{Item3}}</strong>
+    * <strong>{{Item1}}</strong> and <strong>{{Item2}}</strong>
+    * <strong>{{Item1}}</strong>
+  ]
+
+
+  Details! ~ <%
+    <small>In the pocket: {{Items}}.</small>%>
+}
+
+Equipment { ^ [
+    * Gear
+  ]
+}
+
+Gear(Equipment) { ^ [
+    * Storage
+    * Food
+    * HolyItems
+    * Tools
+    * Lighting
+    * Wearables
+    ]
+}
+
+Tools {
+	^ [
+    * StakesAndMallet
+    * Crowbar
+    * GrapplingHook
+    * SmallHammer
+    * IronSpikes
+    * ThieveTools
+    * Pole
+    * Rope
+    * Mirror
+    * SmallBell
+    * Canvas
+    * Chain
+    * FishingRod
+    * SewingNeedle
+    * MiningPickAxe
+    * BushcraftKnife
+    * SmokingPipe
+    * Inkvial
+    * Quill
+    * EmptyScroll
+    * Lens
+	]
+}
+
+Lighting(Gear) {
+	^ [
+    * Lantern
+    * Oil
+    * TinderBox
+    * SixTorches
+    * Candles
+	]
+}
+
+HolyItems(Gear) {
+	^ [
+    * HolySymbol
+    * HolyWater
+	]
+}
+
+Storage(Gear) {
+	^[
+    * SmallSack
+    * LargeSack
+    * Backpack
+	]
+}
+
+Food(Gear) {
+	^ [
+    * IronRations
+    * Rations
+    * Waterskin
+    * Wine
+    * Garlic
+    * FreshFruits
+    * DriedFruits
+    * Bread
+    * Pie
+    * Cake
+    * Salt
+    * Grain
+    * Flour
+    * Nuts
+    * Honey
+    * FreshFishSmall
+    * FreshFishFillet
+    * PickledFish
+    * SmallShellFish
+    * Lobster
+    * FreshGame
+    * DriedMeat
+	]
+}
+
+Fish {
+	^ [
+    * IronRations
+    * Rations
+    * Salt
+    * FreshFishSmall
+    * FreshFishFillet
+    * PickledFish
+    * SmallShellFish
+    * Lobster
+    * FishingRod
+	]
+}
+
+MeatAndFish {
+	^ [
+    * IronRations
+    * Rations
+    * Salt
+    * Honey
+    * FreshFishSmall
+    * FreshFishFillet
+    * PickledFish
+    * SmallShellFish
+    * Lobster
+    * FreshGame
+    * FreshMeat
+    * DriedMeat
+	]
+}
+
+Drinks {
+	^ [
+    * CommonBeer
+    * CraftBeer
+    * Cider
+    * CommonWine
+    * CraftWine
+    * RoyalWine
+	]
+}
+
+Wearables(Gear) {
+	^ [
+    * Wolfsbane
+    * ClothingCommonOutfit
+    * ClothingFineOutfit
+    * ClothingArtisanOutfit
+    * ClothingAdventurerOutfit
+    * ClothingUniformOutfit
+    * ClothingScholarOutfit
+    * ClothingNobleOutfit
+    * ClothingRoyalOutfit
+    * ClothingBelt
+    * ClothingSash
+    * ClothingSuspenders
+    * ClothingGirdle
+    * ClothingCape
+    * ClothingPlainCloak
+    * ClothingWarmCloak
+    * ClothingForestCloak
+    * ClothingJacket
+    * ClothingLeatherApron
+    * ClothingLeatherCoat
+    * ClothingBlouse
+    * ClothingGown
+    * ClothingCommonDress
+    * ClothingFineDress
+    * ClothingNobleDress
+    * ClothingRoyalDress
+    * ClothingKilt
+    * ClothingLeggings
+    * ClothingLeatherLeggings
+    * ClothingCommonRobe
+    * ClothingEmbrioderedRobe
+    * ClothingTunic
+    * ClothingCommonShirt
+    * ClothingArtisanShirt
+    * ClothingTrousers
+    * ClothingSkirt
+    * ClothingLeatherVest
+    * ClothingFurVest
+    * ClothingLeatherGloves
+    * ClothingWarmGloves
+    * CLothingMittens
+    * ClothingHighBoots
+    * ClothingAdventurerBoots
+    * ClothingLowBoots
+    * ClothingRidingBoots
+    * ClothingFineShoes
+    * ClothingFineShoes
+    * ClothingRoyalShoes
+    * ClothingFurHat
+    * ClothingVeil
+    * ClothingCap
+    * ClothingLeatherHat
+	]
+}
+
+Hats(Gear) {
+    ^ [
+    * ClothingFurHat
+    * ClothingVeil
+    * ClothingCap
+    * ClothingLeatherHat
+    ]
+}
+
+LeatherMade(Gear) {
+	^ [
+    * ClothingLeatherApron
+    * ClothingLeatherCoat
+    * ClothingLeatherLeggings
+    * ClothingLeatherVest
+    * ClothingLeatherGloves
+    * ClothingLeatherHat
+    * Storage
+	]
+}
+
+ArmorWeapon {
+    ^ [
+    * BattleAxe
+    * Club
+    * CrossBow
+    * Dagger
+    * HandAxe
+    * Javelin
+    * Lance
+    * LongBow
+    * Mace
+    * Polearm
+    * ShortBow
+    * ShortSword
+    * SilverDagger
+    * Sling
+    * Spear
+    * Staff
+    * Sword
+    * TwoHandedSword
+    * Warhammer
+    *(x4) ArmorShield
+    *(x3) ArmorLeather
+    *(x2) ArmorChainmail
+    *(x1) ArmorPlatemail
+    ]
+}
+    

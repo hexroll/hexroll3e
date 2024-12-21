@@ -1,0 +1,333 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+ContainerTrap { ^ [ * NoTrap
+                    * ContainerNeedleTrap
+                    * ContainerVapourTrap
+                    * ContainerTouchTrap
+                    * ContainerRubbleTrap
+                  ]
+    ContainerType = none
+    Vessel = none
+}
+
+NoTrap {
+    Description! = none
+}
+  
+
+PoisonTrapDamage = [
+  * Save vs Poison or sustain 1d6 turns of uncontrolled spasms.
+  * Save vs Poison or die in 1d4 turns.
+]
+
+ContainerNeedleTrap {
+  | ContainerTrap
+  Damage @ $PoisonTrapDamage
+  Description! ~ <%
+      There's a <strong>poisoned needle</strong> {{ContainerType.TrapLocation}}.  If undetected,
+      there's a <strong>2 in 6</strong> chance of getting pricked.  {{Damage}}
+      %> 
+}
+
+
+ContainerVapourTrap {
+  | ContainerTrap
+  Vessel @ [
+    * <strong>blister</strong> made of goat's intestine
+    * <strong>blister</strong> made of lizard's intestine
+    * <strong>blister</strong> made of rat's intestine
+    * vial made of an extremely fragile glass
+  ]
+  Damage @ $PoisonTrapDamage
+  Description! ~ <%
+      There's a small <strong>gas-filled</strong> {{Vessel}}
+      {{ContainerType.TrapLocation}}.  If undetected, there's a <strong>2 in 6</strong> chance of popping
+      it.  {{Damage}}
+      %>
+}
+
+ContainerTouchTrap {
+  | ContainerTrap
+
+  Agent @ [
+    * highly corrosive ointment
+    * strong acid ooze
+  ]
+    Description! ~ <%
+        {{capitalize(articlize(Agent))}} was applied on the {{ContainerType.PluralizedName}}.
+        If undetected, there's a <strong>2 in 6</strong> chance of touching it.
+        <strong>Save vs Petrification</strong> or sustain <strong>1d4 damage</strong>.
+        %>
+}
+
+TrapObjectRubble {
+      noun! = rubble
+      aux! = is
+    
+}
+TrapObjectDebris {
+      noun! = debris
+      aux! = is
+}
+TrapObjectStones {
+      noun! = stones
+      aux! = are    
+}
+
+ContainerRubbleTrap {
+  | ContainerTrap
+  Object! @@ [
+    * TrapObjectRubble
+    * TrapObjectDebris
+    * TrapObjectStones
+  ]
+  Description! ~ <%
+      <strong>Loose</strong> {{Object.noun}} {{Object.aux}} locked above the {{ContainerType.PluralizedName}}, released when a
+      <strong>switch</strong> {{ContainerType.TrapLocation}} is triggered.  If undetected, there's a
+      <strong>2 in 6</strong> chance for the {{Object.noun}} to drop down.  <strong>Save vs
+      Petrification</strong> or sustain <strong>1d8 damage</strong>.
+      %>
+}
+
+
+AreaTrap { 
+  ^ [
+        *(x10) NoTrap
+        * PitTrap
+        * SwingingBladeTrap
+        * SpringedDeviceTrap
+        * ProjectilesTrap
+        * VapourTrap
+    ]
+}
+
+DeadEndTrap { 
+  ^ [
+        * PitTrap
+        * SwingingBladeTrap
+        * SpringedDeviceTrap
+        * ProjectilesTrap
+        * VapourTrap
+    ]
+}
+
+
+
+PitTrap {
+  Cover @ [
+    * covered only by the darkness
+    * <strong>hidden</strong> under <strong>canvas and dirt</strong>
+    * covered under <strong>thin wood planks</strong>
+  ]
+
+  Monster @ PitTrapMonster
+
+  Description! @ [
+    * <p>There's a <strong>deadly pit</strong> here, 6' deep, {{Cover}}.  If
+      undetected, there's a <strong>2 in 6</strong> chance of falling in when
+      stepped on. </p><p> {%if
+      Monster.NumberAppearingRoaming==1%}{{capitalize(articlize(Monster.Title))}}
+      is {%else%}{{Monster.NumberAppearingRoaming}}
+      {{Monster.Title}}s are {%endif%} waiting at the bottom.
+
+      <hr/>
+
+      {{Monster.Stats}}
+
+      <br/>
+
+      {%if Monster.NumberAppearingRoaming<10%}{%for m in
+      range(Monster.NumberAppearingRoaming)%} <sub>{% for hp in
+      range(dice(Monster.HitDiceRoll)) %}❏{%endfor%}</sub><br/>
+      {%endfor%}{%endif%}
+
+      <hr/>
+      </p>
+
+    * There's a <strong>deadly pit</strong> here, 6' deep, {{Cover}}.
+      If undetected, there's a <strong>2 in 6</strong> chance of falling in.
+      <strong>Save vs Death</strong> or sustain <strong>1d6 damage</strong> from long rusty spikes at the
+      bottom.
+
+  ]
+}
+
+
+TrapTriggers = [
+  * stepping on <strong>pressure plate</strong>
+  * stepping through its <strong>trip wire</strong>
+  * causing a <strong>sound sensitive membrane</strong> to vibrate
+  * <strong>removing a specific object</strong> from its original place
+]
+
+
+SwingingBladeTrap {
+  Trigger @ $TrapTriggers
+
+  Description! @ [
+    * There's a razor-sharp 4' tall <Strong>swinging blade trap</strong> here, <Strong>hidden</strong>
+      inside a thin long <Strong>wall slit</strong>.  If undetected, there's a <Strong>2 in 6</strong>
+      chance of triggering if {{Trigger}}.  <Strong>Save vs Breath</strong> or sustain <Strong>2d4
+      damage</strong>.
+
+    * There's a crushing <Strong>swinging boulder trap</strong> here, <Strong>hidden</strong> inside the
+      <Strong>wall</strong>.  If undetected, there's a <strong>2 in 6</strong> chance of triggering if
+      {{Trigger}}. <strong>Save vs Breath</strong> or sustain <strong>2d4 damage</strong>.
+
+    * There's a razor-sharp 5' tall <strong>swinging blade trap</strong> here, going back
+      and forth <strong>periodically</strong>.  If undetected, there's a chance of <Strong>2 in
+      6</strong> of passing it at the wrong time.  <Strong>Save vs Breath</strong> or sustain <Strong>2d4
+      damage</strong>.
+
+    * There's a crushing <strong>swinging boulder trap</strong> here, going back and forth
+      <strong>periodically</strong>.  If undetected, there's a chance of <strong>2 in 6</strong> of
+      passing it at the wrong time.  <strong>Save vs Breath</strong> or sustain <strong>2d4
+      damage</strong>.
+  ]
+
+
+}
+
+
+SpringedDeviceTrap {
+  Trigger @ $TrapTriggers
+
+  Description! ~ <%
+      There's a <strong>spring-loaded spears trap</strong> here, hidden inside <strong>shafts in
+      the floor</strong>.  If undetected, there's a <strong>2 in 6 chance</strong> of triggering it if
+      {{Trigger}}. <strong>Save vs Death</strong> or sustain <strong>1d6 damage</strong> from the
+      violent thrust of the jumping spears.
+      %>
+
+
+}
+
+
+ProjectilesTrap {
+  Trigger @ $TrapTriggers
+  Damage @ $PoisonTrapDamage
+
+  Description! @ [
+    * There's a <strong>poisonous darts trap</strong> here, hidden inside <strong>shafts in the
+      wall</strong>.  If undetected, there's a 2 in 6 chance of triggering it if 
+      {{Trigger}}.
+      {{Damage}}
+
+    * There's a <strong>crossbow trap</strong> here, hidden inside a </strong>niche in the wall</strong>.
+      If undetected, there's a 2 in 6 chance of triggering it if {{Trigger}}.
+      <strong>Save vs Breath</strong> or sustain <strong>1d6 damage</strong> from the fast and sharp
+      arrow.
+
+  ]
+
+}
+
+# test
+# comment
+
+VapourTrap {
+  # comment
+  Trigger @ $TrapTriggers
+  PoisonDamage @ $PoisonTrapDamage
+  Description! @ [
+    * There's a <strong>poisonous gas trap</strong> here. If undetected, there's a 2 in 6
+      chance of triggering if {{Trigger}}, causing the gas to come out of
+      <strong>slits in the wall</strong>.
+      {{PoisonDamage}}
+    * There's an <strong>acidic vapour trap</strong> here. If undetected, there's a 2 in 6
+      chance of triggering if {{Trigger}}, causing a spray of acid to come out
+      of a <strong>hole in the wall</strong>.  <strong>Save vs Death</strong> or sustain <strong>1d6 damage</strong>
+      by acid.
+  ]
+
+}
+
+
+DoorTrapCrossingTriggers = [
+  * when crossing, a <strong>pressure plate</strong> is stepped on
+  * stepping through an almost invisible <strong>trip wire</strong>
+]
+
+
+DoorTrapHandlingTriggers = [
+  * unlocking it's <strong>fake door lock</strong> with any key
+  * it's ring shaped <strong>door handle</strong> is pulled
+  * pulling a <strong>wooden lever</strong> fixed on the wall beside it
+]
+
+
+DoorTrap {
+  ^ [
+    * DoorBladeTrap
+    * DoorMagicalTrap
+    * DoorPitTrap
+  ]
+  Title! = trap
+}
+
+
+DoorBladeTrap {
+  | DoorTrap
+  Trigger @ $DoorTrapCrossingTriggers
+
+  Description! ~ <%
+      There's a giant blade locked inside a cavity above the door.
+      If undetected, there's a 2 in 6 chance of triggering it if
+      {{Trigger}}.
+      <strong>Save vs Petrification</strong> or sustain <strong>1d8 damage</strong>.
+      %>
+
+
+}
+
+
+DoorMagicalTrap {
+  | DoorTrap
+  Damage @ [
+    * <strong>forget</strong> one memorized spell
+    * anything carried made of <strong>gold will turn to wood</strong>
+    * suffer a <strong>-2 AC penalty</strong>
+    * <strong>teleport</strong> to a random area
+  ]
+    Description! ~ <%
+      This doorway is magically trapped.
+      If undetected, there's a 2 in 6 chance of triggering it
+      when crossing.
+      <strong>Save vs Spells</strong> or {{Damage}}.
+    %>
+
+}
+  
+DoorPitTrap {
+  | DoorTrap
+  Trigger @ $DoorTrapHandlingTriggers
+  Description! ~ <%
+      There's a concealed 10 foot deep pit next to the door.
+      If undetected, there's a 2 in 6 chance of triggering it if
+      {{Trigger}}.
+      <strong>Save vs Petrification</strong> or sustain <strong>1d8 damage</strong>.
+    %>
+}

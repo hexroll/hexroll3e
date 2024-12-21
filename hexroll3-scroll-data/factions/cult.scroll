@@ -1,0 +1,127 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+CultName(FactionName) {
+  Name_Prefix @ [
+    * dark
+    * defiled
+    * white
+    * black
+    * burning
+    * flaming
+    * desecrated
+    * foul
+    * corrupt
+    * sacred
+  ]
+
+  Name_Suffix @ [
+    * horrors
+    * sun
+    * followers
+    * truthseekers
+    * saviors
+    * scrolls
+    * saints
+    * bones
+    * lambs
+    * wolves
+    * servants
+    * seekers
+    * prophets
+  ]
+  | FactionName
+}
+
+Cult (Faction) {
+  FactionName! @ CultName
+
+  AcceptedAlignment = Chaotic
+
+  Race @ [
+    * humans
+    * elves
+    * gnolls
+    * kobolds
+  ]
+
+  Verb = secretly
+
+  Purpose @ [
+    * conducting horrid experiments in humanoids
+    * sacrificing humans
+    * attempting demon summoning rituals
+  ]
+
+  Leader @ CultLeader {
+    HostingEntity := &uuid
+    Alignment = Chaotic
+  }
+
+  Lair ? FactionLair {
+    FactionName = *FactionName
+    FactionLeader = *Leader
+    FactionUUID = &uuid
+    Faction = <%
+        <a href="{{sandbox()}}/faction/{{FactionUUID}}"><strong>{{FactionName.Full}}</strong></a>
+        are using this dungeon, and there's a 2 in 6 chance to find
+        <a href="{{sandbox()}}/faction/{{FactionUUID}}/npc/{{FactionLeader.uuid}}"><strong>{{FactionLeader.Name.Full}}</strong></a>
+        together with {{FactionLeader.Gender.PronounPossessive}} acolytes or mediums here.
+    %>
+  }
+
+  LairRumor @ RealmRumor {
+    FactionName := *FactionName
+    FactionUUID := &uuid
+    FactionLair := *Lair
+    Details = <%
+        {% if FactionLair %}
+        <a href="{{sandbox()}}/faction/{{FactionUUID}}"><strong>{{FactionName.Full}}</strong></a>
+        are using the
+        <a href="{{sandbox()}}/location/{{FactionLair.DungeonUUID}}"><strong>{{FactionLair.Name.Title}}</strong></a>
+        as their hideout.
+        {% else %}
+        <a href="{{sandbox()}}/faction/{{FactionUUID}}"><strong>{{FactionName.Full}}</strong></a>
+        are looking for a hideout.
+        {% endif %}
+    %>
+  }
+
+  Brief! ~ <%
+    <p>
+    <strong>{{FactionName.Full}}</strong>
+    {{class | lower}} are {{Purpose}}.
+    </p>
+    <p>
+    {% if Lair %}
+    The {{class | lower}} hideout is the {{Lair.Name.Title}}.
+    {% endif %}
+    </p>
+  %>
+
+  Coords! ~ <%{% if Lair %} {{Lair.Coords}} {%endif%}%>
+  | Faction
+}
+

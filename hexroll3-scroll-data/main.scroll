@@ -1,0 +1,201 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
++ /utils/index
++ /utils/sigils
++ /names/base
++ /names/places
++ /names/regions
++ /names/taverns
++ /names/npc
++ /names/dungeons
++ /npc/state
++ /npc/gender
++ /npc/character
++ /npc/equipment
++ /monsters/base
++ /monsters/activities
++ /hooks/rumor
++ /hooks/artifacts
++ /hooks/quest
++ /hooks/relation
++ /hooks/quests/missing_person
++ /hooks/quests/lost_item
++ /hooks/quests/delivery
++ /hooks/quests/escort
++ /settlements/base
++ /settlements/folk
++ /settlements/dwelling
++ /settlements/stronghold
++ /settlements/tavern
++ /settlements/district
++ /settlements/city
++ /settlements/town
++ /settlements/village
++ /settlements/shops
++ /settlements/castle
++ /dungeons/mouth
++ /dungeons/traps
++ /dungeons/doors
++ /dungeons/areas
++ /dungeons/appearance
++ /dungeons/debris
++ /dungeons/containers
++ /dungeons/fountain
++ /dungeons/fungi
++ /dungeons/pools
++ /dungeons/remains
++ /dungeons/portal
++ /dungeons/dungeon
++ /dungeons/cave
++ /dungeons/temple
++ /dungeons/tomb
++ /dungeons/encounters/humanoids
++ /dungeons/encounters/vermins
++ /dungeons/encounters/aberrations
++ /dungeons/encounters/ooze
++ /dungeons/encounters/undead
++ /dungeons/encounters/magical
++ /dungeons/encounters/dragons
++ /dungeons/encounters/caves
++ /dungeons/encounters/temples
++ /wilderness/base
++ /wilderness/landmarks
++ /wilderness/weather
++ /wilderness/hex
++ /wilderness/region
++ /wilderness/mountains
++ /wilderness/plains
++ /wilderness/forest
++ /wilderness/jungle
++ /wilderness/desert
++ /wilderness/swamps
++ /wilderness/tundra
++ /wilderness/ocean
++ /realms/base
++ /realms/faction
++ /realms/name
++ /realms/ruler
++ /realms/realm
++ /factions/cult
++ /factions/militia
++ /factions/syndicate
++ /osr/equipment
++ /osr/npc
++ /osr/npc_allocs
++ /osr/magic_items
++ /osr/treasure
++ /osr/monsters
++ /osr/quests
++ /osr/encounters/wilderness
++ /osr/encounters/dungeon
+
+main {
+  Version = 2
+  << IndexedEntity
+  [1..1 realms!] @ RuledRealm
+  [0..0 ocean!] @ OceanHex
+  Header! ~ <%
+    <h4 id="title">
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+    </span> <br/>
+    Table of Contents
+    </h4>
+  %>
+
+  ToC! ~ <%
+    {% for r in realms %}
+    <div class="toc-section">
+    <h5><a href="{{sandbox()}}/realm/{{r.uuid}}">{{r.Title}}</a></h5>
+    <p>
+    <blockquote>{{r.Background}}</blockquote>
+    </p>
+
+    {% set toc_obj = list_to_obj(r.toc, "Type") %}
+
+    <div class="toc-subsection">
+
+    {% if toc_obj.Region %}
+    <div class="toc-column">
+    <h6>Regions</h6>
+    <ul>
+    {% for region in sortby(toc_obj.Region,"Title") %}
+    <li><a href="{{sandbox()}}/region/{{region.UUID}}">{{ region.Title }}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+
+    {% if toc_obj.Settlement %}
+    <div class="toc-column">
+    <h6>Settlements</h6>
+    <ul>
+    {% for settlement in sortby(toc_obj.Settlement,"Title") %}
+    <li>{{capitalize(settlement.Class)}} of <a href="{{sandbox()}}/location/{{settlement.UUID}}">{{capitalize(settlement.Title)}}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+
+    {% if toc_obj.Faction %}
+    <div class="toc-column">
+    <h6>Factions</h6>
+    <ul>
+    {% for faction in sortby(toc_obj.Faction,"Title") %}
+    <li><a href="{{sandbox()}}/location/{{faction.UUID}}">{{faction.Title.Full}}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+
+    {% if toc_obj.Dungeon %}
+    <div class="toc-column">
+    <h6>Dungeons</h6>
+    <ul>
+    {% for dungeon in sortby(toc_obj.Dungeon,"Title") %}
+    <li><a href="{{sandbox()}}/location/{{dungeon.UUID}}">{{dungeon.Title.Title}}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+    </div>
+    </div>
+    {% endfor %}
+  %>
+
+  r! = <% {{realms}} %>
+
+  <metadata%
+  %metadata>
+
+  <header%
+    {{Header}}
+  %header>
+
+  <body%
+    {{ToC}}
+  %body>
+}

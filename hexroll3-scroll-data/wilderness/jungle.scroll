@@ -1,0 +1,126 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Jungle {
+  Name! = Jungle
+  Statue @ [
+    * angry demon
+    * giant sleeping monkey
+    * three robed priestesses 
+  ]
+  Skeleton @ [
+    * dragon, as if sleeping peacefully
+    * giant humanoid, lying face down
+  ]
+  Supplemental! @ [
+    * Droplets of water fall down from the oversized leaves of the tall trees here.
+      Ancient stone made totem-like pillars emerge from the undergrowth, each
+      with a different carving of an animal.
+
+    * This part of the jungle has a very dense undergrowth of bushes and vines.
+      A sword or a machete is likely needed to carve the way forward.
+
+    * The trees here are naked and twisted. Their branches reach down like bony
+      claws. Was this place cursed in days long gone?
+
+    * The trees here are big and tall. Their tops are almost hidden by the
+      dense mist.  Their trunks are as wide as a hut. Some of them have planks
+      of wood attached, forming a ladder.
+
+    * A huge, lush tree is standing in a clearing here, covered with colourful
+      flowers and holding a sweet berry inside. Birds fly cheerfully around it.
+
+    * Moss covered ruins of an ancient stone structure emerge from within the
+      vegetation. Carvings of spirals and swirls decorate some of the larger
+      stones.
+
+    * The forest is dense and dark here, but countless clusters of
+      phosphorescent fungi are growing near the base of the trunks, creating a
+      luminous colourful glow above the ground.
+
+    * Dense ivy and vegetation cover an old skeleton of a {{Skeleton}}
+      in a clearing surrounded by the jungle trees. 
+
+    * Ropes tangle down the branches here. On some, straw-made figures 
+      of humanoids are hanging down by their canvas covered heads.
+
+    * Dozens of giant dead tree trunks are laying on the ground here, covered
+      with moss and undergrowth. Some of them seem to have a face, with a 
+      frozen expression of agony.
+
+    * An oversized statue of {{articlize(Statue)}} holding a sword
+      against the ground stands proudly in a clearing here.
+      Fresh flowers were recently placed near its base.
+
+    * There's a stream of clear water here, flowing gently between the jungle trees,
+      over the smooth rock ground.
+
+    * Colourful plants and mushrooms grow within the undergrowth
+      here - almost densely enough to hide the bones of an alien creature.
+
+    * A small pond sits between the jungle trees here. At night, countless
+      mysterious forms glow an eerie purple light deep in the water.
+
+  ]
+  Location! @ [
+    * near a water stream
+    * next to a clearing
+    * deep in the jungle
+    * where the jungle meets a tall mountain
+  ]
+  Hideout! @ [
+    * under the ruins of an ancient temple
+    * withing the dense undergrowth
+    * near an abandoned ritual site, deep in the jungle
+    * under the remains of an ancient settlement
+    * under the ruins of an ancient ziggurat
+  ]
+}
+
+JungleRandomEncounterTable {
+  [4..4 OtherEncounters!] @ ForestRandomEncounter
+}
+
+JungleHex (Hex) {
+  Terrain! @ Jungle
+  Monster! @ ForestFeatureEncounter
+  RandomEncounters @ ForestRandomEncounterTable
+  ExtensionTypeClass = "JungleHexExtension"
+  | Hex
+}
+
+JungleRegion (Region) {
+  Suffix @ [
+    * Jungle
+    * Wilds
+    * Bushes
+    * Rainforest
+    * Wilderness
+  ]
+  | Region
+  Weather? @ TropicalWeatherContainer
+  [$minimum_tiles_per_jungle_region..$maximum_tiles_per_jungle_region Hexmap?] @ JungleHex
+}
+

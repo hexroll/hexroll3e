@@ -1,0 +1,119 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+VillageDistrict(District) {
+  Title = Village District
+  CostFactor = 0.9
+  << Advert
+  << LocalRumor
+  [5..19 shops!] @ TownShops
+  | District
+}
+
+Village(Settlement) {
+  | Settlement
+
+  Title! = "village of {{title(NamePart)}}"
+
+  Prefix! @ [
+    * thriving
+    * bustling
+    * sleepy
+    * flourishing
+    * lively
+    * struggling
+    * growing
+    * withering
+    * prospering
+    * expanding
+  ]
+
+  Connector! @ [
+    * blends seamlessly
+    * sits quietly
+    * rests peacefully
+  ]
+
+  District? @ VillageDistrict
+  Population? = "{{int(District.Population)}}"
+
+  GAlignment @ [
+    *(x5) Lawful
+    *(x1) Neutral
+  ]
+  [2..3 Guards?] @ Guard {
+     Alignment = &GAlignment
+     HostingEntity := &uuid
+     Profession = "guard"
+     URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+  }
+
+  Overview? ~ <%
+    <p>
+      Population: {{Population}} villagers
+    </p>
+    <h5>Village Shops & Services</h5>
+    {{District.Index}}
+    {% if Guards %}
+    <h5>Guards</h5>
+    {% for g in Guards %}
+    <a class="npc-anchor" id="{{g.uuid}}"></a>
+    <p>
+    {{reroller(g, "", False)}} {{g.Description}}
+    {{g.Stats}}
+    {% if g.Association %}
+    <ul>
+    {{g.Association}}
+    </ul>
+    {% endif %}
+    <hr/>
+    </p>
+    {% endfor %}
+    {% endif %}
+  %>
+
+  Supplemental! = ""
+
+  Brief? = <%
+    {{Overview}}
+  %>
+
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="0" y="0" zoom="6"> </a>
+  %metadata>
+
+  <header%
+    <div hidden id="doc-title"> {{capitalize(Title)}} from {{Realm}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="NamePart" data-map-label="true">{{NamePart}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+    {{Brief}}
+  %body>
+}
+

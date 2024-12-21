@@ -1,0 +1,95 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonEntrance {
+  AreaNumber = 0
+  AreaUUID! = none
+  HexClass = none
+  DungeonContext = none
+  EntranceLocationPrefix = ""
+  EntranceDescLeadingTo = ""
+
+  MountainLocation @ [
+    * in a cave on the face of cliff, at the end of a rope bridge above a chasm
+    * inside a cave, hidden behind a raging waterfall
+    * inside an adandoned mine
+    * inside a cave on the face of a steep cliff
+    * under the ruines of an old fortress
+    * in the basement of an abandoned inn
+    * inside an abandoned wooden cabin, under loose floor boards
+  ]
+  ForestLocation @ [
+    * deep inside the trunk of a giant oak, at the bottom of an excavated spiral staircase
+    * under the ruins of an ancient temple, masked by dense undergrowth
+    * deep inside the mouth of a giant stone skull, entirely covered with moss and ivy
+    * in the basement of an abandoned inn
+    * inside an abandoned wooden cabin, under loose floor boards
+  ]
+  PlainsLocation @ [
+    * hidden deep inside a burial mound
+    * deep inside the mouth of a giant stone skull
+    * under a wooden trapdoor buried 5 feet in the ground
+    * under the ruines of an old fortress
+    * at the bottom of a false outhouse
+    * in the basement of an abandoned inn
+    * inside an adandoned mine
+    * inside an abandoned wooden hut, under loose floor boards
+  ]
+  DesertLocation @ [
+    * under a wooden trapdoor buried 5 feet into the sand, with only an arrow-shaped sign pointing down hinting on the location
+    * deep inside the mouth of a giant stone craved skull, partly buried under a dune
+    * in the basement of an abandoned inn
+    * inside a cave on a formation of rock surrounded by dunes
+    * inside an abandoned wooden hut, under loose floor boards
+  ]
+
+  DefaultLocation @ [
+    * located behind a giant skull's gaping mouth
+    * under a wooden trapdoor buried 5 feet in the ground
+  ]
+  DungeonHex = :Dungeon.Hex
+  Location! ~ <%
+    {%if DungeonHex == "MountainsHex"%}{{MountainLocation}}
+    {%elif DungeonHex == "ForestHex"%}{{ForestLocation}}
+    {%elif DungeonHex == "PlainsHex"%}{{PlainsLocation}}
+    {%elif DungeonHex == "DesertHex"%}{{DesertLocation}}
+    {%else%}{{DefaultLocation}}{%endif%}
+  %>
+  Description! ~ <%
+    <a href="{{sandbox()}}/location/{{AreaUUID}}"><strong>{{EntranceDescLeadingTo}} {{AreaNumber}}</strong></a> {{EntranceLocationPrefix}}
+    {%if DungeonHex == "MountainsHex"%}
+    {{MountainLocation}}.
+    {%elif DungeonHex == "ForestHex"%}
+    {{ForestLocation}}.
+    {%elif DungeonHex == "PlainsHex"%}
+    {{PlainsLocation}}.
+    {%elif DungeonHex == "DesertHex"%}
+    {{DesertLocation}}.
+    {%else%}
+    {{DefaultLocation}}.
+    {%endif%}
+  %>
+}
+

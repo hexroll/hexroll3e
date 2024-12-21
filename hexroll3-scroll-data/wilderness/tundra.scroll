@@ -1,0 +1,128 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Tundra {
+  Name! = Tundra
+  Direction @ [
+    * north
+    * south
+    * north-east
+    * south-east
+    * north-west
+    * south-west
+  ]
+  Supplemental! @ [
+    * The ice here is blindingly bright in daylight. It is almost too much
+      to bear for those who are accustomed to the darkness of the depths. 
+
+    * The ice plateaus here are mostly opaque, but every now and then it
+      reveals ominous shadows of creatures swimming or perhaps lurking underneath.
+
+    * In the middle of the icy wasteland, a large round snowy rock emerges from
+      the snow. Easy enough to climb on and perhaps find some shelter from
+      the cold.
+
+    * The ice here is thick but broken and cracked. It is a challenge to find
+      a safe path to follow, and quite often, a leap is required to move about.
+
+    * The snow here is soft to walk on. Too soft. In some places, taking the
+      next step means falling down deep into a sinkhole.
+
+    * Gusts of wind swirl the soft snow in the air, making it difficult to
+      walk safely and comfortably as it obscures the vision and hits any
+      exposed skin with a freezing sting.
+
+    * Vast plateaus of ice stretch in all directions, feature-less and 
+      monotonous. Navigating is difficult without any distant landmarks.
+
+    * Tall pillars of ice emerge from the snow here, as if water has risen
+      from the ground, only to be captured by the frost.
+
+    * The snow here is riddled with giant craters. Something with
+      much force and velocity must have fallen from the sky.
+
+    * The ruins of a giant wall of ice can be seen in the distance. 
+      The formation is unnatural, unmaintained, and impressive.
+
+    * There are caverns of translucent ice here. Frozen creatures
+      and ancient artifacts could be spotted if walking inside them.
+
+    * There are several deep frozen chasms here, with unnatural thin 
+      bridges providing the only way to cross.
+
+    * There's a glacier here, almost impossible to climb through, with 
+      fragile excavated tunnels dug in it to provide an unsafe passage.
+
+    * There's a large ice wall here, forming a natural dam, blocking
+      a large body of icy water from flooding the area.
+
+    * A frozen waterfall is the only way to march {{Direction}} from here
+      and will require climbing or rappelling to cross it.
+
+    * Several dome shaped shelters are scattered on the snowy planes
+      here, providing a convenient hideout from the cold.
+
+  ]
+  Location! @ [
+    * on the icy plateau
+    * near a hot spring
+    * between two snowy giant boulders
+  ]
+
+  Hideout! @ [
+    * under the ruins of an ancient temple
+    * underground
+    * near an abandoned ritual site
+    * under the ruins of an ancient settlement
+    * inside an ancient iceberg
+  ]
+}
+
+TundraRandomEncounterTable {
+  [4..4 OtherEncounters!] @ TundraRandomEncounter
+}
+
+TundraHex (Hex) {
+  Terrain! @ Tundra
+  Monster! @ TundraFeatureEncounter
+  RandomEncounters @ TundraRandomEncounterTable
+  ExtensionTypeClass = "TundraHexExtension"
+  | Hex
+}
+
+TundraRegion (Region) {
+  Suffix @ [
+    * Tundra
+    * Wastelands
+    * Barrens
+    * Wastes
+    * Icefields
+    * Snowlands
+  ]
+  | Region
+  Weather? @ ArcticWeatherContainer
+  [$minimum_tiles_per_tundra_region..$maximum_tiles_per_tundra_region Hexmap?] @ TundraHex
+}
+

@@ -1,0 +1,165 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonContainerType { ^ [
+        * DungeonContainerJar
+        * DungeonContainerChest
+        * DungeonContainerCrate
+        * DungeonContainerBarrel
+        * DungeonContainerBag
+    ]
+}
+
+DungeonContainerJar(DungeonContainerType) {
+    Quantity = none
+    Name! = jar
+    PluralizedName! ~ <% {{Name}}{%if Quantity!="single"%}s{%endif%} %>
+    TrapLocation! @ [
+        * embedded in a handle
+    ]
+}
+
+DungeonContainerChest(DungeonContainerType) {
+    Quantity = none
+    Name! = chest
+    PluralizedName! ~ <% {{Name}}{%if Quantity!="single"%}s{%endif%} %>
+    TrapLocation! @ [
+        * hidden under a pulling ring
+    ]
+}
+
+DungeonContainerCrate(DungeonContainerType) {
+    Quantity = none
+    Name! = crate
+    PluralizedName! ~ <% {{Name}}{%if Quantity!="single"%}s{%endif%} %>
+    TrapLocation! @ [
+        * embedded in one of the wooden planks
+    ]
+}
+
+DungeonContainerBarrel(DungeonContainerType) {
+    Quantity = none
+    Name! = barrel
+    PluralizedName! ~ <% {{Name}}{%if Quantity!="single"%}s{%endif%} %>
+    TrapLocation! @ [
+        * hidden in a rim
+    ]
+}
+
+DungeonContainerBag(DungeonContainerType) {
+    Quantity = none
+    Name! = bag
+    PluralizedName! ~ <% {{Name}}{%if Quantity!="single"%}s{%endif%} %>
+    TrapLocation! @ [
+        * thrown casually inside
+    ]
+}
+
+DungeonContainers {
+  Coin @ [
+    * silver
+    * copper
+  ]
+
+  Foreshadow! @ [
+    * A few single {{Coin}} pieces could be found if examining the ground near
+      the entrances to this area
+    * Traces of something heavy dragged on the ground could be found if examining
+      around the entrances to this area
+    * A torn canvas bag was left on the ground near an entrance to this area
+  ]
+
+  Quantity @ [
+    * single
+    * multiple
+  ]
+
+  Type @ DungeonContainerType {
+      Quantity = &Quantity
+  }
+
+  Size @ [
+    * large
+    * small
+    * very big
+    * big
+    ]
+
+  Trap! @ ContainerTrap {
+      ContainerType = *Type
+  }
+
+  Hint! ~ <%
+    There {%if Quantity=="single"%}is a{%else%}are some{%endif%} {{Size}}
+    {{Type.Name}}{%if Quantity!="single"%}s{%endif%} near the far wall
+    %>
+
+  Description! ~ <%
+    {%if Trap.Description%}The {{Type.Name}}{% if Quantity=="single"%} is{%else%}s are{%endif%} trapped.
+    {{Trap.Description}}
+    </li><li>{%endif%}{%if (trim(Treasure.Details))==""%}The treasure here, if any, was <strong>already looted</strong>.
+    {%else%}There’s a 2-in-6 chance the {{Type.Name}}{%if Quantity=="single"%}s{%endif%} contain{%if Quantity=="single"%}s{%endif%}:
+    <ul>
+    {{Treasure.Details}}
+    </ul>
+    Otherwise, this place was already looted earlier.
+    {%endif%}
+  %>
+}
+
+DungeonTreasureTier1 (DungeonContainers) {
+  Treasure! @ TreasureTypeTier1
+  TreasureAreaNumber! = :AreaDescription.RoomNumber
+  TreasureDungeonName! = :Dungeon.Name
+  TreasureDungeonUUID! = :Dungeon.uuid
+  TreasureAreaUUID! = :AreaDescription.uuid
+  | DungeonContainers
+}
+
+DungeonTreasureTier2 (DungeonContainers){
+  Treasure! @ TreasureTypeTier2
+  TreasureAreaNumber! = :AreaDescription.RoomNumber
+  TreasureDungeonName! = :Dungeon.Name
+  TreasureDungeonUUID! = :Dungeon.uuid
+  TreasureAreaUUID! = :AreaDescription.uuid
+  | DungeonContainers
+}
+
+DungeonTreasureTier3 (DungeonContainers){
+  Treasure! @ TreasureTypeTier3
+  TreasureAreaNumber! = :AreaDescription.RoomNumber
+  TreasureDungeonName! = :Dungeon.Name
+  TreasureDungeonUUID! = :Dungeon.uuid
+  TreasureAreaUUID! = :AreaDescription.uuid
+  | DungeonContainers
+  Rumor @ DungeonTreasureRumor
+}
+
+DungeonTreasureTier4 (DungeonContainers){
+  Treasure! @ TreasureTypeTier3
+  | DungeonContainers
+  Rumor @ DungeonTreasureRumor
+}
+

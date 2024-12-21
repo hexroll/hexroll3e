@@ -1,0 +1,100 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Desert {
+  Name! = Desert
+  Supplemental! @ [
+    * The sand here is as dark as the night. Not a fire nor a volcano could have
+      been the cause.
+
+    * You can clearly see bones revealing under the dunes when the wind shifts
+      the sand. This was no land of peace.
+
+    * Surrounded by the soft dunes, a huge rock shaped like a dome is planted in
+      the sand. It is almost too slippery to climb on.
+
+    * Either wind or some other force creates dozens of giant sand vortexes
+      here, as tall as the eye can see.
+
+    * There are numerous sinkholes in the sands here. Some of them are big
+      enough to swallow an inn.
+
+    * The wind here is gentle and the sand is soft and warm. Large canopied
+      desert trees provide enough shadow to rest or camp under.
+
+    * Vast dunes stretch in all directions, shimmering in the desert heat. The
+      sun makes the sand scorching hot.
+
+    * Tall pillars of rock emerge from the sands here, like giant columns to
+      support the cloudless sky.
+
+    * The sand here is riddled with small craters, as if a cluster of rocks rained
+      violently from above.
+
+    * A giant perfect wall of stones stands lonely and unconnected in the middle
+      of the wasteland, with only empty stretches of sand to surround it.
+
+    * Gusts of warm desert wind sweep and swirl the sands, creating ghost-like
+      clouds of desert dust.
+  ]
+  Location! @ [
+    * on the dunes sands
+    * near an oasis
+    * between two giant dunes
+    * beside the ruins of a pyramid
+    * near an ancient monument
+  ]
+  Hideout! @ [
+    * under the ruins of an ancient temple
+    * underground
+    * near an abandoned ritual site
+  ]
+}
+
+DesertRandomEncounterTable {
+  [4..4 OtherEncounters!] @ DesertRandomEncounter
+}
+
+DesertHex (Hex) {
+  Terrain! @ Desert
+  Monster! @ DesertFeatureEncounter
+  RandomEncounters @ DesertRandomEncounterTable
+  ExtensionTypeClass = "DesertHexExtension"
+  | Hex
+}
+
+DesertRegion (Region) {
+  Suffix @ [
+    * Dunes
+    * Desert
+    * Wastelands
+    * Barrens
+    * Wastes
+  ]
+  | Region
+  Weather? @ DesertWeatherContainer
+  [$minimum_tiles_per_desert_region..$maximum_tiles_per_desert_region Hexmap?] @ DesertHex
+}
+

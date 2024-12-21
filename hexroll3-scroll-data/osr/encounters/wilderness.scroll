@@ -1,0 +1,385 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+# This model contains Open Game Content, subject to the Open Game License,
+# released un the Open Game License, Version 1.0a (enclosed in the LICENSE
+# file), as described in Section 1(d) of the License.
+#
+DesertFeatureEncounter {
+  ^ [
+    *(x4) GiantRattler
+    *(x4) Tarantella
+    *(x3) GiantHawk
+    *(x3) Hobgoblin
+    *(x3) Manticore
+    *(x3) Ogre
+    *(x2) Gargoyle
+    * FireGiant
+    * GiantRoc
+    * Griffon
+    * LargeRoc
+    * Thoul
+]}
+
+DesertRandomEncounter {
+  ^ [
+    *(x5) Camel
+    *(x5) Orc
+    *(x3) Gecko
+    *(x3) Hobgoblin
+    *(x3) Lion
+    *(x3) SmallHerdAnimal
+    *(x2) PitViper
+    *(x2) Tuatara
+    *(x1) Ogre
+    * Goblin
+    * SmallRoc
+]}
+
+ForestFeatureEncounter {
+  ^ [
+    * Basilisk
+    * BlackDragon
+    * BlueDragon
+    * Boar
+    * Bugbear
+    * Chimera
+    * Cockatrice
+    * CrabSpider
+    * Cyclops
+    * DireWolf
+    * Dryad
+    * Gargoyle
+    * Gecko
+    * GiantHawk
+    * Gnoll
+    * Goblin
+    * GoldDragon
+    * GreenDragon
+    * Griffon
+    * HillGiant
+    * Hippogriff
+    * Hobgoblin
+    * Hydra
+    * Hydra
+    * KillerBee
+    * NormalWolf
+    * Ogre
+    * Orc
+    * Panther
+    * Pegasus
+    * PitViper
+    * Pixie
+    * RedDragon
+    * RobberFly
+    * SmallRoc
+    * Sprite
+    * Stirge
+    * Thoul
+    * Tiger
+    * Troll
+    * Tuatara
+    * Unicorn
+    * WhiteDragon
+    * Wyvern
+]}
+
+ForestRandomEncounter {
+  ^ [
+    *(x5) Bandit
+    *(x3) Berserker
+    * Boar
+    * CrabSpider
+    * Gecko
+    * Gnoll
+    * Goblin
+    * Hobgoblin
+    * KillerBee
+    * NormalWolf
+    * Ogre
+    * Orc
+    * Panther
+    * PitViper
+    * RobberFly
+    * SmallRoc
+    * Sprite
+    * Stirge
+    * Tiger
+    * Tuatara
+]}
+
+MountainsFeatureEncounter {
+  ^ [
+    *(x5) Goblin
+    *(x4) Hobgoblin
+    *(x4) StoneGiant
+    *(x3) CaveBear
+    *(x3) Kobold
+    *(x3) Ogre
+    *(x3) Orc
+    *(x3) Troll
+    *(x2) CloudGiant
+    *(x2) FrostGiant
+    *(x2) HillGiant
+    * Basilisk
+    * Basilisk
+    * BlackDragon
+    * BlinkDog
+    * BlueDragon
+    * Centaur
+    * Chimera
+    * DireWolf
+    * Gargoyle
+    * GiantRattler
+    * GiantRoc
+    * GoldDragon
+    * Gorgon
+    * GreenDragon
+    * Griffon
+    * Harpy
+    * Hippogriff
+    * Hydra
+    * LargeRoc
+    * Manticore
+    * Medusa
+    * MountainLion
+    * PitViper
+    * RedDragon
+    * Treant
+    * Troglodyte
+    * WarpBeast
+    * Werebear
+    * Wereboar
+    * Wererat
+    * Weretiger
+    * Werewolf
+    * WhiteDragon
+    * Wyvern
+]}
+
+MountainsRandomEncounter {
+  ^ [
+    *(x10) Bandit
+    *(x5) Goblin
+    *(x4) Hobgoblin
+    *(x3) CaveBear
+    *(x3) Kobold
+    *(x3) Ogre
+    *(x3) Orc
+    *(x3) Troll
+    *(x3) Berserker
+    *(x2) NeanderthalCaveman
+    * GiantRattler
+    * MountainLion
+    * NormalWolf
+    * PitViper
+    * SmallRoc
+]}
+
+OceanFeatureEncounter {
+  ^ [
+    *(x7) GreatWhiteShark
+    *(x7) OctopusGiant
+    *(x7) SeaDragon
+    *(x7) SquidGiant
+    *(x4) AirElemental
+    *(x4) StormGiant
+    *(x4) WaterElemental
+    * DragonTurtle
+]}
+
+OceanRandomEncounter {
+  ^ [
+    * BullShark
+    * GiantBass
+    * GiantCatfish
+    * GiantRoc
+    * KillerWhale
+    * MakoShark
+    * Merman
+    * Narwhal
+    * Pirate
+    * SaltwaterTermite
+    * SeaSerpentLesser
+    * SeaSnake
+    * SpermWhale
+]}
+
+PlainsFeatureEncounter {
+  ^ [
+    *(x4) GiantRattler
+    *(x4) Tarantella
+    *(x3) GiantHawk
+    *(x3) Hobgoblin
+    *(x3) Manticore
+    *(x3) Ogre
+    *(x2) Gargoyle
+    * FireGiant
+    * GiantRoc
+    * Griffon
+    * LargeRoc
+    * Thoul
+]}
+
+PlainsRandomEncounter {
+  ^ [
+    *(x5) Camel
+    *(x5) Orc
+    *(x3) Gecko
+    *(x3) Hobgoblin
+    *(x3) Lion
+    *(x3) SmallHerdAnimal
+    *(x2) PitViper
+    *(x2) Tuatara
+    *(x1) Ogre
+    * Goblin
+    * SmallRoc
+]}
+
+SwampsFeatureEncounter {
+  ^ [
+    *(x4) BlackWidow
+    *(x3) CarcassCrawler
+    *(x3) LeechGiant
+    *(x3) Ogre
+    *(x2) Ghoul
+    *(x2) Hydra
+    *(x2) Treant
+    *(x2) Troll
+    *(x1) BlackDragon
+    *(x1) DarkHag
+    *(x1) GiantCrocodile
+]}
+
+SwampsRandomEncounter {
+  ^ [
+    *(x5) Boar
+    *(x5) GiantBass
+    *(x5) GiantCatfish
+    *(x5) InsectSwarm
+    *(x5) LizardMan
+    *(x5) NormalCrocodile
+    *(x5) SeaSnake
+    *(x4) Goblin
+    *(x3) CrabGiant
+    *(x3) Hobgoblin
+    *(x3) Hobgoblin
+    *(x3) Orc
+    *(x3) Thoul
+    *(x2) CrabSpider
+    *(x2) GiantBat
+    *(x2) NormalBat
+    *(x2) Tarantella
+    *(x2) ToadGiant
+    *(x2) Zombie
+]}
+TundraFeatureEncounter {
+  ^ [
+    *(x5) Goblin
+    *(x4) Hobgoblin
+    *(x4) StoneGiant
+    *(x3) CaveBear
+    *(x3) Kobold
+    *(x3) Ogre
+    *(x3) Orc
+    *(x3) Troll
+    *(x2) CloudGiant
+    *(x2) FrostGiant
+    *(x2) HillGiant
+    * Basilisk
+    * Basilisk
+    * BlackDragon
+    * BlinkDog
+    * BlueDragon
+    * Centaur
+    * Chimera
+    * DireWolf
+    * Gargoyle
+    * GiantRattler
+    * GiantRoc
+    * GoldDragon
+    * Gorgon
+    * GreenDragon
+    * Griffon
+    * Harpy
+    * Hippogriff
+    * Hydra
+    * LargeRoc
+    * Manticore
+    * Medusa
+    * MountainLion
+    * PitViper
+    * RedDragon
+    * Treant
+    * Troglodyte
+    * WarpBeast
+    * Werebear
+    * Wereboar
+    * Wererat
+    * Weretiger
+    * Werewolf
+    * WhiteDragon
+    * Wyvern
+]}
+
+TundraRandomEncounter {
+  ^ [
+    *(x10) Bandit
+    *(x5) Goblin
+    *(x4) Hobgoblin
+    *(x3) Berserker
+    *(x3) CaveBear
+    *(x3) Kobold
+    *(x3) Ogre
+    *(x3) Orc
+    *(x3) Troll
+    *(x2) NeanderthalCaveman
+    * GiantRattler
+    * MountainLion
+    * NormalWolf
+    * PitViper
+    * SmallRoc
+]}
+
+BridgeMonsterThugs {
+  ^ [
+    *(x3) Bandit
+    * Gnoll
+    * Goblin
+    * Orc
+  ]
+}
+
+BridgeMonsterTroll {
+  ^ [
+    * Troll
+  ]
+}
+
+BridgeMonsterOgre {
+  ^ [
+    * Ogre
+  ]
+}

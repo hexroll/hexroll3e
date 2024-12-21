@@ -1,0 +1,136 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Gender { ^ [ *(x50) Female
+             *(x50) Male
+             *(x01) Fluid ]
+}
+
+GenderFeature {
+    HairColor! @ [ * red
+                   * blonde
+                   * black
+                   * brown
+                   * almond
+                   * white ]
+
+    HairLength! @ [ * long
+                    * short ]
+
+}
+
+MasculineFeature (GenderFeature) {
+    | GenderFeature
+    Feature! @ [ *(x3) a {{HairLength}} {{HairColor}} beard
+                 *(x3) a heavy {{HairColor}} beard
+                 *(x5) short {{HairColor}} hair
+                 *(x5) thin {{HairColor}} hair
+                 *(x1) no hair
+                 *(x1) thick bushy eyebrows
+                 *(x1) a strong, prominent chin
+                 *(x1) a square jaw
+                 *(x1) a two day stubble
+                 *(x1) a scruff
+                 *(x1) a thick moustache
+                 *(x1) a goatee beard
+                 *(x1) a frowny expression
+                 *(x1) a long smoking pipe in his mouth
+                 *(x1) a big round belly
+                 *(x1) a deep, commanding voice
+                 *(x1) a hoarse voice
+                 *(x1) a hairy chest
+                 *(x1) a chiseled chin
+                 *(x1) thick sideburns
+                 *(x1) patchy beard
+                 *(x1) thin greying hair ]
+}
+
+FeminineFeature (GenderFeature) {
+    | GenderFeature
+    HairTrait @ [ * silky
+                  * flowing
+                  * curly
+                  * wavy
+                  * braided
+                  * wild
+                  * well-brushed ]
+    Feature! @ [ *(x3) {{HairLength}} and {{HairTrait}} {{HairColor}} hair
+                 *(x3) {{HairLength}} {{HairColor}} hair
+                 *(x3) {{HairTrait}} {{HairColor}} hair
+                 *(x3) {{HairLength}} {{HairColor}} pony-tail
+                 *(x3) soft gentle features
+                 *(x3) delicate features
+                 *(x3) soft voice
+                 *(x3) warm voice
+                 *(x3) painted skin decorations
+                 *(x3) delicate makeup
+                 *(x3) heavy makeup
+                 *(x2) full lips
+                 *(x1) a beauty mark above the lips
+                 *(x1) ample breasts
+                 *(x1) ample hips ]
+}
+
+Male (Gender) {
+    | Gender
+    NameClass! = "NameMale"
+    PronounSubject! = < he >
+    PronounObject! = < him >
+    PronounPossessive! = < his >
+    Possession! = < has >
+    BeVerb!     = < is >
+    GenderFeature! @@ [
+        *(x100) MasculineFeature
+        *(x1)   FeminineFeature ]
+    Feature! = < {{GenderFeature.Feature}} >
+}
+
+Female (Gender) {
+    | Gender
+    NameClass! = "NameFemale"
+    PronounSubject! = < she >
+    PronounObject! = < her >
+    PronounPossessive! = < her >
+    Possession! = < has >
+    BeVerb! = < is >
+    GenderFeature! @@ [
+        *(x1)     MasculineFeature
+        *(x100)   FeminineFeature ]
+    Feature! = < {{GenderFeature.Feature}} >
+}
+
+Fluid (Gender) {
+    | Gender
+    NameClass! = "NameFluid"
+    PronounSubject! = < they >
+    PronounObject! = < them >
+    PronounPossessive! = < their >
+    Possession! = < have >
+    BeVerb! = < are >
+    GenderFeature! @@ [
+        *(x1) MasculineFeature
+        *(x1) FeminineFeature ]
+    Feature! = < {{GenderFeature.Feature}} >
+}

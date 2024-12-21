@@ -1,0 +1,346 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+region_classes = [
+    *(x6) MountainsRegion
+    *(x6) ForestRegion
+    *(x6) DesertRegion
+    *(x6) PlainsRegion
+    *(x6) JungleRegion
+    *(x6) TundraRegion
+    *(x6) SwampsRegion
+]
+
+EvilName {
+  Prefix @ [
+    * Ba
+    * Be
+    * Za
+    * Ze
+    * Ka
+    * Ke
+    * Go
+    * Ga
+    * Ge
+  ]
+
+  Infix @ [
+    * zu
+    * za
+    * uf
+    * uz
+  ]
+
+  Suffix @ [
+    * ul
+    * ar
+    * a
+    * u
+    * ux
+    * av
+    * ax
+  ]
+
+  Full! @ [
+    * {{Prefix}}'{{Infix}}{{Suffix}}
+    * {{Prefix}}{{Infix}}{{Suffix}}
+  ]
+
+}
+
+OnceA {
+  DemonGodName @ EvilName
+
+  OncePrefix @ [
+    * a throne for
+    * a gateway to
+    * the passage to
+    * the pathway to
+    * the lands of
+    * the forge of
+    * the residence of
+    * the grouds of
+    * the prison of
+    * a prison of
+    * the birthplace of
+    * a refuge for
+    * the realm of
+    * the expanse of
+    * the fortress of
+    * the battlegrounds of
+    * the domain of
+  ]
+
+  OnceSuffix @ [
+    * the dark lord
+    * the notorious red lich
+    * {{DemonGodName.Full}} the vile
+    * {{DemonGodName.Full}} the dark
+    * dark evil
+    * dark horror
+    * the vile crimson princess
+    * the demons of oblivion
+    * the demons
+    * the king of demons
+    * the demon-queen
+    * the king witch
+    * the blood-lusting emperor
+    * the blood-lusting emperess
+    * the unspoken terror
+  ]
+
+  Something! ~ <% {{OncePrefix}} {{OnceSuffix}} %>
+}
+
+RegionDescriptor {
+  Suffix = :Region.Suffix
+  Dwelled! @ [
+    * {{if_plural_else(Suffix,"inhabit","inhabits")}} a few residents now
+    * {{if_plural_else(Suffix,"are","is")}} now home for a few inhabitants
+    * {{if_plural_else(Suffix,"are","is")}} inhabited by a few dwellers now
+    * now {{if_plural_else(Suffix,"provide","provides")}} a safehaven for some
+    * now {{if_plural_else(Suffix,"provide","provides")}} refuge for some
+    * now {{if_plural_else(Suffix,"provide","provides")}} shelter for some
+  ]
+
+  Monsters! @ [
+    * the hunting grounds of vile monsters
+    * hiding unspeakable terrors
+  ]
+
+  Dungeons! @ [
+    * dark secrets still await
+    * unspeakable terrors still lurk
+    * hidden dangers still await
+    * immense dangers still face
+    * horrifying discoveries still await
+  ]
+
+  DungeonSuffix! @ [
+    * those who dare uncover them
+    * those who travel here
+    * those who venture into here
+    * those who are brave enough to explore the area
+  ]
+
+  Inn! @ [
+    * can provide a place of refuge
+    * can provide a shelter for the night
+    * a safe place to stay the night
+  ]
+
+  Caution! @ [
+    * caution is always advised
+    * some hazards still reside here
+    * adventurers must still take caution
+    * explorers should still be alert
+  ]
+
+  Uncharted! @ [
+    * unpopulated and dangerous
+    * unpopulated and savage
+    * unpopulated and hazardous
+    * unpopulated and treacherous
+    * unpopulated and mysterious
+    * barren and dangerous
+    * barren and savage
+    * barren and hazardous
+    * barren and treacherous
+    * barren and mysterious
+  ]
+
+  Charted! @ [
+    * well travelled
+    * mostly explored
+    * partially explored
+    * frequently travelled
+    * frequently explored
+  ]
+
+  UnchartedDiscoveries! @ [
+    * dark secrets and glorious treasure
+    * great dangers and great riches
+  ]
+
+  Lore! @ OnceA
+}
+
+  RegionTocEntry(TocEntry) {
+    Title! = *Region.Name
+  }
+
+RegionExtension {
+  Prescript! ~ ""
+  Inscript! ~ ""
+  Postscript! ~ ""
+}
+
+Region { ^ $region_classes
+  Prefix @ RegionName
+
+  Name! ` "{{Prefix.Value}} {{Suffix}}"
+  Weather? = null
+  Hexmap! = null
+
+  $TocEntry @ RegionTocEntry {
+    Type = Region
+    UUID = &uuid
+  }
+
+  RealmUUID = :Realm.uuid
+  RealmName = *Realm.Title
+  Breadcrumbs? ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/realm/{{RealmUUID}}"> {{RealmName}} </a>
+    </span>
+  %>
+
+  Descriptor @ RegionDescriptor
+
+  Extension @ RegionExtension
+  Description? ~ <%
+    {% set dungeons = 0 %}
+    {% set settlements = 0 %}
+    {% set dwellings = 0 %}
+    {% set inns = 0 %}
+    {%for h in Hexmap%}
+      {%if length(h.Dungeon)==1%}
+      {% set dungeons = dungeons + 1 %}
+      {%elif h.Residency %}
+      {% set dwellings = dwellings + 1 %}
+      {%elif length(h.Settlement)==1%}
+      {% set settlements = settlements + 1 %}
+      {%elif length(h.Inn)==1%}
+      {% set inns = inns + 1 %}
+      {%else%}
+      {%endif%}
+    {%endfor%}
+
+    {{Extension.Prescript}}
+    <p>
+    {{reroller(Descriptor, "", False)}} Once {{Descriptor.Lore.Something}},
+    {% if dungeons > 0 and settlements > 0 and inns > 0 %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}} {{if_plural_else(Suffix,"have","has")}}
+      {{plural_with_count(settlements, "settlement")}} and {{Descriptor.Inn}} now, but {{Descriptor.Dungeons}} {{Descriptor.DungeonSuffix}}.
+    {% elif dungeons > 0 and settlements > 0 %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}}
+      {{if_plural_else(Suffix,"have","has")}} {{plural_with_count(settlements, "settlement")}} now,
+      but {{Descriptor.Dungeons}} {{Descriptor.DungeonSuffix}}.
+    {% elif dungeons > 0 and dwellings > 0 %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}} {{Descriptor.Dwelled}},
+      but {{Descriptor.Dungeons}} {{Descriptor.DungeonSuffix}}.
+    {% elif dungeons > 0 %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Descriptor.Uncharted}} {{Suffix | lower}}
+      {{if_plural_else(Suffix, "hide", "hides")}}
+      {{Descriptor.UnchartedDiscoveries}} for those who are brave enough.
+    {% elif settlements > 0 and inns > 0%}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}} now
+      {{if_plural_else(Suffix,"have","has")}} {{plural_with_count(settlements, "settlement")}},
+      {{if_plural_else(Suffix,"are","is")}} {{Descriptor.Charted}}, and {{Descriptor.Inn}}, but {{Descriptor.Caution}}.
+    {% elif settlements > 0 %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}}
+      {{if_plural_else(Suffix,"have","has")}} {{plural_with_count(settlements, "settlement")}} now
+      and {{if_plural_else(Suffix,"are","is")}} {{Descriptor.Charted}}, but {{Descriptor.Caution}}.
+    {% elif dwellings > 0 %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}} {{Descriptor.Dwelled}}
+      and {{if_plural_else(Suffix,"are","is")}} {{Descriptor.Charted}}, but {{Descriptor.Caution}}.
+    {% else %}
+      {{if_plural_else(Suffix, "these", "this")}} {{Suffix | lower}} {{if_plural_else(Suffix,"are","is")}} {{Descriptor.Uncharted}}.
+    {% endif %}
+
+    </p>
+
+    {% if settlements == 0 and dungeons == 0 and inns == 0 and dwellings == 0 %}
+    {% else %}
+    <h5> Notable Locations </h5>
+    <ul>
+    {%for h in Hexmap%}
+      {%if length(h.Settlement)==1%}
+      <li>
+      <a href="{{sandbox()}}/location/{{h.Settlement[0].uuid}}">{{h.Settlement[0].Header}}</a>
+      </li>
+      {%endif%}
+    {%endfor%}
+    {%for h in Hexmap%}
+      {%if length(h.Inn)==1%}
+      <li>
+      <a href="{{sandbox()}}/location/{{h.Inn[0].uuid}}">{{h.Inn[0].Name.Full}}</a>
+      </li>
+      {%endif%}
+    {%endfor%}
+    {%for h in Hexmap%}
+      {%if h.Residency %}
+      <li>
+      <a href="{{sandbox()}}/location/{{h.uuid}}">{{h.Residency[0].Header}}</a>
+      </li>
+      {%endif%}
+    {%endfor%}
+    {%for h in Hexmap%}
+      {%if length(h.Dungeon)==1%}
+      <li>
+      <a href="{{sandbox()}}/location/{{h.Dungeon[0].uuid}}">{{h.Dungeon[0].Header}}</a>
+      </li>
+      {%endif%}
+    {%endfor%}
+    </ul>
+    {% endif %}
+    {{Extension.Inscript}}
+    <h5> Regional Weather </h5>
+    {{Weather.Weather.Description}}
+    {{Extension.Postscript}}
+  %>
+
+  <metadata%
+    <a class="map-coords" region="{{uuid}}"> </a>
+  %metadata>
+
+  <header%
+  <h4 id="title">
+  <span id="editable-title" data-attr="Name" data-map-label="true">{{Name}}</span>
+  {{Breadcrumbs}}
+  </h4>
+  %header>
+
+  <body%
+    {{Description}}
+  %body>
+}
+
+minimum_tiles_per_mountains_region = 12
+maximum_tiles_per_mountains_region = 32
+minimum_tiles_per_forest_region = 12
+maximum_tiles_per_forest_region = 32
+minimum_tiles_per_desert_region = 12
+maximum_tiles_per_desert_region = 32
+minimum_tiles_per_plains_region = 12
+maximum_tiles_per_plains_region = 32
+minimum_tiles_per_jungle_region = 12
+maximum_tiles_per_jungle_region = 32
+minimum_tiles_per_swamps_region = 12
+maximum_tiles_per_swamps_region = 32
+minimum_tiles_per_tundra_region = 12
+maximum_tiles_per_tundra_region = 32

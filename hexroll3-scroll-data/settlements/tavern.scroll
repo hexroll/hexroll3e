@@ -1,0 +1,342 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+TavernDish {
+  Type @ [
+    * Stewed
+    * Barbecued
+    * Cooked
+  ]
+  Kind @ [
+    * tenders of
+    * fillet of
+    * slices of
+    * chunks of
+  ]
+  MainIngredient @ [
+    * meat
+    * fish
+    * shellfish
+    * chicken
+    * pork
+  ]
+  Style @ [
+    * marinated in
+    * glazed with
+  ]
+  SecondIngredient @ [
+    * ale
+    * red wine
+    * white wine
+    * honey and herbs
+    * garlic and wine
+  ]
+  Addition @ [
+    * served with
+  ]
+  ThirdIngredient @ [
+    * mashed potatoes
+    * baked potatoes
+    * cooked rice
+    * steamed vegetables
+    * fresh salad
+  ]
+  Price @ [
+    * 0.15
+    * 0.2
+    * 0.25
+  ]
+  CostFactor = :District.CostFactor
+  Description! ~ <%
+    {% if not CostFactor %}
+    {% set CostFactor = 1 %}
+    {% endif %}
+    {{Type}} {{Kind}} <strong>{{MainIngredient}}</strong>,
+    {{Style}} <strong>{{SecondIngredient}}</strong> and {{Addition}}
+    <strong>{{ThirdIngredient}}</strong> for
+    <strong>{{currency(Price * CostFactor)}}</strong>
+  %>
+}
+
+TavernMenu {
+  [2..4 Dishes] @ TavernDish
+  Details! ~ <%
+     {{ Dishes | map(attribute="Description") | bulletize("11037") }}
+  %>
+}
+
+TavernStaff (Character) {
+  | Character
+  TavernName! = *Tavern.Title
+  Role! = none
+  $IndexRef @ IndexedEntity {
+    Render = "Name"
+    Details = "{{Role}} {{TavernName}}"
+    Anchor = &uuid
+    Link = &HostingEntity
+    Type = "location"
+    Full = ""
+    Search = "{{Full}}"
+    Icon = "user"
+  }
+}
+
+TavernDrinks {
+	^ [
+    *(x6) TavernAle
+    *(x6) TavernCommonBeer
+    *(x4) TavernCraftBeer
+    *(x6) TavernCider
+    *(x4) TavernCommonWine
+    *(x2) TavernCraftWine
+    * TavernRoyalWine
+	]
+}
+
+TavernAle {
+  Title! ~ "Ale"
+  Cost! = 0.04
+}
+
+TavernCommonBeer {
+  Title! ~ "Common Beer"
+  Cost! = 0.05
+}
+
+TavernCraftBeer {
+  Title! ~ "Craft Beer"
+  Cost! = 0.12
+}
+
+TavernCider {
+  Title! ~ "Cider"
+  Cost! = 0.08
+}
+
+TavernCommonWine {
+  Title! ~ "Common Wine"
+  Cost! = 0.15
+}
+
+TavernCraftWine {
+  Title! ~ "Craft Wine"
+  Cost! = 0.35
+}
+
+TavernRoyalWine {
+  Title! ~ "Royal Quality Wine"
+  Cost! = 1.5
+}
+
+InnRoom {
+	^ [
+    *(x6) InnRoomBenchAndRoof
+    *(x6) InnRoomBunkbedsRoom
+    *(x6) InnRoomPrivateBedRoom
+    *(x6) InnRoomUpscaleBedRoom
+	]
+}
+
+
+InnRoomBenchAndRoof {
+  Title! ~ "Bench and a Roof"
+  Occupancy! = 1
+  CostPerNight! = 0.05
+}
+
+InnRoomBunkbedsRoom {
+  Title! ~ "Bunk Beds Room"
+  Occupancy! @ 4d3
+  CostPerNight! = 1.00
+}
+
+InnRoomPrivateBedRoom {
+  Title! ~ "Private Bed Room"
+  Occupancy! = 1
+  CostPerNight! = 2.00
+
+}
+
+InnRoomUpscaleBedRoom {
+  Title! ~ "Upscale Bed Room"
+  Occupancy! = 2
+  CostPerNight! = 8.00
+}
+
+Tavern(Populated) {
+  Title! ` "{{Name.Full}}"
+  [2..6 drinks] @ TavernDrinks
+  [4..4 menus] @ TavernMenu
+  [0..3 lodging] @ InnRoom
+
+  keeper? @ TavernStaff {
+    HostingEntity := &uuid
+    SettlementName = &SettlementName
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+    Role = "Keeper of "
+  }
+  [2..3 staff?] @ TavernStaff {
+    HostingEntity := &uuid
+    SettlementName = &SettlementName
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+    Role = "Staff member in "
+  }
+
+  [4..10 visitors?] @ TavernVisitor {
+    HostingEntity := &uuid
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+    SettlementName = &SettlementName
+  }
+
+  FactionName = none
+  FactionUUID = none
+  Faction = none
+
+  [2..5 adverts?] ? Advert
+  rumors? @ RumorsTable
+
+  HexLink = :Settlement.HexLink
+  Coords! ~ <%
+    <a class="map-coords" hex="{{HexLink}}" x="{{x_coords}}" y="{{y_coords}}" zoom="3"> </a>
+  %>
+
+  Link! = "{{sandbox()}}/location/{{uuid}}"
+
+  CostFactor = :District.CostFactor
+
+  Description? ~ <%
+    {% if not CostFactor %}
+    {% set CostFactor = 1 %}
+    {% endif %}
+    <h5>Keeper</h5>
+
+    Owned and managed by <a class="npc-anchor" id="{{keeper.uuid}}"></a>{{keeper.Description}}
+    <ul>
+    {% if keeper.Association %}
+    {{keeper.Association}}
+    {% endif %}
+    </ul>
+    <h5>Staff</h5>
+    {%for s in staff%}
+      <p>
+        <a class="npc-anchor" id="{{s.uuid}}"></a>
+        {{s.Description}}
+        <ul>
+        {% if s.Association %}
+        {{s.Association}}
+        {% endif %}
+        </ul>
+      </p>
+    {%endfor%}
+    {%if drinks%}
+      <h5>Drinks</h5>
+      <table>
+      <!--tr><td>Drink</td><td>Price</td></tr-->
+      {% for d in unique(drinks,"class") %}
+        <tr><td>{{d.Title}}</td><td>{{currency(d.Cost * CostFactor)}}</td></tr>
+      {% endfor %}
+      </table>
+    {%endif%}
+    <h5>Food</h5>
+    <table>
+    <tr><td>1d4</td><td>Menu</td></tr>
+    <tr><td>1</td><td>{{menus[0].Details}}  </td></tr>
+    <tr><td>2</td><td>{{menus[1].Details}}  </td></tr>
+    <tr><td>3</td><td>{{menus[2].Details}}  </td></tr>
+    <tr><td>4</td><td>{{menus[3].Details}}  </td></tr>
+    </table>
+    {%if lodging%}
+      {%if length(lodging) > 0%}
+        <h5>Lodging</h5>
+        <table>
+        {% for d in unique(lodging,"class") %}
+          <tr><td>{{d.Title}}</td>
+          <td>Up to {{d.Occupancy}} occupants</td>
+          <td>{{currency(d.CostPerNight * CostFactor)}} per night</td></tr>
+        {% endfor %}
+        </table>
+      {%endif%}
+    {%endif%}
+    <h5>Patrons & Visitors</h5>
+    {{maybe(Faction)}}
+    {%if patrons %}
+      {%for p in patrons%}
+        <hr/>
+        <a href="{{sandbox()}}{{p.URLExt}}">
+        <strong>{{p.Name.Full}}</strong>
+        </a>
+        the {{p.OwnerTitle}}, when not in shop.
+      {%endfor%}
+    {%endif%}
+    {%for v in visitors%}
+      <hr/>
+      {{reroller(v, "", False)}}
+      <a class="npc-anchor" id="{{v.uuid}}"></a> {{v.Description}}
+      {{v.Stats}}
+      <ul>
+      {% if v.Association %}
+        {{v.Association}}
+      {% endif %}
+      </ul>
+    {%endfor%}
+    {%if length(adverts) > 0%}
+      <table>
+      <tr><th> Bulletin </th></tr>
+      {%for a in adverts%}
+        <tr><td>{{a.Details}}</td></tr>
+      {%endfor%}
+      </table>
+    {%endif%}
+    <br/>
+    {{rumors.table}}
+    <br/>
+  %>
+
+  $IndexRef @ IndexedEntity {
+    Render = "Name"
+    Details = "{{capitalize(TavernLocation)}}"
+    Link = &uuid
+    Type = "location"
+    Full = ""
+    Search = "{{Full}}"
+    Icon = "beer-mug-empty"
+  }
+
+  <metadata%
+    {{Coords}}
+  %metadata>
+
+  <header%
+    <div hidden id="doc-title"> {{Title}} from {{capitalize(SettlementName)}} in {{RealmName.Title}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Title">{{Title}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+    {{Description}}
+  %body>
+}

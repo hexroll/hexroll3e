@@ -1,0 +1,143 @@
+/*
+// Copyright (C) 2020-2025 Pen, Dice & Paper
+//
+// This program is dual-licensed under the following terms:
+//
+// Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//
+// Option 2: Commercial License
+// For commercial use, you are required to obtain a separate commercial
+// license. Please contact ithai at pendicepaper.com
+// for more information about commercial licensing terms.
+*/
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+COMMENT = _{ "#" ~ (!("\n" | "\r\n") ~ ANY)* }
+
+// Basic constructs
+null = {  "null-array" | "none" | "null" }
+quoted_string = _{ "\"" ~ string ~ "\"" }
+string = { (!"\"" ~ ANY)* }
+free_text = @{ !(":" | "*" | "&") ~ (!("\n" | "\r") ~ ANY)+ }
+number = @{ ASCII_DIGIT+ }
+decimal_number = @{ (ASCII_DIGIT | ".")+ }
+identifier = @{ ("$" | ASCII_ALPHANUMERIC | "_")+ }
+
+
+// Dice Specification
+dice_value = _{ number_of_dice ~ "d" ~ dice_type ~ (("+" | "-") ~ dice_modifier)? ~ "x"? ~ dice_multiplier? }
+number_of_dice = @{number}
+dice_type = @{number}
+dice_modifier = @{number}
+dice_multiplier = @{number}
+
+
+// Main entry
+file = _{ SOI ~ scroll ~ EOI }
+scroll = _{ (include_stmt | entity_definition | variable_definition)+ }
+include_stmt = { "+" ~ include_path }
+include_path = { (scroll_uid | file_path) }
+scroll_uid = @{ (ASCII_ALPHANUMERIC)+ }
+file_path = @{ (ASCII_ALPHANUMERIC | "_" | "/")+ }
+
+// Global Variable Definition
+variable_definition = { identifier ~ "=" ~ ( values_list | value) }
+
+// Entity Definition
+entity_definition = { entity_declaration ~ "{" ~ subclasses? ~ attributes? ~ "}" }
+entity_name = { identifier }
+entity_parent_name = { identifier }
+entity_declaration = { "&"? ~ entity_name ~ entity_parent? }
+entity_parent = _{ "(" ~ entity_parent_name ~ ")" }
+subclasses = { "^" ~ (global | entities_list) }
+
+// Entity Attributes
+attributes = _{ (roll | inheritance | context_assignment | assignment | weak_assignment | prerendered_assignment | declaration | roll_one_of | pop | collect | tags)+  }
+
+// Assignments
+prepend_assignment = { property ~ ":=" ~ (context | value) }
+assignment = { property ~ "=" ~ value }
+weak_assignment = { property ~ "~" ~ value }
+prerendered_assignment = { property ~ "`" ~ value }
+context_assignment = { property ~ "=" ~ (context | context_ptr)}
+declaration = { property ~ "::" ~ declaration_type }
+declaration_type = @{ (ASCII_ALPHANUMERIC | "_" | "(" | ")" | ".")+}
+
+roll = _{ (roll_from_global | roll_from_indirect | roll_from_list | roll_a_dice | roll_an_entity)}
+pop = _{ (pop_an_entity | pick_an_entity)}
+roll_from_list = { property ~ "@" ~ values_list }
+roll_from_global = { property ~ "@" ~ global }
+roll_from_indirect = { property ~ "@" ~ indirect ~ injections? }
+indirect = ${"&" ~ identifier}
+roll_a_dice = { property ~ "@" ~ dice_value }
+roll_an_entity = { (array | property)  ~ "@" ~ entity_name ~ injections? }
+pop_an_entity = { (array | property)  ~ "%" ~ entity_name ~ injections? }
+pick_an_entity = { (array | property)  ~ "?" ~ entity_name ~ injections? }
+roll_one_of = { property ~ "@@" ~ entities_list ~ injections?}
+injections = { "~"? ~ "{" ~ ( prepend_ptr | append_ptr | prepend_copy_value | append_copy_value |  prepend_assignment | assignment | roll_from_list | roll_a_dice ) * ~"}"}
+prepend_copy_value = { property ~ ":=" ~ "&" ~  (attr_attr_spec | attr_spec) }
+append_copy_value = { property ~ "=" ~ "&" ~  (attr_attr_spec | attr_spec ) }
+prepend_ptr = { property ~ ":=" ~ "*" ~  (attr_attr_spec | attr_spec ) }
+append_ptr = { property ~ "=" ~ "*" ~  (attr_attr_spec | attr_spec ) }
+attr_spec = ${ identifier }
+attr_attr_spec = ${ identifier ~ "." ~ identifier }
+
+// Array specification
+array = { "[" ~ min ~ ".." ~ max ~ (property) ~ "]"}
+min = { global | number }
+max = { global | number }
+
+// Collection
+collect = { (property)? ~  "<<" ~ entity_name }
+
+global = @{ "$" ~ identifier }
+
+// Values Lists
+values_list = _{ "[" ~ (list_item)+ ~ "]" }
+list_item = _{ "*" ~ probability_spec? ~ list_value }
+list_value = ${ (!("*" | "]" | "#") ~ ANY)* }
+
+probability_spec = @{"(" ~ "x" ~ probability_value ~ ")"}
+probability_value = ${ASCII_DIGIT+}
+
+entities_list = { "[" ~ ("*" ~ probability_spec? ~ entity_name)+ ~ "]" }
+property =  ${ property_name ~ ( is_public | is_optional )?}
+property_name = { identifier }
+is_public = {"!"}
+is_optional = {"?"}
+value = { null | template | slim_template |  quoted_string | free_text }
+inheritance = { "|" ~ entity_name }
+
+// Contexts
+context = ${ ":" ~ context_parent ~ "." ~ context_attr }
+context_ptr = ${ "*" ~ context_parent ~ "." ~ context_attr }
+context_parent = { identifier }
+context_attr = { identifier }
+
+template = _{ "<%" ~ template_body ~ "%>" }
+template_body = { (!"%>" ~ ANY)+ }
+
+slim_template = _{ "<" ~ slim_template_body ~ ">" }
+slim_template_body = { (!">" ~ ANY)+ }
+
+tags = { (tag_html | tag_metadata | tag_body | tag_header) }
+
+tag_html = _{ "<html%" ~ tag_html_body ~ "%html>" }
+tag_html_body = { (!"%html>" ~ ANY)+ }
+tag_metadata = _{ "<metadata%" ~ tag_metadata_body ~ "%metadata>" }
+tag_metadata_body = { (!"%metadata>" ~ ANY)* }
+tag_body = _{ "<body%" ~ tag_body_body ~ "%body>" }
+tag_body_body = { (!"%body>" ~ ANY)+ }
+tag_header = _{ "<header%" ~ tag_header_body ~ "%header>" }
+tag_header_body = { (!"%header>" ~ ANY)+ }

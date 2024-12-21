@@ -1,0 +1,149 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonDebris {
+  Debris2Location @ [
+    * next to it
+    * spread all over the place
+    ]
+
+  Debris1 @ [
+    * an old, ripped backpack
+    * a used flask of oil
+    * a torn quiver
+    * a rusty short sword
+    * a burnt torch
+    * an old broken mirror
+    * a wicker basket
+    * a torn hide armor
+    * a small empty bottle
+    * a broken wooden box
+    * an empty drinking flask
+    * a rusted pile of chains
+    * a dirty stuffed doll
+    * a pile of cockroaches
+    * a figure made of sticks and twine
+    * several large decorative pillows
+    * a nest of straw and blankets
+    * many candles, burnt out in a pile of wax
+    * a ring of fist-sized stones
+    * a broken talisman
+    * a torn cloak
+    * a spotted mushroom
+    * a collection of offerings, long ago forgotten
+    * several iron bars, each about a foot in length
+    * a bouquet of flowers
+    * a muddy puddle
+    * knitting needles and yarn
+    * a pile of papers
+    * the rotting hide of a large animal
+    * a pile of gravel and small stones
+    * three large bird skulls
+    * the skull of a strange animal
+    * a carved idol
+    * a pile of bones
+    * a bundle of sticks
+    * a broken table
+    * a tangle of vines
+    * many shoes and boots, piled together
+    * a tall pointy hat
+    * a boot, skeletal foot still inside
+    * a bucket of guts
+    * a pouch of dice
+    * feathers
+    * a blanket, laid out and covering something small
+    * a broken music box
+    * vomit
+    * a small bell
+    * an eyeball in a sealed jar
+    * a clear puddle
+    * a stagnant puddle
+    * a shattered sword
+    * an empty cage with the bars bent out
+    * a smashed lyre
+    ]
+  Debris2 @ [
+    * broken pieces of wood
+    * torn pieces of clothing
+    * rotting remains of food
+    * dry remains of food
+    * ripped pieces of old rope
+    * traces of fur
+    * garlic leftovers
+    * hundred tiny bones
+    * feathers
+    * cube shaped stones
+    * shreded pieces of clothing
+    * shreded pages of a book
+    * shreded pieces of a map
+    * small mounds of ashes
+    * dried flowers
+    * brightly colored leaves
+    * tiny mushrooms
+    * thick spiderwebs
+    * shattered pieces of glass
+    * marbles
+    * dead mice
+    * seeds
+    * carved figurines
+    * damp leaves
+    * small stones with runes etchings
+    * broken arrows
+    * small iron cages
+    ]
+  Description! @ [
+    * There’s also {{Debris1}} {{Debris1Location}} and some {{Debris2}}
+      {{Debris2Location}}.
+    * {{capitalize(Debris2)}} litter the area.
+    * {{capitalize(Debris1)}} can be found {{Debris1Location}}.
+    ]
+}
+
+RoomDebris (DungeonDebris) {
+  Debris1Location @ [
+    * in the far corner
+    * in the near corner
+    * near the wall on the left
+    * near the wall on the right
+    * near the wall on the far end
+    * in an alcove
+    * on an altar
+    * below an arch
+    * in a large basin
+    ]
+  | DungeonDebris
+}
+
+CaveDebris (DungeonDebris) {
+  Debris1Location @ [
+    * in the far corner
+    * in the near corner
+    * near the wall on the left
+    * near the wall on the right
+    * near the wall on the far end
+    * in a large basin
+    ]
+  | DungeonDebris
+}

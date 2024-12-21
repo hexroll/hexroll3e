@@ -1,0 +1,1384 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+ShopQuest {
+  ^ [
+    *(x6) NoQuest
+    *(x1) DeliveryQuest
+  ]
+}
+
+Shop(SettlementLocation) {
+  x_coords = 0
+  y_coords = 0
+  Owner! @ Folk {
+    ShopTitle = &Title
+    SettlementName = &SettlementName
+    OwnerTitle = &OwnerTitle
+    Profession = &OwnerTitle
+    HostingEntity := &uuid
+    URLExt = "/location/{{HostingEntity}}"
+  }
+
+  BaseName! ~ "{{Owner.Name.First}}'s {{maybe(Term)}}"
+  Name! ~ "{{BaseName}} (<em>{{Title}}</em>)"
+
+  InvertedName! ~ <%<a href="{{sandbox()}}/location/{{uuid}}"><strong>{{Title}}</strong></a> ({{BaseName}})%>
+
+  DistrictCostFactor? = :District.CostFactor
+
+  PriceFactor? @ [
+    * 0.8
+    * 0.9
+    * 1.0
+    * 1.1
+    * 1.2
+    * 1.4
+  ]
+
+
+  Inventory? ~ <%
+    {% if Items %}
+      <h5> Inventory </h5>
+      <table><tr><th>Item</th><th>Price</th </tr>
+      {% for i in unique(Items,"class")%}
+      <tr>
+        <td>{{i.Title}}</td> <td>{{currency(i.Cost * PriceFactor * DistrictCostFactor)}}</td>
+      </tr>
+      {% endfor %}
+      </table>
+    {% endif %}
+  %>
+
+  Quest? @ ShopQuest
+
+  HexQuestMission? = none
+  HexQuest? = none
+
+
+  HexLink? = :Settlement.HexLink
+
+  Details? ~ <%
+    <p>
+
+    {{capitalize(OwnerTitle)}}:
+    {{Owner.Description}}
+    <ul>
+    {% if Owner.Association %}
+    {{Owner.Association}}
+    {% endif %}
+    {{Owner.TavernText}}
+    {% if Owner.PersonalQuest and Owner.PersonalQuest.Description!=""%}
+    <li>
+    {{reroller(Owner.PersonalQuest.uuid,"RerollerQuest", False)}}
+    {{Owner.PersonalQuest.Description}}
+    </li>
+    {% endif %}
+    {% if Quest and Quest.Description!=""%}
+    <li>
+    {{reroller(Quest.uuid,"DeliveryQuest", False)}}
+    {{Quest.Description}}
+    </li>
+    {% endif %}
+    {% if HexQuest %}
+    <li>
+    {{reroller(HexQuest, "", False)}}
+    {{HexQuest.Description}}
+    </li>
+    {% endif %}
+    {% if not (Owner.PersonalQuest and Owner.PersonalQuest.Description!="")%}
+    <li class="inactive-quest">
+    Unlock this page and click here
+    {{reroller(Owner.PersonalQuest.uuid,"RerollerQuest", False)}}
+    for a hook
+    </li>
+    {% endif %}
+    {% if not (Quest and Quest.Description!="") and false%}
+    {% if Quest %}
+    <li class="inactive-quest">
+    Unlock this page and click here
+    {{reroller(Quest.uuid,"DeliveryQuest", False)}}
+    for a hook
+    </li>
+    {% endif %}
+    {% endif %}
+    </ul>
+    </p>
+    <p>
+    {{Inventory}}
+    </p>
+  %>
+
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="{{x_coords}}" y="{{y_coords}}" zoom="2"> </a>
+  %metadata>
+  <header%
+    <div hidden id="doc-title">{{Title}} in {{capitalize(SettlementName)}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Name">{{Name}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+  {{Details}}
+  %body>
+
+}
+
+Service(SettlementLocation) {
+  Services! = false
+  x_coords = 0
+  y_coords = 0
+  Owner! @ Folk {
+    OwnerTitle = &OwnerTitle
+    Profession =  "{{OwnerTitle | lower}} of the {{ServiceTitle | lower}}"
+    SettlementName = &SettlementName
+    OwnerTitle = &OwnerTitle
+    Profession = &OwnerTitle
+    URLExt = "/location/{{HostingEntity}}"
+    HostingEntity := &uuid
+  }
+  BaseName! ~ "{{Owner.Name.First}}'s {{maybe(Term)}}"
+  Name! ~  "<strong>{{Title}}</strong>"
+
+  InvertedName! ~ <%<a href="{{sandbox()}}/location/{{uuid}}"><strong>{{Title}}</strong></a> ({{Owner.Name.First}}'s {{maybe(Term)}})%>
+
+  Inventory? ~ <%
+    {% if Services %}
+    Service | Price
+    *--- | -----{% for i in Services %}
+    {{i.Title}} | {{i.Cost}}{% endfor %}
+
+    {% endif %}
+  %>
+  Quest? = none
+  HexQuestMission? = none
+  HexQuest? = none
+
+  HexLink? = :Settlement.HexLink
+
+  Details? ~ <%
+    <p>
+    {{capitalize(OwnerTitle)}}:
+    {{Owner.Description}}
+    <ul>
+    {% if Owner.Association %}
+    {{Owner.Association}}
+    {% endif %}
+    {{Owner.TavernText}}
+    {% if Owner.PersonalQuest and Owner.PersonalQuest.Description!=""%}
+    <li>
+    {{reroller(Owner.PersonalQuest.uuid,"RerollerQuest", False)}}
+    {{Owner.PersonalQuest.Description}}
+    </li>
+    {% endif %}
+    {% if Quest and Quest.Description!=""%}
+    <li>
+    {{reroller(Quest.uuid,"DeliveryQuest", False)}}
+    {{Quest.Description}}
+    </li>
+    {% endif %}
+    {% if HexQuest %}
+    <li>
+    {{reroller(HexQuest, "", False)}}
+    {{HexQuest.Description}}
+    </li>
+    {% endif %}
+    {% if not (Owner.PersonalQuest and Owner.PersonalQuest.Description!="")%}
+    <li class="inactive-quest">
+    Unlock this page and click here
+    {{reroller(Owner.PersonalQuest.uuid,"RerollerQuest", False)}}
+    for a hook
+    </li>
+    {% endif %}
+    {% if not (Quest and Quest.Description!="") and false%}
+    {% if Quest %}
+    <li class="inactive-quest">
+    Unlock this page and click here
+    {{reroller(Quest.uuid,"DeliveryQuest", False)}}
+    for a hook
+    </li>
+    {% endif %}
+    {% endif %}
+    </ul>
+    </p>
+    <p>
+    {{Inventory}}
+    </p>
+  %>
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="{{x_coords}}" y="{{y_coords}}" zoom="2"> </a>
+  %metadata>
+
+  <header%
+    <div hidden id="doc-title">{{Title}} in {{capitalize(SettlementName)}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Name">{{Name}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+  {{Details}}
+  %body>
+}
+
+Guild {
+  GuildHead @ Folk
+}
+
+
+MagicItems (Shop) {
+  Title! = Magic Items
+  OwnerTitle! = magic items expert
+  Term! @ [
+	* staff
+    * orb
+    * dust
+    * star
+    * light
+    * illusion
+    * gremlin
+  ]
+  Items? = null
+  | Shop
+}
+
+BakeryProducts {
+ ^ [
+    * Bread
+    * Pie
+    * Cake
+    * Flour
+   ]
+}
+
+Bakery(Shop) {
+  Title! = Bakery
+  OwnerTitle! = bakerer
+  [2..3 Items?] @ BakeryProducts
+  Term! @ [
+    * Loaf
+    * Baguette
+    * Bun
+    * Cupcakes
+    * Cakes
+    * Whisk
+    * Dough
+    * Cakery
+    * Sweets
+	]
+  | Shop
+}
+
+GeneralGoodsProducts {
+ ^ [
+    * Storage
+    * HolyItems
+    * Tools
+    * Lighting
+    * Wearables
+   ]
+}
+
+GeneralGoods(Shop) {
+  Title! = General Goods
+  OwnerTitle! = merchant
+  [7..10 Items?] @ GeneralGoodsProducts
+  Term! @ [
+	  * Goods
+    * Supply
+    * Tradehouse
+    * Stock
+    * Inventory
+    * Reserves
+  ]
+  | Shop
+}
+
+BookstoreProducts {
+ ^ [
+    * EmptyScroll
+    * Inkvial
+    * Quill
+   ]
+}
+
+Bookstore(Shop) {
+  Title! = Bookstore
+  OwnerTitle! = curator
+  [2..3 Items?] @ BookstoreProducts
+  Term! @ [
+    * Scrolls
+    * Pages
+    * Books
+  ]
+  | Shop
+}
+
+Grocer(Shop) {
+  Title! = Grocer
+  OwnerTitle! = merchant
+  [7..10 Items?]  @ Food
+  Term! @ [
+    * Groceries
+    * Tomato
+    * Supply
+    * Fresh Food & More
+    * Rations
+  ]
+  | Shop
+}
+
+Pet {
+ ^ [
+    * PetCat
+    * PetDog
+    * PetRaven
+    * PetRat
+    * PetMonkey
+    * PetOwl
+    * PetWolf
+    * PetFish
+    * PetLizard
+    * PetParrot
+    * PetSnake
+    * PetSongBird
+   ]
+}
+
+PetCat(Pet) {
+  Title! = Cat
+  Cost! = 1
+}
+
+PetDog(Pet) {
+  Title! = Dog
+  Cost! = 4
+}
+
+PetRaven(Pet) {
+  Title! = Raven
+  Cost! = 3
+}
+
+PetRat(Pet) {
+  Title! = Rat
+  Cost! = 2
+}
+
+PetMonkey(Pet) {
+  Title! = Monkey
+  Cost! = 10
+}
+
+PetOwl(Pet) {
+  Title! = Owl
+  Cost! = 16
+}
+
+PetWolf(Pet) {
+  Title! = Wolf
+  Cost! = 9
+}
+
+PetFish(Pet) {
+  Title! = Fish
+  Cost! = 0.4
+}
+
+PetLizard(Pet) {
+  Title! = Lizard
+  Cost! = 1
+}
+
+PetParrot(Pet) {
+  Title! = Parrot
+  Cost! = 19
+}
+
+PetSnake(Pet) {
+  Title! = Snake
+  Cost! = 3
+}
+
+PetSongBird(Pet) {
+  Title! = Song Bird
+  Cost! = 2
+}
+
+PetShop(Shop) {
+  Title! = Pet Shop
+  OwnerTitle! = merchant
+  [3..5 Items?] @ Pet
+  Term! @ [
+    * Petshop
+    * Sidekicks
+    * Friends
+  ]
+  | Shop
+}
+
+Herbalist(Shop) {
+  Title! = Herbalist
+  OwnerTitle! = herbalist
+  Term! @ [
+    * Greens
+    * Weeds
+    * Mushroom
+  ]
+  Items? = null
+  | Shop
+
+  HexQuestMission @ [
+    * harvest exotic herbs
+    * forage exotic mushrooms
+  ]
+  HexQuest! @ EscortQuest
+}
+
+Potion(Shop) {
+  Title! = Potions
+  OwnerTitle! = alchemist
+  Term! = null
+
+  Items? = null
+  | Shop
+}
+
+ExoticGoods(Shop) {
+  Title! = Exotic Goods
+  OwnerTitle! = exotica curator
+  Term! @ [
+    * Exotica
+    * Curiosities
+    * Collection
+    * Discoveries
+    * Excavations
+  ]
+  Items? = null
+  | Shop
+  HexQuestMission @ [
+    * acquire exotic artifacts
+  ]
+  HexQuest! @ EscortQuest
+}
+
+Jeweler(Shop) {
+  Title! = Jeweler
+  OwnerTitle! = jeweler
+  Term! @ [
+    * Gems
+    * Jewels
+    * Sparkly Things
+    * Sparkly Things and Such
+  ]
+  Items? = null
+  | Shop
+}
+
+Bunkhouse(Shop) {
+  Title! = Bunkhouse
+  OwnerTitle! = host
+  Term! = null
+
+  Items? = null
+  | Shop
+}
+
+Carpenter(Shop) {
+  Title! = Carpenter
+  OwnerTitle! = carpenter
+  Term! @ [
+    * Carpentry
+    * Woodcraft
+    * Workshop
+  ]
+  Items? = null
+  | Shop
+}
+
+Mount {
+ ^ [
+    * Camel
+    * DraftHorse
+    * RidingHorse
+    * WarHorse
+    * Mule
+   ]
+}
+
+Stables(Shop) {
+  Title! = Stables
+  OwnerTitle! = carer
+  [2..6 Items?] @ Mount
+  Term! @ [
+    * Mounts
+    * Stallions
+    * Riders
+  ]
+  | Shop
+}
+
+ArmorWeapons(Shop) {
+  Title! = "Armor & Weapons"
+  OwnerTitle! = blacksmith
+  [5..10 Items?] @ ArmorWeapon
+  Term! @ [
+    * Blade
+    * Shield & Sword
+    * Spear
+    * Archer
+  ]
+  | Shop
+}
+
+Hatter(Shop) {
+  Title! = Hatter
+  OwnerTitle! = hatter
+  [2..3 Items?] @ Hats
+  Term! @ [
+    * Caps
+    * Top Hat
+  ]
+  | Shop
+}
+
+Butchery(Shop) {
+  Title! = Butchery
+  OwnerTitle! = butcher
+  [6..10 Items?] @ MeatAndFish
+  Term! @ [
+    * Beef & Pork
+    * Prime Cut
+    * Steak
+  ]
+  | Shop
+  HexQuestMission @ [
+    * go on a big-game hunt
+  ]
+  HexQuest! @ EscortQuest
+}
+
+Clothing(Shop) {
+  Title! = Clothing
+  OwnerTitle! = tailor
+  [2..6 Items?] @ Wearables
+  Term! @ [
+    * Fashion
+    * Wearables
+    * Boutique
+  ]
+  | Shop
+}
+
+Blacksmith(Shop) {
+  Title! = Blacksmith
+  OwnerTitle! = blacksmith
+  Term! @ [
+    * Anvil
+    * Iron
+    * Blade
+    * Forge
+    * Hammer
+    * Fire
+  ]
+
+  [2..6 Items?] @ ArmorWeapon
+
+  | Shop
+}
+
+Barber(Shop) {
+  Title! = Barber
+  OwnerTitle! = barber
+  Term! @ [
+    * Scissors
+    * Razor
+    * Salon
+  ]
+
+  Items? = null
+  | Shop
+}
+
+Liquor(Shop) {
+  Title! = Liquor
+  OwnerTitle! = merchant
+  [2..6 Items?] @ Drinks
+  Term! @ [
+    * Liquor
+    * Spirits
+    * Mixtures
+    * Liquors
+  ]
+
+  | Shop
+}
+
+Craft(Shop) {
+  Title! = Craft
+  OwnerTitle! = merchant
+  [2..6 Items?] @ Tools
+  Term! @ [
+    * Crafts
+    * Handmades
+    * Crafthouse
+    * Workshop
+  ]
+
+  | Shop
+}
+
+Music(Shop) {
+  Title! = Music
+  OwnerTitle! = musician
+  [2..3 Items?] @ MusicalInstruments
+  Term! @ [
+    * Instruments
+    * Guitar & Flute
+    * Harp & Lute
+  ]
+  | Shop
+  HexQuestMission @ [
+    * find exquisite tonewood
+  ]
+  HexQuest! @ EscortQuest
+}
+
+Salon(Shop) {
+  Title! = Salon
+  OwnerTitle! = stylist
+  Term! @ [
+    * Salon
+    * Styles
+  ]
+  Items? = null
+  | Shop
+}
+
+Cartographer(Shop) {
+  Title! = Cartographer
+  OwnerTitle! = cartographer
+  Term! @ [
+    * Maps
+    * Mapmakers
+    * cartography
+  ]
+  Items? = null
+  | Shop
+}
+
+Spice(Shop) {
+  Title! = Spices
+  OwnerTitle! = merchant
+  Term! @ [
+    * Spices
+    * Salt & Pepper
+  ]
+  Items? = null
+  | Shop
+}
+
+Bathhouse(Shop) {
+  Title! = Bathhouse
+  OwnerTitle! = host
+  Term! @ [
+    * Baths
+    * Steam & Bath
+  ]
+  Items? = null
+  | Shop
+}
+
+Casino(Shop) {
+  Title! = Casino
+  OwnerTitle! = manager
+  Term! @ [
+    * Easy-money
+    * Casino
+    * Dicerollers
+  ]
+  Items? = null
+  | Shop
+}
+
+AnimalSupplies(Shop) {
+  Title! = Animal Supplies
+  OwnerTitle! = merchant
+  Term! @ [
+    * Barn & Yarn
+  ]
+  Items? = null
+  | Shop
+}
+
+Occult(Shop) {
+  Title! = Occult
+  OwnerTitle! = curator
+  Term! @ [
+    * Ritual Goods
+    * Witchcraft Materials
+  ]
+  Items? = null
+  | Shop
+  HexQuestMission @ [
+    * explore for mysterious artifacts
+  ]
+  HexQuest! @ EscortQuest
+}
+
+
+Winery(Shop) {
+  Title! = Winery
+  OwnerTitle! = sommelier
+  [2..3 Items?] @ Drinks
+  Term! @ [
+    * Wines
+    * Fine Wines
+  ]
+  | Shop
+}
+
+Brewery(Shop) {
+  Title! = Brewery
+  OwnerTitle! = brewer
+  [2..3 Items?] @ Drinks
+  Term! @ [
+    * Good Stuff
+    * Brews
+  ]
+  | Shop
+}
+
+Distillery(Shop) {
+  Title! = Distillery
+  OwnerTitle! = destiller
+  [2..3 Items?] @ Drinks
+  Term! @ [
+    * Good Stuff
+    * Mixtures
+    * Liquors
+    * Laboratory
+    * Spirits
+  ]
+
+  | Shop
+}
+
+Flower(Shop) {
+  Title! = Flower Shop
+  OwnerTitle! = florist
+  Term! @ [
+    * Bouquets
+    * Flowers
+    * Roses
+    * Tulips
+  ]
+  Items? = null
+  | Shop
+}
+
+Cobbler(Shop) {
+  Title! = Cobbler
+  OwnerTitle! = cobbler
+  Term! @ [
+    * Shoes
+    * Shoemakers
+  ]
+  Items? = null
+  | Shop
+}
+
+Tinkerer(Shop) {
+  Title! = Tinkerer
+  OwnerTitle! = tinkerer
+  [3..5 Items?] @ Tools
+  Term! @ [
+    * Devices
+    * Fix-it-All
+  ]
+  | Shop
+}
+
+Weaver(Shop) {
+  Title! = Weaver
+  OwnerTitle! = weaver
+  Term! @ [
+    * Fabrics
+    * Garments
+  ]
+  Items? = null
+  | Shop
+}
+
+Scribe(Shop) {
+  Title! = Scribe
+  OwnerTitle! = scribe
+  Term! @ [
+    * Copywriters
+    * Ink & Feather
+  ]
+  Items? = null
+  | Shop
+}
+
+Veterinarian(Shop) {
+  Title! = Veterinarian
+  OwnerTitle! = veterinarian
+  Term! @ [
+    * Pet Hospital
+    * Horse Healers
+    * Sheep Whisperer
+  ]
+  Items? = null
+  | Shop
+}
+
+DarkMarket(Shop) {
+  [9..15 Items?] @ Gear
+  Title! = Dark Market
+  OwnerTitle! = merchant
+  Term! @ [
+    * Place
+    * Cheap Goods
+    * Market
+    * Passage
+    * Knick & Knacks
+    * All Legal Goods
+  ]
+
+  | Shop
+}
+
+Brothel(Shop) {
+  Title! = Brothel
+  OwnerTitle! = host
+  Term! @ [
+    * Companions
+  ]
+  Items? = null
+  | Shop
+}
+
+Bank(Service) {
+  Title! = Bank
+  OwnerTitle! = bank manager
+  Term! @ [
+    * Vaults
+    * Bank
+    * Safe Place
+  ]
+
+ | Service
+}
+
+GlassBlower(Shop) {
+  Title! = Glass Blower
+  OwnerTitle! = glass blower
+  Term! @ [
+    * Glassworks
+    * Tubes
+    * Bottlemakers
+  ]
+  Items? = null
+  | Shop
+}
+
+Leatherworker(Shop) {
+  Title! = Leatherworker
+  OwnerTitle! = leatherworker
+  [2..6 Items?] @ LeatherMade
+  Term! @ [
+    * Leathers
+    * Bags and Such
+  ]
+  | Shop
+}
+
+Physician(Shop) {
+  Title! = Physician
+  OwnerTitle! = physician
+  Term! @ [
+    * Clinic
+  ]
+  Items? = null
+  | Shop
+}
+
+Barracks(Service) {
+  Title! = Barracks
+  OwnerTitle! = keeper
+  Term! @ [
+    * Guards Hall
+    * Barracks
+    * Personnel
+    * Tent
+    * Soldiers
+  ]
+
+ | Service
+}
+
+School(Service) {
+  Title! = School
+  OwnerTitle! = teacher
+  Term! @ [
+    * Schoolhouse
+    * Elementary
+    * Alphabet
+    * Basics
+  ]
+
+ | Service
+}
+
+Daycare(Service) {
+  Title! = Daycare
+  OwnerTitle! = carer
+  Term! @ [
+    * Creche
+    * Carers
+    * Nannies
+  ]
+
+ | Service
+}
+
+Museum(Service) {
+  Title! = Museum
+  OwnerTitle! = curator
+  Term! @ [
+    * Collection
+    * Artifacts
+    * Antiques
+    * Old Stuff
+    * Oddities
+  ]
+
+ | Service
+}
+
+Library(Service) {
+  Title! = Library
+  OwnerTitle! = librarian
+  Term! @ [
+    * Books & More
+    * Library
+    * Collection
+    * Shelves
+    * Manuscripts
+  ]
+
+ | Service
+}
+
+Lawyer(Shop) {
+  Title! = Lawyer
+  OwnerTitle! = lawyer
+  Term! @ [
+    * Will Makers
+    * Soliciters
+  ]
+  Items? = null
+  | Shop
+}
+
+TinWorker(Shop) {
+  Title! = Tin Worker
+  OwnerTitle! = tin worker
+  Term! @ [
+    * Hammer
+    * Silverware & More
+    * Forks & Knives
+    * Bronze & Copper
+    * Repairs
+  ]
+  Items? = null
+  | Shop
+}
+
+IndoorMarket(Shop) {
+  Title! = Indoor Market
+  OwnerTitle! = merchant
+  [10..14 Items?] @ Gear
+  Term! @ [
+    * Fresh Food
+    * Market
+    * 1cp Shop
+  ]
+  | Shop
+}
+
+Nightclub(Shop) {
+  Title! = Nightclub
+  OwnerTitle! = host
+  Term! @ [
+    * Club
+    * Lounge
+    * Dancehall
+  ]
+  Items? = null
+  | Shop
+}
+
+CityHall(Shop) {
+  Title! = CityHall
+  OwnerTitle! = official
+  Term! = null
+  Items? = null
+  | Shop
+}
+
+FishMarket(Shop) {
+  Title! = Fish Market
+  OwnerTitle! = fishmonger
+  [2..4 Items?] @ Fish
+  Term! @ [
+    * Fresh Fish
+    * Sea Products
+    * Daily Catch
+  ]
+  | Shop
+}
+
+Tailor(Shop) {
+  Title! = Tailor
+  OwnerTitle! = tailor
+  [2..6 Items?] @ Wearables
+  Term! @ [
+    * Fashion
+    * Handmade Shirts and More
+    * Fine Clothes
+  ]
+  | Shop
+}
+
+Prison(Service) {
+  Title! = Prison
+  OwnerTitle! = warden
+  Term! = null
+ | Service
+}
+
+CityGuard(Service) {
+  Title! = City guard
+  OwnerTitle! = captain
+  Term! = null
+ | Service
+}
+
+EventHall(Shop) {
+  Title! = Event Hall
+  OwnerTitle! = party planner
+  Term! @ [
+    * Wedding Hall
+    * Feasts Hall
+    * Events and Balls
+  ]
+  Items? = null
+  | Shop
+}
+
+Orphanage(Service) {
+  Title! = Orphanage
+  OwnerTitle! = carer
+  Term! @ [
+    * Charity
+    * Safehouse
+  ]
+ | Service
+}
+
+Enchanter(Shop) {
+  Title! = Enchanter
+  OwnerTitle! = enchanter
+  Term! @ [
+    * Enchanments
+    * Blessings
+  ]
+  Items? = null
+  | Shop
+}
+
+PostOffice(Shop) {
+  Title! = Post Office
+  OwnerTitle! = clerk
+  Term! @ [
+    * Post Station
+    * Deliveries
+  ]
+  Items? = null
+  | Shop
+}
+
+Mill(Shop) {
+  Title! = Mill
+  OwnerTitle! = miller
+  Term! = null
+  Items? = null
+  | Shop
+}
+
+Smokehouse(Shop) {
+  Title! = Smokehouse
+  OwnerTitle! = curer
+  Term! @ [
+    * Smoked Goods
+    * Smoked Fish And More
+    * Smoked Meat And More
+  ]
+  Items? = null
+  | Shop
+}
+
+GameShop(Shop) {
+  Title! = Game Shop
+  OwnerTitle! = merchant
+  Term! @ [
+    * Games
+    * Pawns and Dice
+    * Cards and Balls
+    * Cards
+    * Dice
+  ]
+  Items? = null
+  | Shop
+}
+
+Theater(Service) {
+  Title! = Theater
+  OwnerTitle! = producer
+  Term! @ [
+    * Show
+    * Pretenders
+    * Spectacle
+    * Comedy Club
+    * Experience
+  ]
+ | Service
+}
+
+Witch(Shop) {
+  Title! = Witch
+  OwnerTitle! = witch
+  Term! = null
+  Items? = null
+  | Shop
+}
+
+College(Service) {
+  Title! = College
+  OwnerTitle! = teacher
+  Term! = null
+ | Service
+}
+
+PrintingPress(Shop) {
+  Title! = Printing Press
+  OwnerTitle! = typesetter
+  Term! @ [
+    * Print Shop
+    * Prints
+    * Press
+  ]
+  Items? = null
+  | Shop
+}
+
+AnimalPound(Service) {
+  Title! = Animal Pound
+  OwnerTitle! = carer
+  Term! = null
+ | Service
+}
+
+EventPlanner(Shop) {
+  Title! = Event Planner
+  OwnerTitle! = event planner
+  Term! @ [
+    * Events
+    * Parties
+    * Feasts
+    * Celebrations
+    * Festivals
+  ]
+  Items? = null
+  | Shop
+}
+
+Mortician(Service) {
+  Title! = Mortician
+  OwnerTitle! = mortician
+  Term! @ [
+    * Grave Diggers
+    * Graves and Tombstones
+    * Eternal Sleep
+    * Crates and Shovels
+  ]
+ | Service
+}
+
+Tanner(Shop) {
+  Title! = Tanner
+  OwnerTitle! = tanner
+  Term! @ [
+    * Leathers
+    * Hides and Leathers
+    * Beast Skins
+  ]
+  Items? = null
+  | Shop
+}
+
+Registry(Service) {
+  Title! = Registry
+  OwnerTitle! = clerk
+  Term! @ [
+    * Registry
+    * Registrars
+    * House of Records
+    * Records
+    * Signatures Keep
+    * Records Vault
+  ]
+ | Service
+}
+
+TradePost(Shop) {
+  Title! = Trade Post
+  OwnerTitle! = merchant
+  Term! @ [
+    * Barters
+    * Traders
+    * Buying and Selling
+    * Marketplace
+  ]
+  Items? = null
+  | Shop
+}
+
+VehicleMaker(Shop) {
+  Title! = Vehicle Maker
+  OwnerTitle! = carpenter
+  Term! @ [
+    * Wheels
+    * Vehicles
+    * Carts and Wagons
+  ]
+  Items? = null
+  | Shop
+}
+
+Archive(Service) {
+  Title! = Archive
+  OwnerTitle! = archiver
+  Term! @ [
+    * Archive
+    * Storage
+    * Scrolls
+  ]
+ | Service
+}
+
+FortuneTeller(Shop) {
+  Title! = Fortune Teller
+  OwnerTitle! = fortune teller
+  Term! @ [
+    * Eye
+    * Third Eye
+    * Visions
+  ]
+  Items? = null
+  | Shop
+}
+
+Matchmaker(Shop) {
+  Title! = Matchmaker
+  OwnerTitle! = matchmaker
+  Term! @ [
+    * House of Roses
+    * House of Hearts
+    * Matchmaking Services
+  ]
+  Items? = null
+  | Shop
+}
+
+ArtistsGuild(Guild) {
+  Title! = Artist Guild
+}
+
+HuntersGuild(Guild) {
+  Title! = Hunters Guild
+}
+
+FishermenGuild(Guild) {
+  Title! = Fishermen Guild
+}
+
+ThievesGuild(Guild) {
+  Title! = Thieves Guild
+  [2..6 Items?] @ Tools
+}
+
+MerchantsGuild(Guild) {
+  Title! = Merchants Guild
+}
+
+ScholarsGuild(Guild) {
+  Title! = Scholars Guild
+}
+
+WritersGuild(Guild) {
+  Title! = Writers Guild
+}
+
+AdventurersGuild(Guild) {
+  Title! = Adventurers Guild
+  [2..6 Items?] @ Gear
+}
+
+MagesGuild(Guild) {
+  Title! = Mages Guild
+}
+
+BardsGuild(Guild) {
+  Title! = Bards Guild
+}
+
+ArchitectsGuild(Guild) {
+  Title! = Architects Guild
+}
+
+SailorsGuild(Guild) {
+  Title! = Sailors Guild
+}
+
+KnightsGuild(Guild) {
+  Title! = Knights Guild
+}
+

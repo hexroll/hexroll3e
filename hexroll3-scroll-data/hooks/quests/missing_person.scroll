@@ -1,0 +1,332 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+MissingPersonQuestSecret(QuestSecret) {
+  Details! ~ <%
+    * {{Relation.Name.Full}}’s {{Relation.Type}}
+    is held captive in {{Location.DungeonContext.Name.Title | title}}
+  %>
+}
+
+MissingPersonRelation {
+  ^ [
+    * MissingPersonSon
+    * MissingPersonDaughter
+    * MissingPersonNephew
+    *(x3) MissingPersonSpouse
+  ]
+}
+
+MissingPersonSon {
+  Type! = son
+  Gender! @ Male
+  Name! @ Name {
+    Gender := &Gender.NameClass
+  }
+  FirstName! ~ <%{{Name.First}}%>
+  PronounObject! ~ <%{{Gender.PronounObject}}%>
+  PronounSubject! ~ <%{{Gender.PronounSubject}}%>
+  PronounPossessive! ~ <%{{Gender.PronounPossessive}}%>
+  BeVerb! ~ <%{{Gender.BeVerb}}%>
+}
+
+MissingPersonDaughter {
+  Type! = daughter
+  Gender! @ Female
+  Name! @ Name {
+    Gender := &Gender.NameClass
+  }
+  FirstName! ~ <%{{Name.First}}%>
+  PronounObject! ~ <%{{Gender.PronounObject}}%>
+  PronounSubject! ~ <%{{Gender.PronounSubject}}%>
+  PronounPossessive! ~ <%{{Gender.PronounPossessive}}%>
+  BeVerb! ~ <%{{Gender.BeVerb}}%>
+}
+
+MissingPersonNephew {
+  Type! = nephew
+  Gender! @ Male
+  Name! @ Name {
+    Gender := &Gender.NameClass
+  }
+  FirstName! ~ <%{{Name.First}}%>
+  PronounObject! ~ <%{{Gender.PronounObject}}%>
+  PronounSubject! ~ <%{{Gender.PronounSubject}}%>
+  PronounPossessive! ~ <%{{Gender.PronounPossessive}}%>
+  BeVerb! ~ <%{{Gender.BeVerb}}%>
+}
+
+MissingPersonWife {
+  Type! = wife
+  Gender! @ Female
+  Name! @ Name {
+    Gender := &Gender.NameClass
+  }
+  FirstName! ~ <%{{Name.First}}%>
+  PronounObject! ~ <%{{Gender.PronounObject}}%>
+  PronounSubject! ~ <%{{Gender.PronounSubject}}%>
+  PronounPossessive! ~ <%{{Gender.PronounPossessive}}%>
+  BeVerb! ~ <%{{Gender.BeVerb}}%>
+}
+
+MissingPersonHusband {
+  Type! = husband
+  Gender! @ Male
+  Name! @ Name {
+    Gender := &Gender.NameClass
+  }
+  FirstName! ~ <%{{Name.First}}%>
+  PronounObject! ~ <%{{Gender.PronounObject}}%>
+  PronounSubject! ~ <%{{Gender.PronounSubject}}%>
+  PronounPossessive! ~ <%{{Gender.PronounPossessive}}%>
+  BeVerb! ~ <%{{Gender.BeVerb}}%>
+}
+
+MissingPersonSpouse {
+  HusbandGender! @ Male
+  HusbandName! @ Name {
+    Gender := &HusbandGender.NameClass
+  }
+  WifeGender! @ Female
+  WifeName! @ Name {
+    Gender := &WifeGender.NameClass
+  }
+
+  SameSex @ 1d10
+
+  Type! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}husband{%else%}wife{%endif%}{%else%}{%if PersonGender.class=="Male"%}husband{%else%}wife{%endif%}{%endif%}%>
+  Name! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}{{HusbandName.Full}}{%else%}{{WifeName.Full}}{%endif%}{%else%}{%if PersonGender.class=="Male"%}{{HusbandName.Full}}{%else%}{{WifeName.Full}}{%endif%}{%endif%}%>
+  FirstName! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}{{HusbandName.First}}{%else%}{{WifeName.First}}{%endif%}{%else%}{%if PersonGender.class=="Male"%}{{HusbandName.First}}{%else%}{{WifeName.First}}{%endif%}{%endif%}%>
+  PronounObject! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}{{HusbandGender.PronounObject}}{%else%}{{WifeGender.PronounObject}}{%endif%}{%else%}{%if PersonGender.class=="Male"%}{{HusbandGender.PronounObject}}{%else%}{{WifeGender.PronounObject}}{%endif%}{%endif%}%>
+  PronounSubject! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}{{HusbandGender.PronounSubject}}{%else%}{{WifeGender.PronounSubject}}{%endif%}{%else%}{%if PersonGender.class=="Male"%}{{HusbandGender.PronounSubject}}{%else%}{{WifeGender.PronounSubject}}{%endif%}{%endif%}%>
+  PronounPossessive! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}{{HusbandGender.PronounPossessive}}{%else%}{{WifeGender.PronounPossessive}}{%endif%}{%else%}{%if PersonGender.class=="Male"%}{{HusbandGender.PronounPossessive}}{%else%}{{WifeGender.PronounPossessive}}{%endif%}{%endif%}%>
+  BeVerb! ~ <%{%if SameSex<8%}{%if PersonGender.class=="Female"%}{{HusbandGender.BeVerb}}{%else%}{{WifeGender.BeVerb}}{%endif%}{%else%}{%if PersonGender.class=="Male"%}{{HusbandGender.BeVerb}}{%else%}{{WifeGender.BeVerb}}{%endif%}{%endif%}%>
+
+}
+
+
+MissingPersonQuestReward {
+  ^ [
+    * MissingPersonQuestItemReward
+    * MissingPersonQuestTreasureReward
+    * MissingPersonQuestTreasureMapReward
+  ]
+}
+
+MissingPersonQuestItemReward {
+  QuestgiverName = :Folk.Name
+  QuestgiverLink = :Folk.HostingEntity
+  Reward! @ LostItem {
+    Folk = *QuestgiverName
+    Link = &QuestgiverLink
+  }
+
+  Details! ~ <%
+    <strong>{{articlize(Reward.Appearance)}}</strong> (actually <strong>{{articlize(Reward.ActualItem)}}</strong>).
+  %>
+}
+
+MissingPersonQuestTreasureReward {
+  Reward! @ [
+    * 200
+    * 800
+    * 1200
+    * 1700
+    * 2200
+    * 2300
+  ]
+  Details! ~ "<strong>{{currency(Reward)}}</strong>."
+}
+
+MissingPersonQuestTreasureMapReward {
+  Treasure % DungeonTreasureTier3
+  Details! ~ <%
+    {% if Treasure %}
+    a <strong>Treasure Map</strong>{%if Treasure%} leading to
+    {{begin_spoiler()}}<a href="{{sandbox()}}/location/{{Treasure.TreasureAreaUUID}}">
+    <strong>area {{Treasure.TreasureAreaNumber}}</strong>
+    </a>
+    in the
+    <a href="{{sandbox()}}/location/{{Treasure.TreasureDungeonUUID}}">
+    <strong>{{Treasure.TreasureDungeonName.Title}}</strong></a>.{{end_spoiler()}}
+    {%endif%}
+    {%else%}
+    a <strong>fake treasure map</strong>.
+    {%endif%}
+    %>
+}
+
+MissingPersonQuestCell {
+  DungeonName! = :Dungeon.Name
+  DungeonUUID! = :Dungeon.uuid
+  AreaNumber! = none
+  AreaUUID! = :AreaDescription.uuid
+  QuestTimeframe = none
+  QuestRelation! = none
+  QuestFolk = none
+  QuestSettlementName = none
+  QuestLink = none
+  QuestPronounSubject! = none
+  QuestPronounPossessive! = none
+  Hint! = none
+  Active! = false
+  Conspectus! = null
+}
+
+
+MissingPersonAdvert(Advert) {
+  QuestTimeframe = none
+  QuestRelation = none
+  QuestFolk = none
+  QuestLink = none
+  | Advert
+}
+
+MissingPersonRumor(LocalRumor) {
+  QuestFolk = none
+  QuestLink = none
+  QuestRelation = none
+  QuestLocation = none
+  | LocalRumor
+}
+
+MissingPersonQuest(Quest) {
+  Reward @ MissingPersonQuestReward
+
+  Timeframe @ [
+    * two days ago
+    * last week
+    * two weeks ago
+    * last month
+  ]
+
+  PersonGender = :Folk.Gender
+  Relation! @ MissingPersonRelation {
+    PersonGender := *PersonGender
+  }
+  QuestgiverName = :Folk.Name
+  QuestgiverLink = :Folk.HostingEntity
+  QuestSettlementName = *Settlement.NamePart
+
+  Location ?  MissingPersonQuestCell {
+          QuestTimeframe = &Timeframe
+          QuestRelation = *Relation
+          QuestFolk = *QuestgiverName
+          QuestLink = &QuestgiverLink
+          QuestPronounSubject = "{{QuestRelation.PronounSubject}}"
+          QuestPronounPossessive = "{{QuestRelation.PronounPossessive}}"
+          QuestSettlementName = &QuestSettlementName
+          Hint = "a person is chained to the wall"
+          Active = <%
+            The <strong>chained person</strong> is
+            <strong>
+            <a href="{{sandbox()}}/location/{{QuestLink}}">{{QuestFolk.Full}}’s</a>
+            {{QuestRelation.Type}}</strong>{%if QuestRelation.FirstName%}, {{QuestRelation.FirstName}},{%endif%}
+            {%if QuestSettlementName%}
+            from {{title(QuestSettlementName)}}
+            {%endif%}
+          %>
+          Conspectus = <%
+            {{begin_spoiler()}}
+            <a href="{{sandbox()}}/location/{{QuestLink}}">
+            <strong>
+            {{QuestFolk.Full}}’s
+            </strong>
+            </a>
+            {{QuestRelation.Type}},
+            {{QuestRelation.FirstName}},
+            {{end_spoiler()}}
+            is in
+            <a href="{{sandbox()}}/location/{{AreaUUID}}">
+            <strong>
+            area {{AreaNumber}}
+            </strong>
+            </a>
+          %>
+    }
+
+
+  Description! ~ <%
+    {% if Location %}
+    {{QuestgiverName.First}}'s <strong>{{capitalize(Relation.Type)}}</strong>{%if Relation.FirstName%}, {{Relation.FirstName}},{%endif%} is missing since {{Timeframe}}.
+      Secret: {{Relation.FirstName}} {{Relation.BeVerb}}
+      {{begin_spoiler()}}held captive in the
+      <a href="{{sandbox()}}/location/{{Location.AreaUUID}}">
+        <strong>{{Location.DungeonName.Title}}</strong>
+      </a>){{end_spoiler()}}
+        <ul><li>
+        Recovery reward is {{Reward.Details}}
+        </li></ul>
+    {% endif %}
+    %>
+
+  Advert @ MissingPersonAdvert {
+          QuestTimeframe = &Timeframe
+          QuestRelation = *Relation
+          QuestFolk = *QuestgiverName
+          QuestLink = &QuestgiverLink
+          Details @ [
+            * “<strong>Please Help!</strong>
+              My dear <strong>{{QuestRelation.Type}}</strong> is missing.
+              I am worried sick and will reward anyone who will help.
+              Yours faithfully,
+              <a href="{{sandbox()}}/location/{{QuestLink}}">
+              <strong>{{QuestFolk.Full}}</strong></a>”
+
+            * “<strong>Urgent!!</strong>
+              My <strong>{{QuestRelation.Type}}</strong> did not return home
+              since {{QuestTimeframe}}. If you have seen
+              {{QuestRelation.PronounObject}} or can help me find
+              {{QuestRelation.PronounObject}}, please contact me
+              as soon as possible.
+              Yours,
+              <a href="{{sandbox()}}/location/{{QuestLink}}">
+              <strong>{{QuestFolk.Full}}</strong></a>”
+
+            * “<strong>{{capitalize(QuestRelation.Type)}} is missing!</strong>
+              My {{QuestRelation.Type}} is missing since {{QuestTimeframe}}.
+              Please reach out to me if you can help.
+              <a href="{{sandbox()}}/location/{{QuestLink}}">
+              <strong>{{QuestFolk.Full}}</strong></a>”
+        ]
+    }
+
+  Rumor @ MissingPersonRumor {
+          QuestFolk = *QuestgiverName
+          QuestLink = &QuestgiverLink
+          QuestRelation = *Relation
+          QuestLocation = *Location
+          Details = <%
+          {% if QuestLocation %}
+            <a href="{{sandbox()}}/location/{{QuestLink}}"><strong>{{QuestFolk.Full}}’s</strong></a>
+            <strong>{{QuestRelation.Type}}</strong> is held captive in the
+            <a href="{{sandbox()}}/location/{{QuestLocation.AreaUUID}}">
+            <strong>{{QuestLocation.DungeonName.Title}}
+            </a>
+          {% endif %}
+          %>
+  }
+}
+

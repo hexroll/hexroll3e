@@ -1,0 +1,124 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Mountains {
+  Name! = Mountains
+  Supplemental! @ [
+    * A thundering waterfall drops hundreds of feet down from an overhang in the
+      steep slopes, forming a cloud of raging water at the base. 
+
+    * A giant peak stands taller than any of the mountains around it. An eerie
+      red glow surrounding its top is visible from afar.
+
+    * Waterfalls of lava flow from caves in a cliff, melting pieces of rock as
+      they fall and form a river of inferno in the deep canyon.
+
+    * The skeleton of a huge dragon is fossilised in one of the cliff faces
+      here. Its wings are spread as if it was about to fly to the clouds one
+      last time.
+
+    * Multiple plateaus separated by seemingly bottomless chasms are connected
+      with fragile rope bridges. The strong wind swings the brides from side to
+      side, making crossing them a terrifying experience.
+
+    * Giant boulders are hanging in mid air by some kind of invisible magic.
+      Some have rope ladders attached, reaching all the way down for anyone to
+      climb.
+
+    * A small patch of dark clouds circle an even darker peak.  Jolts of
+      lightning flash from within, followed by rumbling thunders.
+
+    * The narrow and winding trails here are on the faces of the cliffs.
+      Carelessness or combat are especially risky here.
+
+    * The path here leads to a cliffside, more than a hundrad feet tall. Planks
+      of wood attached against the rocky wall form the only way ahead.
+
+    * The passages here are surrounded with steep vertical cliffs and are
+      branching to all directions like a fractured maze.
+      
+    * Two giant stone figures of guards, gazing into the sky and holding a sword 
+      against the ground are carved on both cliff sides of the valley
+      here. 
+
+    * The rock formations here are sharp, pointy and dark. Walking here
+      feels like entering the a skull of a colossal monster.
+
+    * Small unexplained earthquakes tremble the rocks here a few times a day.
+      Loose rocks and boulders may block the pathways, or even worse, fall
+      from above unexpectedly.
+
+    * Dense fog makes travelling on the trails here difficult and slow.
+      The reduced visibility renders it almost impossible to scout for danger.
+
+    * Weird colourful crystal formations are decorating the rocky walls here.
+      Mesmerising rays of light are bouncing from their countless facets.
+
+    * Giant thin pillars of rocks are barely supporting even bigger plates
+      of stone. Some of these huge mushroom-like formations have already
+      collapsed. The others are likely to fall as well soon.
+    ]
+  Location! @ [
+    * on the edge of the cliffs, at the end of a winding steep trail
+    * high in the mountains
+    * across a seemingly bottomless chasm, where a rope bridge meets an overhang
+    * near the base of a steep cliff
+    * near the base of the tallest mountain
+  ]
+  Hideout! @ [
+    * behind a waterfall
+    * inside a cave on the cliff
+    * inside an old volcano
+  ]
+ }
+
+MountainsRandomEncounterTable {
+  [4..4 OtherEncounters!] @ MountainsRandomEncounter
+}
+
+MountainsHex (Hex) {
+  Terrain! @ Mountains
+  Monster! @ MountainsFeatureEncounter
+  RandomEncounters @ MountainsRandomEncounterTable
+  ExtensionTypeClass = "MountainsHexExtension"
+  | Hex
+}
+
+MountainsRegion (Region) {
+  Suffix @ [
+    * Mountains
+    * Ridge
+    * Range
+    * Peaks
+    * Teeth
+    * Crags
+    * Cliffs
+  ]
+
+  | Region
+  Weather? @  MountainWeatherContainer
+  [$minimum_tiles_per_mountains_region..$maximum_tiles_per_mountains_region Hexmap?] @ MountainsHex
+}
+

@@ -1,0 +1,68 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Rumor {
+  Details! = ""
+}
+
+LocalRumor(Rumor) {
+}
+
+RealmRumor(Rumor) {
+}
+
+HexRumor(Rumor) {
+
+}
+
+RumorsTable {
+
+  [2..5 rumors] ? LocalRumor
+  [6..6 rumors2] ? RealmRumor
+  [6..6 rumors3] ? HexRumor
+
+  table! ~ <%
+    <table>
+    <tr> <th> d6 </th> <th> Rumor </th> </tr>
+    {%set counter=namespace(value=0)%}
+    {%for r in rumors%}
+      {% if trim(r.Details) != "" %}
+        {%set counter.value=counter.value+1%}
+        <tr> <td> {{counter.value}} </td> <td> {{begin_spoiler()}}{{r.Details}}{{end_spoiler()}} </td> </tr>
+      {% endif %}
+    {%endfor%}
+    {%for r in range(6-counter.value)%}
+      {% if rumors2[r] %}
+        {%set counter.value=counter.value+1%}
+        <tr> <td> {{counter.value}} </td> <td> {{begin_spoiler()}}{{rumors2[r].Details}}{{end_spoiler()}} </td> </tr>
+      {% endif %}
+    {%endfor%}
+    {%for r in range(6-counter.value)%}
+      {%set counter.value=counter.value+1%}
+      <tr> <td> {{counter.value}} </td> <td> {{begin_spoiler()}}{{rumors3[r].Details}}{{end_spoiler()}} </td> </tr>
+    {%endfor%}
+    </table>
+  %>
+}

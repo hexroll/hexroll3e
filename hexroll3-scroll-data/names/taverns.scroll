@@ -1,0 +1,114 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+BaseTavernName {
+  Creature @ [
+    * Ghoul
+    * Mummy
+    * Skeleton
+    * Spectre
+    * Wight
+    * Wraith
+    * Zombie
+    * Werewolf
+    * Hawk
+    * Harpy
+    * Dragon
+    * Vampire
+    * Pixie
+    * Unicorn
+    * Orc
+    * Goblin
+    * Gnoll
+    * Ogre
+    * Troll
+  ]
+
+  Title @ [
+    * Devil
+    * Queen
+    * King
+    * Knight
+    * Hunter
+    * Baker
+    * Brewer
+    * Wizard
+    * Bard
+    * Rogue
+    * Mage
+    * Witch
+    * Paladin
+    * Peasant
+  ]
+
+  Object @ [
+    * Sword
+    * Mace
+    * Stone
+    * Torch
+    * Arrow
+    * Spear
+    * Staff
+  ]
+
+  LivingAdjective @ [
+    * Bleeding
+    * Fearless
+    * Gloomy
+    * Sad
+    * Crying
+    * Laughing
+    * Cursed
+  ]
+
+  StaticAdjective @ [
+    * Flaming
+    * Glowing
+    * Magic
+    * Black
+    * Cursed
+    * Lost
+  ]
+  Full! @ [
+    * "The {{Creature}} & The {{LivingAdjective}} {{Title}} {{Type}}"
+    * "The {{LivingAdjective}} {{Creature}} {{Type}}"
+    * "{{StaticAdjective}} {{Object}} {{Type}}"
+    * "The {{StaticAdjective}} {{Object}} {{Type}}"
+    * "The {{Title}}'s {{Object}} {{Type}}"
+  ]
+}
+
+TavernName(BaseTavernName) {
+  Type! = Tavern
+  | BaseTavernName
+}
+
+InnName(BaseTavernName) {
+  Type! @ [
+    * Inn
+    * Lodge
+  ]
+  | BaseTavernName
+}

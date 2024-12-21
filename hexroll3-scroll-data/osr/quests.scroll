@@ -1,0 +1,312 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+# This document contains Open Game Content, subject to the Open Game License,
+# released un the Open Game License, Version 1.0a (enclosed in the LICENSE
+# file), as described in Section 1(d) of the License.
+#
+LostItemMagical(LostItem) {
+  ^ [
+    *(x3) LostItemBoots
+    *(x3) LostItemClothing
+    *(x4) LostItemHelm
+    * LostItemBag
+    * LostItemAmulet
+    * LostItemBroom
+    * LostItemCrystalBall
+    * LostItemDrums
+    * LostItemBottle
+    * LostItemDevice
+    * LostItemCarpet
+    * LostItemGirdle
+    * LostItemHorn
+    * LostItemMirror
+    * LostItemRope
+    * LostItemScarab
+  ]
+  Reward! @ [
+    * 1200
+    * 1700
+    * 2200
+    * 2300
+  ]
+  | LostItem
+}
+
+LostItemBag(LostItemMagical) {
+  Appearance! @ [
+    * decorated leather bag
+    * reinforced leather bag
+  ]
+
+  ActualItem! @ [
+    * Bag of Devouring
+    * Bag of Holding
+  ]
+  | LostItemMagical
+}
+
+LostItemBoots(LostItemMagical) {
+  Appearance! @ [
+    * sturdy leather boots
+    * custom-made leather boots
+  ]
+
+  ActualItem! @ [
+    * Boots of Levitation
+    * Boots of Speed
+    * Boots of Travelling and Leaping
+  ]
+  | LostItemMagical
+}
+
+LostItemAmulet(LostItemMagical) {
+  Appearance! @ [
+    * family amulet
+  ]
+
+  ActualItem! @ [
+    * Amulet of Protection Against Scrying
+    * Medallion of ESP 30’
+  ]
+  | LostItemMagical
+}
+
+LostItemBroom(LostItemMagical) {
+  Appearance! @ [
+    * handcrafted broom
+  ]
+
+  ActualItem! @ [
+    * Broom of Flying
+  ]
+  | LostItemMagical
+}
+
+LostItemClothing(LostItemMagical) {
+  Appearance! @ [
+    * embroided cloak
+  ]
+
+  ActualItem! @ [
+    * Displacer Cloak
+    * Elven Cloak and Boots
+  ]
+  | LostItemMagical
+}
+
+LostItemSword(LostItem) {
+  Reward! @ [
+    * 230
+    * 440
+    * 390
+    * 320
+  ]
+  Appearance! @ [
+    * decorated sword
+    * custom sword
+  ]
+
+  ActualItem! @ [
+    *(x11) Sword +1
+    *(x4) Sword +2
+    * Sword +1, +2 vs Lycanthropes
+    * Sword +1, +2 vs Spell Users
+    * Sword +1, +3 vs Dragons
+    * Sword +1, +3 vs Enchanted Creatures
+    * Sword +1, +3 vs Regenerating Creatures
+    * Sword +1, +3 vs Undead
+    * Sword +1, Flaming
+    * Sword +1, Light
+    * Sword +1, Light
+    * Sword +1, Locate Objects
+    * Sword +1, Locate Objects
+    * Sword +1, Wishes
+    * Sword +2, Charm Person
+    * Sword +3
+  ]
+  | LostItem
+}
+
+LostItemHelm(LostItemMagical) {
+  Appearance! @ [
+    * decorated helm
+    * golden helm
+  ]
+
+  ActualItem! @ [
+    * Helm of Alignment Changing
+    * Helm of Reading Languages and Magic
+    * Helm of Telepathy
+    * Helm of Teleportation
+  ]
+  | LostItemMagical
+}
+
+LostItemGauntlets(LostItemMagical) {
+  Appearance! @ [
+    * golden gauntlets
+    * decorated gauntlets
+  ]
+
+  ActualItem! @ [
+    * Gauntlets of Ogre Power
+  ]
+  | LostItemMagical
+}
+
+LostItemArmor(LostItem) {
+  Reward! @ [
+    * 230
+    * 440
+    * 390
+    * 320
+  ]
+  Appearance! @ [
+    * custom-fit armor
+    * decorated armor
+    * armor of sentimental value
+  ]
+  ActualItem! @ [
+    *(x6) Armour +1
+    *(x3) Armour +2
+    * Armour +3
+  ]
+  | LostItem
+}
+
+LostItemCrystalBall(LostItemMagical) {
+  Appearance! @ [
+    * glass ball
+  ]
+
+  ActualItem! @ [
+    * Crystal Ball
+    * Crystal Ball with Clairaudience
+    * Crystal Ball with ESP
+  ]
+  | LostItemMagical
+}
+
+LostItemDrums(LostItemMagical) {
+  Appearance! @ [
+    * drums
+  ]
+
+  ActualItem! @ [
+    * Drums of Panic
+  ]
+  | LostItemMagical
+}
+
+LostItemBottle(LostItemMagical) {
+  Appearance! @ [
+    * bottle of sentimental value
+  ]
+
+  ActualItem! @ [
+    * Efreeti Bottle
+  ]
+  | LostItemMagical
+}
+
+LostItemDevice(LostItemMagical) {
+  Appearance! @ [
+    * contraption
+  ]
+
+  ActualItem! @ [
+    * "Elemental Summoning Device = Air"
+    * "Elemental Summoning Device = Earth"
+    * "Elemental Summoning Device = Fire"
+    * "Elemental Summoning Device = Water"
+  ]
+  | LostItemMagical
+}
+
+LostItemCarpet(LostItemMagical) {
+  Appearance! @ [
+    * colourful carpet
+    * wool carpet
+    * dragon's skin carpet
+  ]
+
+  ActualItem! @ [
+    * Flying Carpet
+  ]
+  | LostItemMagical
+}
+
+LostItemGirdle(LostItemMagical) {
+  Appearance! @ [
+    * girdle
+  ]
+  ActualItem! @ [
+    * Girdle of Giant Strength
+  ]
+  | LostItemMagical
+}
+
+LostItemHorn(LostItemMagical) {
+  Appearance! @ [
+    * horn
+  ]
+
+  ActualItem! @ [
+    * Horn of Blasting
+  ]
+  | LostItemMagical
+}
+
+LostItemMirror(LostItemMagical) {
+  Appearance! @ [
+    * makeup mirror
+    * mirror
+  ]
+  ActualItem! @ [
+    * Mirror of Life Trapping
+  ]
+  | LostItemMagical
+}
+
+LostItemRope(LostItemMagical) {
+  Appearance! @ [
+    * strong rope
+  ]
+  ActualItem! @ [
+    * Rope of Climbing
+  ]
+  | LostItemMagical
+}
+
+LostItemScarab(LostItemMagical) {
+  Appearance! @ [
+    * scarab
+  ]
+  ActualItem! @ [
+    * Scarab of Protection
+  ]
+  | LostItemMagical
+}
+

@@ -1,0 +1,57 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+[package]
+name = "hexroll3-scroll"
+version = "0.1.0"
+edition = "2021"
+opt-level = 3
+
+[features]
+zstd = ["dep:zstd"]
+
+[dependencies]
+anyhow = "1.0.82"
+caith = "4.2.3"
+ciborium = "0.2.2"
+getrandom = { version = "0.2", features = ["js"] }
+indexmap = {version="2.2.6",features=["serde"]}
+log = "0.4.22"
+minijinja = {version="2.3.0" , features=["builtins"]}
+moka = {version="0.12.8",features=["sync"]}
+pest = "2.7"
+pest_derive = "2.7"
+rand = {version="0.8.5", features=["std_rng"]}
+rand_chacha = "0.3.1"
+redb = "2.3.0"
+serde = {version="1.0.197",features = ["derive"]}
+serde_json = { version="1.0.133",features = ["preserve_order"]}
+zstd = {version = "0.13.2", optional= true}
+
+[lib]
+path = "src/lib.rs"
+
+[dev-dependencies]
+tempfile = "3.10.1"
+

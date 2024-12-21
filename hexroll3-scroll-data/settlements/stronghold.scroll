@@ -1,0 +1,246 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Stronghold (Residency){ ^ [
+      * Tower
+      * FighterCastle
+    ]
+}
+
+CastleType {
+  Name! = Castle
+}
+
+FighterCastle (Stronghold) {
+  Prefix @ [
+    * majestic
+    * impressive
+    * immense
+  ]
+  Type @ CastleType
+  Population = 1
+  HexLink = :Hex.uuid
+  HexRegion = :Hex.Region
+  Resident! @ CastleResident {
+    HostingEntity := &HexLink
+    URLExt = "/location/{{HostingEntity}}"
+    SettlementName = &HexRegion
+  }
+  Motivation! @ [
+    * {{Resident.Gender.Possession}} acquired the lands surrounding the castle and is developing it
+      as {{Resident.Gender.PronounPossessive}} barony
+    * took over the lands here after a bloody battle
+  ]
+  Details! ~ <%
+    <ul><li>
+    {{Resident.Name.First}}, a level {{Resident.Level}} {{Resident.Class}},
+      {{Motivation}}.
+      {{capitalize(Resident.Gender.PronounSubject)}} {{Resident.Gender.Possession}} {{Resident.Appearance}}
+      (<em>{{Resident.State}}</em>). {{Resident.InThePocket.Details}}
+      {%if Resident.Association%}{{Resident.Association}}{%endif%}
+      {%if Quest%}
+      <ul><li>
+      {{Resident.Name.First}} {{Resident.Gender.BeVerb}} {{Quest}}
+      </li></ul>
+      {%endif%}
+      </li></ul>
+      <p>
+      <strong>{{Resident.Name.Full}}</strong>
+      <hr/>
+      {{Resident.Stats}}
+      <hr/>
+      </p>
+      %>
+  | Residency
+}
+
+Academy {
+  Name! @ [
+    * Academy of Magic
+    * School of the Arcana
+    * School of Sorcery
+  ]
+  Motivation! @ [
+    * teaching the art of magic
+    * documenting and teaching the history of magic
+  ]
+  HexLink = :Hex.uuid
+  HexRegion = :Hex.Region
+  [3..6 Mediums] @ MagicAcademyMedium {
+    HostingEntity := &HexLink
+    URLExt = "/location/{{HostingEntity}}"
+    SettlementName = &HexRegion
+  }
+  Details! ~ <%
+    <h5>Mediums</h5>
+    <ul>
+    {%for m in Mediums%}
+    <a class="npc-anchor" id="{{m.uuid}}"></a>
+    <li>
+    {{m.Description}}
+    <ul>
+    {% if m.Association %}
+    {{m.Association}}
+    {% endif %}
+    </ul>
+    </li>
+    {%endfor%}
+    </ul>
+  %>
+  Quest! = none
+}
+
+Observatory {
+  Name! = Observatory
+  Motivation! @ [
+    * trying to unlock the secrets of the universe
+    * searching for a mysterious celestial entity
+    * researching celestial magic
+  ]
+  Details! ~ ""
+  Reward @ RandomPotion
+  Shard % Shard {
+      Findable = true
+  }
+  # This is an anti-pattern the fixates the wrong region in this case
+  # ShardRegion = &Shard*Region.Name
+  # End anti-pattern
+  Quest! ~ <%
+    {% if Shard %}
+      hoping to research {{Shard.Name}}, thought to be found in
+      {% if Shard.Region %}
+      {{html_link( Shard.HexUUID,Shard.Region)}}.
+      {% else %}
+      {{html_link( Shard.HexUUID,ShardRegion)}}.
+      {% endif %}
+      Searching for the {{Shard.Name}} will increase the
+      chance for an encounter in that hex.
+      <ul><li>
+          Finders reward is {{reroller(Reward, "", False)}} <strong>{{Reward.Description}}</strong>
+      </li></ul>
+      {% else %}
+      looking for a mysterious shard, not found in these lands.
+      {% endif %}
+  %>
+}
+
+Laboratory {
+  Name! = Laboratory
+  Motivation! @ [
+    * brewing extraordinary potions
+    * researching exceptional magic-items
+  ]
+  HexRegion = :Hex.Region
+  Assistant @ MagicLaboratoryAssistant {
+    HostingEntity := &HexLink
+    URLExt = "/location/{{HostingEntity}}"
+    SettlementName = &HexRegion
+  }
+  Details! ~ <%
+    <h5> Assistant </h5>
+    <p>
+    {{Assistant.Description}}
+    <ul>
+    {% if Assistant.Association %}
+    {{Assistant.Association}}
+    {% endif %}
+    </ul>
+    </p>
+    <p>
+    {{Assistant.Stats}}
+    </p>
+  %>
+  Component % Plant {
+    Findable = true
+  }
+  # This is an anti-pattern the fixates the wrong region in this case
+  # ComponentRegion = &Component*Region.Name
+  Reward @ RandomPotion
+  Quest! ~ <%
+      {% if Component %}
+      looking for the <strong>{{Component.Name}}</strong>, a unique potion component, rumored to be
+      found in
+      {% if Component.Region %}
+      {{html_link( Component.HexUUID,Component.Region)}}.
+      {% else %}
+      {{html_link( Component.HexUUID,ComponentRegion)}}.
+      {% endif %}
+      Searching for the {{Component.Name}} will increase the
+      chance for an encounter in that hex.
+      <ul><li>
+          Reward is {{reroller(Reward, "", False)}}<strong>{{Reward.Description}}</strong>
+      </li></ul>
+      {% else %}
+      looking for an exotic potion component, not found in these lands.
+      {% endif %}
+  %>
+}
+
+Tower (Residency){
+  Prefix @ [
+    * magically-hidden
+    * glass-made
+    * dark-colored tower
+  ]
+  HexLink = :Hex.uuid
+  Type @@ [
+    * Academy
+    * Observatory
+    * Laboratory
+  ]~{
+    HexLink := &HexLink
+  }
+  Population = 1
+  HexLink = :Hex.uuid
+  HexRegion = :Hex.Region
+  Resident! @ WizardTowerResident {
+    HostingEntity := &HexLink
+    URLExt = "/location/{{HostingEntity}}"
+    SettlementName = &HexRegion
+  }
+  Details! ~ <%
+    <ul><li>
+      {{reroller(Resident, "", False)}}
+      {{Resident.Name.First}}, a level {{Resident.Level}} {{Resident.Class}},
+      is {{Type.Motivation}}.
+      {{capitalize(Resident.Gender.PronounSubject)}} {{Resident.Gender.Possession}} {{Resident.Appearance}}
+      (<em>{{Resident.State}}</em>). {{Resident.InThePocket.Details}}
+      {%if Resident.Association%}{{Resident.Association}}{%endif%}
+      {%if Type.Quest%}
+      <ul><li>
+      {{Resident.Name.First}} {{Resident.Gender.BeVerb}} {{Type.Quest}}
+      </li> </ul>
+      {%endif%}
+      <p>
+      <strong>{{Resident.Name.Full}}</strong>
+      <hr/>
+      {{Resident.Stats}}
+      <hr/>
+      </p>
+      {{Type.Details}}
+      </li> </ul>
+      %>
+  | Residency
+}

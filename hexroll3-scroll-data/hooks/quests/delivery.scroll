@@ -1,0 +1,129 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DeliveryQuestAdvert(Advert) {
+  QuestFolk = none
+  QuestLink = none
+  QuestDestination = none
+  | Advert
+}
+
+DeliveryQuestRumor(LocalRumor) {
+  QuestFolk = none
+  QuestLink = none
+  QuestObject = none
+  QuestDestination = none
+  | LocalRumor
+}
+
+DeliveryQuest(Quest) {
+
+  Destination % Character
+
+  Reward @ [
+    * 500
+    * 600
+    * 700
+  ]
+
+  PackagePrefix @ [
+    * sealed
+    * mysterious
+  ]
+
+  PackageObject @ [
+    * bottle
+    * box
+    * chest
+    * crate
+    * casket
+  ]
+
+  Package = <%
+    a {{PackagePrefix}} {{PackageObject}}
+  %>
+
+  Description! ~ <%
+    {% if Destination %}
+    Looking for someone to deliver {{Package}} to
+    <a href="{{sandbox()}}{{Destination.URLExt}}"><strong>{{Destination.Name.Full}}</strong></a>
+    {%if Destination.SettlementName and Destination.SettlementName%}in
+    <strong>{{capitalize(Destination.SettlementName)}}</strong>.{%endif%}
+        <ul><li>
+        Reward is <strong>{{currency(Reward)}}</strong>
+        </li></ul>
+    {% endif %}
+  %>
+
+  Questgiver = :SettlementLocation.Owner
+
+  QuestgiverLocationUUID = :SettlementLocation.uuid
+
+  Advert @ DeliveryQuestAdvert {
+    QuestFolk = *Questgiver
+    QuestLink = &QuestgiverLocationUUID
+    QuestDestination = *Destination
+    Details @ [
+      * “<strong>Job offer!</strong> I have a package to deliver
+        {%if QuestDestination.SettlementName %}in
+        <strong>{{capitalize(QuestDestination.SettlementName)}}</strong>{%endif%}.
+        Payment guaranteed at destination upon delivery.
+        Yours,
+        <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Name.Full}}</strong></a>”
+      * “<strong>Travelling{%if QuestDestination.SettlementName%} to
+        <strong>{{capitalize(QuestDestination.SettlementName)}}</strong>{%endif%}?
+        I will pay anyone carrying a package for me.
+        Yours,
+        <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Name.Full}}</strong></a>”
+      * {%if QuestDestination.SettlementName and QuestDestination.SettlementName%}
+        Heading to
+        <strong>{{capitalize(QuestDestination.SettlementName)}}?</strong>
+        {%else%}<strong>Heading away?</strong>{%endif%}
+        Payment guaranteed to a trusty courier. Ask for
+        <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Name.Full}}</strong></a>”
+    ]
+  }
+
+  Rumor @ DeliveryQuestRumor {
+    QuestFolk = *Questgiver
+    QuestLink = &QuestgiverLocationUUID
+    QuestObject = &PackageObject
+    QuestDestination = *Destination
+    Details @ [
+      * <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Name.Full}}</strong></a>
+        is willing to pay well for a delivery job.
+      * <a href="{{sandbox()}}/location/{{QuestLink}}">
+        <strong>{{QuestFolk.Name.Full}}</strong></a>
+        {{QuestFolk.Gender.Possession}} a {{QuestObject}}
+        {{QuestFolk.Gender.PronounSubject}} would like delivered
+        {%if QuestDestination.SettlementName and QuestDestination.SettlementName%}to
+        {{capitalize(QuestDestination.SettlementName)}}{%endif%}
+    ]
+  }
+}

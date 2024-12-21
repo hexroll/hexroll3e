@@ -1,0 +1,1288 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+CityDistrict(District) {
+  ^ [
+    *(x5) ResidentialDistrict
+    * PalaceDistrict
+    * TempleDistrict
+    * CraftingDistrict
+    * HarborDistrict
+    * MarketDistrict
+  ]
+  | District
+  SettlementName = *Settlement.NamePart
+  GAlignment @ [
+    *(x5) Lawful
+    *(x1) Neutral
+  ]
+  [2..3 Guards!] @ Guard {
+     Alignment = &GAlignment
+     HostingEntity := &uuid
+     Profession = "guard"
+     URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+  }
+  Overview! ~ <%
+    <h5> Shops & Services </h5>
+
+    {{Index}}
+
+    <h5>Guards</h5>
+
+    {% for g in Guards %}
+    <a class="npc-anchor" id="{{g.uuid}}"></a>
+    <p>
+    {{reroller(g, "", False)}} {{g.Description}}
+    {{g.Stats}}
+    {% if g.Association %}
+    <ul>
+    {{g.Association}}
+    </ul>
+    {% endif %}
+    <hr/>
+    </p>
+    {% endfor %}
+  %>
+}
+
+City(Settlement) {
+  | Settlement
+
+  Prefix! = ""
+  Title! = "city of {{title(NamePart)}}"
+
+  PopulationMultiplier! @ 5d4+1
+
+  [4..8 districts?] @ CityDistrict
+
+  # Population? ~ <%{{round(sum(attribute_list(districts,"Population"))*PopulationMultiplier,0)}}%>
+  Population? ~ <%{{ (sum((districts | map(attribute="Population") * PopulationMultiplier)) | int) }}%>
+
+  Castle @ Castle
+
+  CityRulerNPC @@ [
+        * FighterLevel10
+        * FighterLevel11
+        * ClericLevel10
+        * ClericLevel11
+        * ElfLevel8
+        * ElfLevel9
+        * DwarfLevel9
+        * DwarfLevel10
+        *(x2) HalflingLevel7
+  ]~{
+    HostingEntity := &uuid
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+  }
+
+  CityRulerTitle! @ [
+    * Mayor
+    * Baron
+  ]
+
+  CityRulerDescriptor @ [
+    * fanatic, power hungry
+    * despised, power hungry
+    * corrupted, power hungry
+    * hated, power hungry
+    * despised tyrant
+    * fanatic tyrant
+    * power hungry tyrant
+    * hated tyrant
+    * tyrant and corrupt
+    * hated and corrupt
+    * honest but weak
+    * honest and just
+    * honest and canny
+    * noble but weak
+    * noble and just
+    * beloved but weak
+    * beloved and just
+    * beloved and canny
+    * cherished but weak
+    * cherished and just
+    * cherished and canny
+  ]
+
+  CityFeature @ [
+    * beautiful hanging gardens
+    * cheerful taverns
+    * developed cultural life
+    * helpful residents
+    * unsafe streets
+    * annual summer festival
+    * solstice festival of lights
+    * annual horse show
+    * fine crafts and art
+    * industrious residents
+    * odd laws and regulations
+  ]
+
+  Supplemental! = <%
+    {{title(NamePart)}} is ruled by the {{CityRulerDescriptor}}
+    {{CityRulerTitle}} {{CityRulerNPC.Name.Full}},
+    and is known for its {{CityFeature}}.
+  %>
+
+  ConnectorTerm2b @ [
+    * guarded walls
+    * impenetrable walls
+    * tall walls
+    * massive walls
+  ]
+
+  ConnectorTerm2a @ [
+    * protected behind
+    * covered behind
+    * behind
+    * surrounded by
+    * secured within its
+  ]
+
+  ConnectorTerm1 @ [
+	    * stands
+    * stands boldly,
+    * stands majestically,
+    * decorates the horizon,
+    * is situated here,
+  ]
+
+  Connector! = "{{ConnectorTerm1}} {{ConnectorTerm2a}} {{ConnectorTerm2b}}"
+  CitySpeciality = "TODO: SPECIALTY CALC!"
+
+  taverns_and_inns? << DistrictTavern
+  places_of_interest? << SettlementLocation
+
+  Overview? ~ <%
+	<p>
+    Population: {{Population}} residents
+	</p>
+
+    {{Castle.Desc}}
+
+    <h5>City Districts</h5>
+
+    {{ districts | map(attribute="LinkedName") | bulletize('9726') }}
+
+    <h5>City Taverns & Inns </h5>
+
+    {{ taverns_and_inns | map(attribute="InvertedLinkedName") | bulletize('9726') }}
+
+    <h5>City Shops & Services</h5>
+
+    {% set last = "" %}
+
+    <table class="index">
+
+    {% for poi in sortby(places_of_interest, "Title") %}
+    {% if poi.Title != last %}
+    {% if last != "" %}
+    </td> </tr>
+    {% endif %}
+    <tr> <td> {{ poi.Title }} </td> <td>
+    {% else %}
+     &#9726;
+    {% endif %}
+    <a href="{{sandbox()}}/location/{{poi.uuid}}"><strong>{{poi.BaseName}}</strong></a>
+    {% set last = poi.Title %}
+    {% endfor %}
+    </td> </tr>
+
+    </table>
+
+
+  %>
+
+  Brief? = <%
+    {{Overview}}
+  %>
+
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="0" y="0" zoom="6"> </a>
+  %metadata>
+  <header%
+    <div hidden id="doc-title"> {{capitalize(Title)}} from {{Realm}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="NamePart" data-map-label="true">{{NamePart}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+  <body%
+    {{Brief}}
+  %body>
+
+}
+
+ResidentialDistrict(District) {
+  TitleNoun @ [
+    * Actor's
+    * Alchemist's
+    * Apothecary's
+    * Astrologer's
+    * Baker's
+    * Barkeep's
+    * Blacksmith's
+    * Butcher's
+    * Carpenter's
+    * Commoners
+    * Constable's
+    * Cook's
+    * Craftsman's
+    * Dancer's
+    * Dockside
+    * Dwellers
+    * Executioner's
+    * Fishmonger's
+    * Grocer's
+    * Harbor
+    * Herald's
+    * Innkeeper's
+    * Jester's
+    * Jeweler's
+    * Judge's
+    * Knight's
+    * Lawyer's
+    * Merchant's
+    * Miners
+    * Musician's
+    * New
+    * Noble's
+    * Old
+    * Painter's
+    * Peasant's
+    * Peasants
+    * Potter's
+    * Sailor's
+    * Scholar's
+    * Scribe's
+    * Sculptor's
+    * Shipwright's
+    * Stable
+    * Tanner's
+    * Torturer's
+    * Tower
+    * Town Crier's
+    * Town Watch's
+    * Townsfolk
+    * Watchman's
+    * Weaver's
+  ]
+
+  TitleSuffix @ [
+    * Alley
+    * Arcade
+    * Arch
+    * Avenue
+    * Bastion
+    * Bend
+    * Block
+    * Borough
+    * Boulevard
+    * Bower
+    * Corner
+    * Court
+    * Crossing
+    * Dell
+    * District
+    * Domain
+    * Drive
+    * End
+    * Estate
+    * Folly
+    * Garden
+    * Grove
+    * Hill
+    * Inn
+    * Isle
+    * Junction
+    * Keep
+    * Landing
+    * Lane
+    * Manor
+    * Meadow
+    * Mile
+    * Nest
+    * Palace
+    * Parlor
+    * Path
+    * Place
+    * Plaza
+    * Quarter
+    * Row
+    * Shore
+    * Square
+    * Street
+    * Terrace
+    * Town
+    * Trail
+    * Turn
+    * Vale
+    * Vista
+    * Walk
+    * Way
+    * Workshop
+  ]
+
+  Title! = "{{TitleNoun}} {{TitleSuffix}}"
+
+  CostFactor = 0.8
+
+  << Advert
+  << LocalRumor
+  [5..9 shops!] @ ResidentialDistrictShop
+  | CityDistrict
+}
+
+ResidentialDistrict1 {
+  ^ [
+    * ResidentialDistrict
+  ]
+}
+ResidentialDistrict2 {
+  ^ [
+    * ResidentialDistrict
+  ]
+}
+ResidentialDistrict3 {
+  ^ [
+    * ResidentialDistrict
+  ]
+}
+ResidentialDistrict4 {
+  ^ [
+    * ResidentialDistrict
+  ]
+}
+ResidentialDistrict5 {
+  ^ [
+    * ResidentialDistrict
+  ]
+}
+
+PalaceDistrict(District) {
+  TitleNoun @ [
+    * Baron's
+    * Baroness's
+    * Baronet's
+    * Bishop's
+    * Castle
+    * Cathedral
+    * Count's
+    * Countess's
+    * Duchess's
+    * Duke's
+    * Earl's
+    * King's
+    * Mayor's
+    * Noble's
+    * Prince's
+    * Princess's
+    * Queen's
+    * Royal
+    * Viscount's
+    * Viscountess's
+  ]
+
+  TitleSuffix @ [
+    * Arch
+    * Court
+    * Crossing
+    * Estate
+    * Garden
+    * Grove
+    * Hill
+    * Keep
+    * Landing
+    * Manor
+    * Meadow
+    * Mile
+    * Palace
+    * Parlor
+    * Place
+    * Plaza
+    * Square
+    * Terrace
+    * Vale
+    * Way
+  ]
+
+  Title! = "{{TitleNoun}} {{TitleSuffix}}"
+
+  CostFactor! = 2.0
+
+  << Advert
+  << LocalRumor
+  [2..5 shops!] @ PalaceDistrictShop
+  | CityDistrict
+}
+
+TempleDistrict(District) {
+  TitleNoun @ [
+    * Alchemist's
+    * Apothecary's
+    * Astrologer's
+    * Bishop's
+    * Cathedral
+    * Chancellor's
+    * Scribe's
+  ]
+
+  TitleSuffix @ [
+    * Alley
+    * Arch
+    * Avenue
+    * Bend
+    * Borough
+    * Boulevard
+    * Court
+    * End
+    * Estate
+    * Garden
+    * Grove
+    * Hill
+    * Keep
+    * Landing
+    * Lane
+    * Manor
+    * Meadow
+    * Mile
+    * Nest
+    * Palace
+    * Parlor
+    * Path
+    * Place
+    * Plaza
+    * Quarter
+    * Row
+    * Shore
+    * Square
+    * Street
+    * Terrace
+    * Town
+    * Trail
+    * Turn
+    * Vale
+    * Vista
+    * Walk
+    * Way
+  ]
+
+  Title! = "{{TitleNoun}} {{TitleSuffix}}"
+
+  CostFactor! = 1.5
+
+  << Advert
+  << LocalRumor
+  [7..9 shops!] @ TempleDistrictShop
+  | CityDistrict
+}
+
+CraftingDistrict(District) {
+  TitleNoun @ [
+    * Peasants
+    * Townsfolk
+    * Common
+    * Commoners
+    * Dwellers
+    * Townsfolk
+    * Miners
+    * Peasants
+    * Townsfolk
+    * Commoners
+    * Dwellers
+    * Townsfolk
+    * Miners
+    * Castle
+    * Cathedral
+    * Market
+    * Old
+    * New
+    * Royal
+    * Merchant's
+    * Craftsman's
+    * Peasant's
+    * Noble's
+    * Queen's
+    * King's
+    * Bishop's
+    * Knight's
+    * Earl's
+    * Baron's
+    * Watchman's
+    * Tower
+    * Stable
+    * Blacksmith's
+    * Tanner's
+    * Weaver's
+    * Potter's
+    * Carpenter's
+    * Baker's
+    * Butcher's
+    * Grocer's
+    * Apothecary's
+    * Innkeeper's
+    * Barkeep's
+    * Cook's
+    * Scribe's
+    * Scholar's
+    * Alchemist's
+    * Astrologer's
+    * Merchant's
+    * Sailor's
+    * Fishmonger's
+    * Shipwright's
+    * Harbor
+    * Dockside
+    * Tanner's
+    * Weaver's
+    * Potter's
+    * Carpenter's
+    * Baker's
+    * Butcher's
+    * Grocer's
+    * Apothecary's
+    * Innkeeper's
+    * Barkeep's
+    * Cook's
+    * Scribe's
+    * Scholar's
+    * Alchemist's
+    * Astrologer's
+    * Herald's
+    * Painter's
+    * Musician's
+    * Actor's
+    * Jester's
+    * Dancer's
+    * Sculptor's
+    * Jeweler's
+    * Weaver's
+    * Potter's
+    * Carpenter's
+    * Baker's
+    * Butcher's
+    * Grocer's
+    * Apothecary's
+    * Innkeeper's
+    * Barkeep's
+    * Cook's
+    * Scribe's
+    * Scholar's
+    * Alchemist's
+    * Astrologer's
+    * Executioner's
+    * Torturer's
+    * Judge's
+    * Lawyer's
+    * Constable's
+    * Bailiff's
+    * Sheriff's
+    * Magistrate's
+    * Chancellor's
+    * Prince's
+    * Princess's
+    * Duke's
+    * Duchess's
+    * Count's
+    * Countess's
+    * Viscount's
+    * Viscountess's
+    * Baronet's
+    * Baroness's
+    * Mayor's
+    * Town Crier's
+    * Town Watch's
+  ]
+
+  TitleSuffix @ [
+    * Alley
+    * Arcade
+    * Arch
+    * Avenue
+    * Bastion
+    * Bend
+    * Block
+    * Borough
+    * Boulevard
+    * Bower
+    * Corner
+    * Court
+    * Crossing
+    * Dell
+    * District
+    * Domain
+    * Drive
+    * End
+    * Estate
+    * Folly
+    * Garden
+    * Grove
+    * Hill
+    * Inn
+    * Isle
+    * Junction
+    * Keep
+    * Landing
+    * Lane
+    * Manor
+    * Meadow
+    * Mile
+    * Nest
+    * Palace
+    * Parlor
+    * Path
+    * Place
+    * Plaza
+    * Quarter
+    * Row
+    * Shore
+    * Square
+    * Street
+    * Terrace
+    * Town
+    * Trail
+    * Turn
+    * Vale
+    * Vista
+    * Walk
+    * Way
+    * Workshop
+  ]
+
+  Title! = "{{TitleNoun}} {{TitleSuffix}}"
+
+  CostFactor! = 1.0
+
+  << Advert
+  << LocalRumor
+  [9..22 shops!] @ CraftingDistrictShop
+  | CityDistrict
+}
+
+HarborDistrict(District) {
+  TitleNoun @ [
+    * Dancer's
+    * Dockside
+    * Fishmonger's
+    * Grocer's
+    * Harbor
+    * Merchant's
+    * New
+    * Old
+    * Sailor's
+    * Shipwright's
+  ]
+
+  TitleSuffix @ [
+    * Alley
+    * Arcade
+    * Arch
+    * Avenue
+    * Bastion
+    * Bend
+    * Block
+    * Borough
+    * Boulevard
+    * Bower
+    * Corner
+    * Court
+    * Crossing
+    * Dell
+    * District
+    * Domain
+    * Drive
+    * End
+    * Estate
+    * Folly
+    * Garden
+    * Grove
+    * Hill
+    * Inn
+    * Isle
+    * Junction
+    * Keep
+    * Landing
+    * Lane
+    * Manor
+    * Meadow
+    * Mile
+    * Nest
+    * Palace
+    * Parlor
+    * Path
+    * Place
+    * Plaza
+    * Quarter
+    * Row
+    * Shore
+    * Square
+    * Street
+    * Terrace
+    * Town
+    * Trail
+    * Turn
+    * Vale
+    * Vista
+    * Walk
+    * Way
+    * Workshop
+  ]
+
+  Title! = "{{TitleNoun}} {{TitleSuffix}}"
+
+  CostFactor! = 0.9
+  << Advert
+  << LocalRumor
+  [8..18 shops!] @ HarborDistrictShop
+  | CityDistrict
+}
+
+MarketDistrict(District) {
+  TitleNoun @ [
+    * Actor's
+    * Alchemist's
+    * Apothecary's
+    * Astrologer's
+    * Bailiff's
+    * Baker's
+    * Barkeep's
+    * Blacksmith's
+    * Butcher's
+    * Carpenter's
+    * Chancellor's
+    * Commoners
+    * Constable's
+    * Cook's
+    * Count's
+    * Countess's
+    * Craftsman's
+    * Dancer's
+    * Dwellers
+    * Executioner's
+    * Fishmonger's
+    * Grocer's
+    * Harbor
+    * Herald's
+    * Innkeeper's
+    * Jester's
+    * Jeweler's
+    * Judge's
+    * Knight's
+    * Lawyer's
+    * Magistrate's
+    * Market
+    * Mayor's
+    * Merchant's
+    * Miners
+    * Musician's
+    * New
+    * Old
+    * Painter's
+    * Peasant's
+    * Peasants
+    * Potter's
+    * Sailor's
+    * Scholar's
+    * Scribe's
+    * Sculptor's
+    * Shipwright's
+    * Stable
+    * Tanner's
+    * Torturer's
+    * Tower
+    * Town Watch's
+    * Townsfolk
+    * Watchman's
+    * Weaver's
+  ]
+
+  TitleSuffix @ [
+    * Alley
+    * Arcade
+    * Arch
+    * Avenue
+    * Bastion
+    * Bend
+    * Block
+    * Borough
+    * Boulevard
+    * Bower
+    * Corner
+    * Court
+    * Crossing
+    * Dell
+    * District
+    * Domain
+    * Drive
+    * End
+    * Estate
+    * Folly
+    * Garden
+    * Grove
+    * Hill
+    * Inn
+    * Isle
+    * Junction
+    * Keep
+    * Landing
+    * Lane
+    * Manor
+    * Meadow
+    * Mile
+    * Nest
+    * Palace
+    * Parlor
+    * Path
+    * Place
+    * Plaza
+    * Quarter
+    * Row
+    * Shore
+    * Square
+    * Street
+    * Terrace
+    * Town
+    * Trail
+    * Turn
+    * Vale
+    * Vista
+    * Walk
+    * Way
+    * Workshop
+  ]
+
+  Title! = "{{TitleNoun}} {{TitleSuffix}}"
+
+  CostFactor! = 0.9
+  << Advert
+  << LocalRumor
+  [18..28 shops!] @ MarketDistrictShop
+  | CityDistrict
+}
+
+ResidentialDistrictShop {
+  ^ [
+    *(x3) Bakery
+    *(x3) GeneralGoods
+    *(x3) Grocer
+    *(x2) Barber
+    *(x2) Butchery
+    *(x2) Clothing
+    *(x2) Cobbler
+    *(x2) DarkMarket
+    *(x2) Herbalist
+    *(x2) IndoorMarket
+    *(x2) Orphanage
+    *(x2) PetShop
+    *(x2) Physician
+    *(x2) School
+    *(x2) Stables
+    *(x2) Tailor
+    *(x2) Tinkerer
+    *(x2) Veterinarian
+    *(x2) Weaver
+    * AnimalSupplies
+    * Bank
+    * Bathhouse
+    * Bookstore
+    * Brewery
+    * Carpenter
+    * Craft
+    * Daycare
+    * Distillery
+    * Flower
+    * Hatter
+    * Liquor
+    * Music
+    * Salon
+    * Scribe
+    * Spice
+    * Winery
+  ]
+}
+
+PalaceDistrictShop {
+  ^ [
+    *(x3) Barracks
+    *(x3) CityGuard
+    *(x2) Archive
+    *(x2) Barber
+    *(x2) Bathhouse
+    *(x2) Casino
+    *(x2) Clothing
+    *(x2) Enchanter
+    *(x2) EventHall
+    *(x2) EventPlanner
+    *(x2) Flower
+    *(x2) Hatter
+    *(x2) Jeweler
+    *(x2) Library
+    *(x2) Liquor
+    *(x2) Music
+    *(x2) Physician
+    *(x2) Salon
+    *(x2) Theater
+    *(x2) Winery
+    * ArmorWeapons
+    * Bank
+    * Blacksmith
+    * Bookstore
+    * Cartographer
+    * ExoticGoods
+    * Lawyer
+    * Museum
+    * Occult
+    * Registry
+    * Scribe
+    * Stables
+    * TradePost
+  ]
+}
+
+PalaceDistrictGuild {
+  ^ [
+    * ArtistsGuild
+    * WritersGuild
+    * KnightsGuild
+  ]
+}
+
+TempleDistrictShop {
+  ^ [
+    *(x3) Herbalist
+    *(x3) Occult
+    *(x2) Archive
+    *(x2) Clothing
+    *(x2) Enchanter
+    *(x2) ExoticGoods
+    *(x2) Flower
+    *(x2) FortuneTeller
+    *(x2) Hatter
+    *(x2) Jeweler
+    *(x2) Library
+    *(x2) Music
+    *(x2) Scribe
+    *(x2) Winery
+    * Bakery
+    * Bank
+    * Bookstore
+    * College
+    * GeneralGoods
+    * Matchmaker
+    * Museum
+    * Physician
+    * School
+    * Theater
+  ]
+}
+
+TempleDistrictGuild {
+  ^ [
+    * ArtistsGuild
+    * ScholarsGuild
+    * WritersGuild
+  ]
+}
+
+CraftingDistrictShop {
+  ^ [
+    *(x3) ArmorWeapons
+    *(x3) Blacksmith
+    *(x3) Clothing
+    *(x3) Hatter
+    *(x3) VehicleMaker
+    *(x2) Brewery
+    *(x2) Cobbler
+    *(x2) Craft
+    *(x2) Distillery
+    *(x2) GlassBlower
+    *(x2) Leatherworker
+    *(x2) Music
+    *(x2) Scribe
+    *(x2) Tailor
+    *(x2) Tanner
+    *(x2) TinWorker
+    *(x2) Tinkerer
+    * Bookstore
+    * Carpenter
+    * Cartographer
+    * DarkMarket
+    * ExoticGoods
+    * GameShop
+    * GeneralGoods
+    * Herbalist
+    * IndoorMarket
+    * Jeweler
+    * Liquor
+    * PrintingPress
+    * Spice
+    * Weaver
+  ]
+}
+
+CraftingDistrictGuild {
+  ^ [
+    * WritersGuild
+  ]
+}
+
+HarborDistrictShop {
+  ^ [
+    *(x3) Carpenter
+    *(x3) DarkMarket
+    *(x3) FishMarket
+    *(x3) GeneralGoods
+    *(x3) Grocer
+    *(x3) IndoorMarket
+    *(x3) Smokehouse
+    *(x3) TradePost
+    *(x3) VehicleMaker
+    *(x2)  Blacksmith
+    *(x2)  Butchery
+    *(x2) AnimalSupplies
+    *(x2) ArmorWeapons
+    *(x2) Brewery
+    *(x2) Brothel
+    *(x2) Cartographer
+    *(x2) Cobbler
+    *(x2) Distillery
+    *(x2) ExoticGoods
+    *(x2) Herbalist
+    *(x2) Tanner
+    *(x2) Tinkerer
+    *(x2) Winery
+    * AnimalPound
+    * Bakery
+    * Bank
+    * Barber
+    * Bathhouse
+    * Bookstore
+    * Bunkhouse
+    * Casino
+    * Clothing
+    * Craft
+    * FortuneTeller
+    * GameShop
+    * GlassBlower
+    * Hatter
+    * Jeweler
+    * Lawyer
+    * Leatherworker
+    * Liquor
+    * Mill
+    * Music
+    * Nightclub
+    * PetShop
+    * Physician
+    * PostOffice
+    * PrintingPress
+    * Registry
+    * Salon
+    * Scribe
+    * Spice
+    * Stables
+    * Tailor
+    * TinWorker
+    * Veterinarian
+    * Weaver
+  ]
+}
+
+HarborDistrictGuild {
+  ^ [
+    * FishermenGuild
+    * MerchantsGuild
+    * AdventurersGuild
+    * BardsGuild
+    * SailorsGuild
+  ]
+}
+
+MarketDistrictShop {
+  ^ [
+    *(x3) ArmorWeapons
+    *(x3) Blacksmith
+    *(x3) GeneralGoods
+    *(x3) Grocer
+    *(x2) AnimalSupplies
+    *(x2) Bakery
+    *(x2) Butchery
+    *(x2) Clothing
+    *(x2) DarkMarket
+    *(x2) FishMarket
+    *(x2) Herbalist
+    *(x2) IndoorMarket
+    *(x2) Leatherworker
+    *(x2) Smokehouse
+    *(x2) Tanner
+    *(x2) VehicleMaker
+    * AnimalPound
+    * Bank
+    * Barber
+    * Bathhouse
+    * Bookstore
+    * Brewery
+    * Brothel
+    * Carpenter
+    * Casino
+    * Cobbler
+    * Craft
+    * Distillery
+    * ExoticGoods
+    * Flower
+    * GameShop
+    * GlassBlower
+    * Hatter
+    * Jeweler
+    * Liquor
+    * Mill
+    * Music
+    * Occult
+    * PetShop
+    * PostOffice
+    * PrintingPress
+    * Salon
+    * Scribe
+    * Spice
+    * Stables
+    * Tailor
+    * TinWorker
+    * Tinkerer
+    * TradePost
+    * Veterinarian
+    * Weaver
+    * Winery
+  ]
+}
+
+MarketDistrictGuild {
+  ^ [
+    * HuntersGuild
+    * ThievesGuild
+    * MerchantsGuild
+  ]
+}
+
+
+DistrictShop {
+  ^ [
+    *(x3) ArmorWeapons
+    *(x3) Blacksmith
+    *(x3) GeneralGoods
+    *(x3) Grocer
+    *(x2) Bakery
+    *(x2) Butchery
+    *(x2) Clothing
+    *(x2) Cobbler
+    *(x2) DarkMarket
+    *(x2) FishMarket
+    *(x2) Herbalist
+    *(x2) IndoorMarket
+    *(x2) Tanner
+    *(x2) Tinkerer
+    * AnimalPound
+    * AnimalSupplies
+    * Archive
+    * Bank
+    * Barber
+    * Barracks
+    * Bathhouse
+    * Bookstore
+    * Brewery
+    * Brothel
+    * Bunkhouse
+    * Carpenter
+    * Cartographer
+    * Casino
+    * CityGuard
+    * CityHall
+    * College
+    * Craft
+    * Daycare
+    * Distillery
+    * Enchanter
+    * EventHall
+    * EventPlanner
+    * ExoticGoods
+    * Flower
+    * FortuneTeller
+    * GameShop
+    * GlassBlower
+    * Hatter
+    * Jeweler
+    * Lawyer
+    * Leatherworker
+    * Library
+    * Liquor
+    * Matchmaker
+    * Mill
+    * Mortician
+    * Museum
+    * Music
+    * Nightclub
+    * Occult
+    * Orphanage
+    * PetShop
+    * Physician
+    * PostOffice
+    * PrintingPress
+    * Prison
+    * Registry
+    * Salon
+    * School
+    * Scribe
+    * Smokehouse
+    * Spice
+    * Stables
+    * Tailor
+    * Theater
+    * TinWorker
+    * TradePost
+    * VehicleMaker
+    * Veterinarian
+    * Weaver
+    * Winery
+    * Witch
+  ]
+}
+
+DistrictGuilds {
+  ^ [
+    * ArtistsGuild
+    * HuntersGuild
+    * FishermenGuild
+    * ThievesGuild
+    * MerchantsGuild
+    * ScholarsGuild
+    * WritersGuild
+    * AdventurersGuild
+    * MagesGuild
+    * BardsGuild
+    * ArchitectsGuild
+    * SailorsGuild
+    * KnightsGuild
+ ]
+}
+

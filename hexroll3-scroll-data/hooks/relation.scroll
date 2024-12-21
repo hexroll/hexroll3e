@@ -1,0 +1,72 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Relation(Quest) {
+  Related % Character 
+ 
+  OwnerUUID = :Character.uuid
+  OwnerName = :Character.Name
+  OwnerGender = :Character.Gender
+
+  WhatLimited @ [
+    * some <strong> business</strong> with
+    * a severe <strong>dispute</strong> with
+    * a <strong>grudge</strong> against
+    * <strong>bad blood</strong> with
+    * a <strong>vendetta</strong> against
+    * a <strong>special interest</strong> in
+  ]
+
+  WhatFull @ [
+    * some <strong> business</strong> with
+    * a severe <strong>dispute</strong> with
+    * a <strong>grudge</strong> against
+    * <strong>bad blood</strong> with
+    * a <strong>vendetta</strong> against
+    * a <strong>special interest</strong> in
+    * <strong>feelings</strong> for
+    * fallen <strong>in love</strong> with
+    * an <strong>affair</strong> with
+  ]
+
+  SameSex @ 1d10
+
+  Description! ~ <%
+    {%if Related and Related.uuid%}
+    {%if Related.uuid!=OwnerUUID%}
+    {{OwnerName.First}} {{OwnerGender.Possession}}
+    {%if OwnerGender.class == Related.Gender.class and SameSex > 8 %}
+    {{WhatFull}}
+    {%elif OwnerGender.class != Related.Gender.class%}
+    {{WhatFull}}
+    {%else%}
+    {{WhatLimited}}
+    {%endif%}
+    <a href="{{sandbox()}}{{Related.URLExt}}">
+    <strong>{{Related.Name.Full}}</strong></a>.
+    {%endif%}
+    {%endif%}
+  %>
+}

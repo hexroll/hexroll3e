@@ -1,0 +1,239 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+realm_type = [
+  * RealmTypeKingdom
+  * RealmTypeLands
+  * RealmTypeEmpire
+  * RealmTypeDuchy
+]
+
+RealmType {
+  ^ $realm_type
+}
+
+RealmTypeKingdom {
+  Ruler! @ Monarch
+  Title! = Kingdom
+}
+
+RealmTypeEmpire {
+  Ruler! @@ [
+    * Bishop
+    * Necromancer
+    * Warexpert
+  ]
+  Title! = Empire
+}
+
+RealmTypeLands {
+  Ruler! @@ [
+    * Bishop
+    * Necromancer
+    * Warexpert
+  ]
+  Title! = Lands
+}
+
+RealmTypeDuchy {
+  Ruler! @ NoblePerson
+  Title! = Duchy
+}
+
+RealmTypeIsland {
+  Ruler! = none
+  Title! = Island
+}
+
+
+UnruledRealm(Realm){
+  Extension @ RealmExtension
+  Name @ RealmName
+  RealmType! @ RealmTypeIsland
+  | Realm
+
+  Background! @ [
+    * A peculiar plague is ravaging the isle. Some say it is a curse
+      from the gods while others blame the wrongdoing of a faction.
+    * A mysterious object fireballed down from the sky during a stormy
+      night. Those who witnessed the spectacle are fearful or take
+      advantage of the fearful.
+  ]
+
+  Description! ~ <%
+    <p>
+    <blockquote>{{Background}}</blockquote>
+    </p>
+  %>
+}
+
+
+RuledRealm (Realm){
+  Extension @ RealmExtension
+  Name @ RealmName
+  RealmType! @ RealmType
+  | Realm
+
+  [0..0 factions!] @ Faction
+
+  Background! @ [
+    * The danger of an imminent invasion keeps the people of these lands in
+      constant fear. But is it real, or is it just fear-mongering conducted by
+      an evil faction?
+
+    * Brutal wars shaped the lands of {{Name.Title}} for ages, but peace was
+      finally restored. There are however those who seek to bring {{Name.Title}} back
+      into darkness.
+
+    * A tyrannical {{RealmType.Ruler.Title}} rules these lands with a heavy hand.
+      Will heroes rise up to help the people with their quest for freedom?
+
+    * A prophecy tells of a young child who will bring a new age
+      of prosperity to {{Name.Title}}, but some find this possibility undesirable
+      and are secretly working to undermine it.
+
+    * A peculiar plague is ravaging the land. Some say it is a curse
+      from the gods while others blame the wrongdoing of a faction.
+
+    * The seemingly childless {{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.First}}
+      is on {{RealmType.Ruler.NPC.Gender.PronounPossessive}} deathbed.
+      A rumor of a legal heir raised as a commoner somewhere in
+      the {{RealmType.Title | lower}} brings hope to most, but is a threat to some.
+
+    * {{capitalize(RealmType.Ruler.Title)}} {{RealmType.Ruler.NPC.Name.First}} fell under the charm of a
+      stranger from afar, whose true intentions could be anyone's guess.
+
+    * A mysterious object fireballed down from the sky during a stormy
+      night, emitting a shock-wave of fears and rumors all around the realm.
+
+    * After receiving a mysterious message, {{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.First}}
+      fell into a numbing depression. {{capitalize(RealmType.Ruler.NPC.Gender.PronounObject)}} court is now in quarrel,
+      and the {{RealmType.Title | lower}} is on the verge of chaos.
+
+    * Twelve years ago, {{RealmType.Ruler.Title }} {{RealmType.Ruler.NPC.Name.First}}'s
+      new born child was cursed. An evil sorcerer destined the child to never
+      reach thirteen years of age. This day is now near.
+
+    * {{capitalize(Name.Title)}} is in blissful equilibrium. {{capitalize(RealmType.Ruler.Title)}} {{RealmType.Ruler.NPC.Name.First}}'s
+      and {{RealmType.Ruler.NPC.Gender.PronounPossessive}} loyal forces keep any evil at bay and away.
+      But a greater, more sinister darkness is approaching from far far away.
+
+    * {{capitalize(RealmType.Ruler.Title)}} {{RealmType.Ruler.NPC.Name.First}} is a beloved ruler,
+      admired for {{RealmType.Ruler.NPC.Gender.PronounPossessive}} wise and thoughtful reign.
+      Is there anyone in the {{RealmType.Title | lower}} who knows {{RealmType.Ruler.NPC.Gender.PronounPossessive}}
+      very dark secret?
+  ]
+
+  RulerTitle! = <{{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.Full}}>
+  Castle! @ CastleLocation {
+    RealmType := *RealmType
+  }
+
+  RulerEntourage! ~ <%
+    {%if RealmType.Ruler.HasChiefCommander%}
+    <a class="npc-anchor" id="{{RealmType.Ruler.EntourageChiefCommand.uuid}}"></a>
+    <p>
+    Commanding the realm's forces is
+    {{RealmType.Ruler.EntourageChiefCommand.Description}}
+
+    {{RealmType.Ruler.EntourageChiefCommand.Stats}}
+    </p>
+    <hr/>
+    {%endif%}
+    {%if RealmType.Ruler.HasClergy%}
+    <a class="npc-anchor" id="{{RealmType.Ruler.EntourageClergy.uuid}}"></a>
+    <p>
+      Heading the temple is {{RealmType.Ruler.EntourageClergy.Description}}
+
+    {{RealmType.Ruler.EntourageClergy.Stats}}
+    </p>
+    <hr/>
+    {%endif%}
+    {%if RealmType.Ruler.HasSage%}
+    <a class="npc-anchor" id="{{RealmType.Ruler.EntourageSage.uuid}}"></a>
+    <p>
+    {{RealmType.Ruler.NPC.Name.First}}'s sage is {{RealmType.Ruler.EntourageSage.Description}}
+
+    {{RealmType.Ruler.EntourageSage.Stats}}
+    </p>
+    <hr/>
+    {%endif%}
+    {%if RealmType.Ruler.HasConfidant%}
+    <a class="npc-anchor" id="{{RealmType.Ruler.EntourageConfidant.uuid}}"></a>
+    <p>
+    {{RealmType.Ruler.NPC.Name.First}}'s confidant is
+    {{RealmType.Ruler.EntourageConfidant.Description}}
+
+    {{RealmType.Ruler.EntourageConfidant.Stats}}
+    </p>
+    {%endif%}
+  %>
+
+  Description! ~ <%
+  {%if RealmType.Ruler %}
+    <p>
+    <blockquote>{{Background}}</blockquote>
+    </p>
+
+    <!--Population: sum(Settlements | map(attribute="Population"))-->
+
+    <a class="npc-anchor" id="{{RealmType.Ruler.NPC.uuid}}"></a>
+    <h5> {{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.Full}} </h5>
+
+    {{Name.Title}} is ruled by {{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Description}}
+
+    <hr/>
+    {{RealmType.Ruler.NPC.Stats}}
+    <hr/>
+
+    {% if Castle and length(Castle.castles) > 0 %}
+    <p>
+    {{reroller(Castle, "", False)}}
+    {{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.First}} preferred place of residence
+    is the {{Castle.Details}}
+    </p>
+    {% endif %}
+
+    <h5> {{RealmType.Ruler.Title}} {{RealmType.Ruler.NPC.Name.Full}}'s entourage </h5>
+
+    {{RulerEntourage}}
+
+  {%endif%}
+
+    <h5> {{appender(uuid, "factions", "Faction")}}Factions </h5>
+    <ul>
+    {% for f in factions %}
+    <li>
+    {{reroller(f, "", False)}} {{f.LinkedTitle}} ({{f.class}})
+    </li>
+    {% endfor %}
+    </ul>
+
+  %>
+
+  <html%
+    {{Description}}
+  %html>
+}

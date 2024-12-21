@@ -1,0 +1,141 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Quest {
+  ^ [ 
+    *(x10) NoQuest
+    *(x5) TrivialHook
+    *(x1) MissingPersonQuest
+    *(x1) TreasureQuest
+    *(x2) Relation
+  ]
+}
+
+RerollerQuest {
+  ^ [ 
+    *(x1) MissingPersonQuest
+    *(x1) TreasureQuest
+    *(x1) Relation
+  ]
+}
+
+NoQuest {
+  Description! = ""
+}
+
+Secret {
+  Details! = "[..]"
+}
+
+QuestSecret(Secret) {
+}
+
+Advert {
+  Details! = ""
+}
+
+TrivialHook {
+    ^ [
+        * TrivialHookIsDoingSomething
+        * TrivialHookWasRecently
+        * TrivialHookJustReceived
+        * TrivialHookMadeA
+    ]
+}
+
+kSomeone = [
+    * a guard
+    * a tavern keeper
+    * a mysterious stranger
+    * a drunkard 
+    * a suspicious noble
+    * a shady adventurer
+]
+
+TrivialHookMadeA {
+    Made @ [
+        * a regretful bet
+        * an unholy pact
+        * a secret agreement
+        * a shady contract
+        * a secret pact
+    ]
+    With @ $kSomeone
+    Description! ~ <% Recently made <strong>{{Made}}</strong> with {{With}}.%>
+}
+
+TrivialHookJustReceived {
+    What @ [
+        * a <strong>mysterious box</strong>
+        * a <strong>sealed letter</strong>
+        * a <strong>sealed bottle</strong>
+        * a <strong>locket</strong>
+        * a <strong>covered jar</strong>
+        * a <strong>pouch</strong>
+    ]
+
+    And @ [
+        * is afraid to open it
+        * is trying to find its origin
+        * is terrified of what's inside it
+
+    ]
+    Description! ~ <% Just received {{What}} and {{And}}.%>
+}
+
+TrivialHookWasRecently {
+    experience @ [
+        * <strong>intimidated</strong> by
+        * <strong>helping</strong>
+        * <strong>arguing</strong> with
+        * <strong>gambling</strong> with
+
+    ]
+
+    who @ $kSomeone
+    Description! ~ <% Was recently {{experience}} {{who}}.%>
+}
+
+
+TrivialHookIsDoingSomething {
+    doing @ [
+        * Preparing for
+        * Avoiding
+        * Thinking about
+        * Bothered by
+    ]
+    adj @ [
+        * an important
+        * an unplanned
+        * an unwanted        
+    ]
+    something @ [
+        * {{adj}} <strong>event</strong>
+        * {{adj}} <strong>guest</strong>
+        * {{adj}} <strong>travel</strong>
+        * {{adj}} <strong>visit</strong>
+    ]
+    Description! ~ <% {{doing}} {{something}}.%>
+}

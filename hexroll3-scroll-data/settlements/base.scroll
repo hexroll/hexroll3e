@@ -1,0 +1,131 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Populated {
+}
+
+SettlementLocation {
+  SettlementName? = *Settlement.NamePart
+  SettlementClass? = :Settlement.class
+  SettlementUUID? = :Settlement.uuid
+
+  RealmUUID? = :Realm.uuid
+  RealmType? = :Realm.RealmType
+  RealmName? = :Realm.Name
+  Realm? = *Realm.Title
+
+  DistrictUUID? = :District.uuid
+  DistrictTitleNoun? = :District.TitleNoun
+  DistrictTitleSuffix? = :District.TitleSuffix
+  DistrictClass? = :District.class
+
+  Breadcrumbs? ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/realm/{{RealmUUID}}"> {{Realm}} </a> >
+      <a href="{{sandbox()}}/location/{{SettlementUUID}}">{{SettlementClass}} of {{SettlementName}}</a> >
+      {% if DistrictClass != "TownDistrict" and DistrictClass != "VillageDistrict" %}
+      <a href="{{sandbox()}}/location/{{DistrictUUID}}">{{DistrictTitleNoun}} {{DistrictTitleSuffix}}</a>
+      {% endif %}
+    </span>
+  %>
+}
+
+residency_classes = [
+    * House
+    * Stronghold
+]
+
+Residency(Populated) { ^ $residency_classes
+  NamePart = null
+  Connector! @ [
+    * is situated
+    * is located
+    * can be found
+  ]
+
+  Header! ~ "{%if Resident %}{{Resident.Name.First}}'s{% endif %} {%if Type %}{{Type.Name}}{% endif %}"
+  Description! ~ <%
+    <a class="npc-anchor" name="{{Resident.uuid}}"></a>
+    The {{Prefix}} {{Type.Name}} of <strong>{{Resident.Name.Full}}</strong>
+    %>
+  Encounter! = "No"
+}
+
+settlement_classes = [
+  *(x3) Village
+  *(x2) Town
+  *(x2) City
+]
+
+IndexedSettlementEntity(IndexedEntity) {
+    Name! = *Settlement.NamePart
+    Class! = ""
+}
+
+Settlement(Populated) {
+  ^ $settlement_classes
+
+  # TODO: NamePart! @ $EnforcedSettlementList
+  NamePart! @ $TownName
+  Name! =  "{{capitalize(class)}} of {{title(NamePart)}}"
+
+  Header! = <%
+    {{capitalize(class)}} of {{title(NamePart)}}
+  %>
+
+  Realm! = *Realm.Title
+
+  $IndexRef @ IndexedSettlementEntity {
+    Link = &HexLink
+    Realm = "xx"
+    Details = "{{Realm}}"
+    Type = "hex"
+    Class = &class
+    Self = true
+    Value = "{{Class}} of {{Name}}"
+    Icon = "house"
+  }
+
+  Region! =  *Region.Name
+
+  RealmUUID = :Realm.uuid
+
+  Breadcrumbs? ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/realm/{{RealmUUID}}"> {{Realm}} </a>
+    </span>
+  %>
+
+  $TocEntry @ TocEntry {
+    Type = Settlement
+    Title = &NamePart
+    Class = &class
+    UUID = &uuid
+  }
+}

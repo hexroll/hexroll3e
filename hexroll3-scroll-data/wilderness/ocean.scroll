@@ -1,0 +1,552 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Ocean {
+  Name! = Ocean
+  Supplemental! @ [
+    * The water here is deep, blue, and calm enough to see some of the
+      underwater life in the daylight.
+
+    * It is difficult to distinguish where the sky and the water meet. Both
+      blend seamlessly as if they were one.
+
+    * Regardless to the weather, theres a perpetual deep fog here, making
+      travelling water here quite dangerous.
+
+    * Regardless to the weather, the wind here refuses to propel any ship
+      as it is barely blowing near the surface of the water.
+
+    * Slowly melting large plates of ice are floating above the water
+      here, detached from where they came from.
+
+  ]
+}
+
+OceanRandomEncounterTable {
+  [4..4 OtherEncounters!] @ OceanRandomEncounter
+}
+
+OceanFeature { ^ [
+    *(x1) OceanFeaturePirateShip
+    *(x1) OceanFeatureIceberg
+    *(x1) OceanFeatureVortex
+    *(x3) OceanFeatureMonster
+    *(x8) OceanFeatureNone
+  ]
+}
+
+OceanFeatureVortex(OceanFeature) {
+  Name! = "Vortex"
+  Details! ~ <%
+    <p>
+    There's a <strong>2 in 6 chance</strong> to be sucked into a violent vortex
+    here.
+    </p>
+  %>
+}
+
+OceanFeatureIceberg(OceanFeature) {
+  Name! = "Iceberg"
+  Details! ~ <%
+    <p>
+    There's a <strong>2 in 6 chance</strong> to crash against a giant
+    iceberg here during the dark.
+    </p>
+  %>
+}
+
+
+OceanFeaturePirateShip(OceanFeature) {
+  Name! = "Pirate Ship"
+  ShipName @ [
+    * The Black Pearl
+    * The Crimson Corsair
+    * The Jolly Roger
+    * The Sea Serpent
+    * The Stormy Scoundrel
+    * The Bloodthirsty Buccaneer
+    * The Ghostly Galleon
+    * The Iron Maiden
+    * The Siren's Revenge
+    * The Shadow Raider
+    * The Skull and Crossbones
+    * The Phantom Pirate
+    * The Dark Marauder
+    * The Silver Shark
+    * The Bone Crusher
+    * The Wicked Wench
+    * The Red Dagger
+    * The Salty Scallywag
+    * The Devil's Pride
+    * The Cutlass Queen
+    * The Razor's Edge
+    * The Banshee's Curse
+    * The Raging Rogue
+    * The Tempest Terror
+    * The Buccaneer's Bounty
+    * The Rogue Wave
+    * The Vengeful Viper
+    * The Golden Ghost
+    * The Plundering Panther
+    * The Shadow Shiver
+    * The Phantom Fury
+    * The Blackheart Buccaneer
+    * The Corsair's Fury
+    * The Crimson Tide
+    * The Bone Mariner
+    * The Sable Serpent
+    * The Swashbuckling Scoundrel
+    * The Sea Witch
+    * The Stormy Sea Dog
+    * The Scallywag's Revenge
+    * The Ironclad Raider
+    * The Bloodhound
+    * The Tempest Treasure
+    * The Vicious Vixen
+    * The Cutlass Cove
+    * The Midnight Marauder
+    * The Buccaneer's Bounty
+    * The Silver Siren
+    * The Grog-Swilling Grizzly
+    * The Jolly Rascal
+    * The Scourge of the Seven Seas
+    * The Skull Crusher
+    * The Ghostly Gale
+    * The Crimson Crow
+    * The Thundering Typhoon
+    * The Black Buccaneer
+    * The Vengeful Voyager
+    * The Sea Scourge
+    * The Corsair's Curse
+    * The Red Serpent
+    * The Stormy Revenge
+    * The Dark Delight
+    * The Phantom Plunderer
+    * The Crimson Cutter
+    * The Rogue Roamer
+    * The Iron Maiden's Revenge
+    * The Salty Sea Witch
+    * The Raging Rascal
+    * The Tempest Tornado
+    * The Buccaneer's Blade
+    * The Silver Storm
+    * The Bone Breaker
+    * The Shadow Buccaneer
+    * The Crimson Crest
+    * The Swashbuckling Serpent
+    * The Sea Serenade
+    * The Stormy Buccaneer
+    * The Scallywag's Scourge
+    * The Ironclad Intruder
+    * The Bloodlust
+    * The Tempest Temptress
+    * The Vengeful Valkyrie
+    * The Cutlass Cove
+    * The Midnight Mirage
+    * The Buccaneer's Booty
+    * The Silver Saber
+    * The Grog-Soaked Siren
+    * The Jolly Rogue
+    * The Scourge of the Sargasso
+    * The Skull and Swords
+    * The Ghostly Galley
+    * The Crimson Cursed
+    * The Thundering Tempest
+    * The Black Scallywag
+    * The Vengeful Vulture
+    * The Sea's Shadow
+    * The Corsair's Conquest
+    * The Red Raider
+    * The Stormy Striker
+    * The Dark Desperado
+    * The Dragon's Revenge
+    * The Phoenix Plunderer
+    * The Kraken's Wrath
+    * The Griffin's Galleon
+    * The Wyvern's Wraith
+    * The Chimera's Fury
+    * The Basilisk's Bounty
+    * The Roc's Roost
+    * The Centaur's Curse
+    * The Minotaur's Marauder
+    * The Unicorn's Uprising
+    * The Pegasus' Prowess
+    * The Mermaid's Mischief
+    * The Harpy's Havoc
+    * The Gorgon's Gold
+    * The Hydra's Howl
+    * The Cyclops' Scourge
+    * The Medusa's Vengeance
+    * The Siren's Song
+    * The Faery's Fury
+    * The Troll's Treasure
+    * The Goblin's Gambit
+    * The Elf's Enchantment
+    * The Dwarf's Delight
+    * The Orc's Onslaught
+    * The Wizard's Wisp
+    * The Witch's Whirlwind
+    * The Warlock's Wrath
+    * The Sorcerer's Scimitar
+    * The Enchanter's Echo
+    * The Alchemist's Ambush
+    * The Druid's Dream
+    * The Necromancer's Nightshade
+    * The Vampire's Veil
+    * The Werewolf's Wail
+    * The Ghost Ship
+    * The Phantom Frigate
+    * The Spectral Scourge
+    * The Haunted Harbinger
+    * The Cursed Corsair
+    * The Elysian Explorer
+    * The Astral Avenger
+    * The Celestial Serpent
+    * The Starlit Stinger
+    * The Moonshadow Mariner
+    * The Solar Siren
+    * The Lunar Leviathan
+    * The Comet's Call
+    * The Meteoric Marauder
+    * The Fire Drake
+    * The Ice Wyrm
+    * The Air Djinn
+    * The Water Nymph
+    * The Storm Sprite
+    * The Lightning Lurker
+    * The Thunder Titan
+    * The Shadow Serpent
+    * The Moonlit Marauder
+    * The Starstruck Scourge
+    * The Enchanted Explorer
+    * The Mystic Mariner
+    * The Arcane Argosy
+    * The Elven Emissary
+    * The Dwarven Delver
+    * The Gnomish Gambit
+    * The Halfling's Haven
+    * The Fey's Fancy
+    * The Troll's Trove
+    * The Giant's Grasp
+    * The Demon's Doom
+    * The Angelic Avenger
+    * The Infernal Incursion
+    * The Elemental Expedition
+    * The Ethereal Emissary
+    * The Cursed Crypt
+    * The Haunted Hoard
+    * The Ghostly Galleon
+    * The Phantom Plunderer
+    * The Shadow Ship
+  ]
+
+  HexLink = :OceanHex.uuid
+  Captain @ PirateShipCaptain {
+    HostingEntity := &HexLink
+    URLExt = "/location/{{HostingEntity}}"
+    SettlementName = &ShipName
+  }
+
+  Monster @ Pirate
+  NumOfPirates @ 5d3
+  Details! ~ <%
+    <p>
+    <strong> {{ShipName}} </strong>, a pirate ship, is sailing here with
+    <strong>{{NumOfPirates}} pirates</strong> on-board and led by <strong> Captain
+    {{Captain.Name.Full}}</strong>.
+    </p>
+
+    <p>
+    There’s a <strong>2-in-6</strong> chance that it will
+    spot any vessel in this area and try to encounter it.
+    </p>
+
+    <p>
+    <strong>{{Captain.Name.Full}}</strong>
+    <br/>
+    {{Captain.Name.First}} {{Captain.Gender.BeVerb}} a level {{Captain.Level}}
+    {{Captain.Class}}. {{capitalize(Captain.Gender.PronounSubject)}}
+    {{Captain.Gender.Possession}} {{Captain.Appearance}}
+    (<em>{{Captain.State}}</em>). {{Captain.InThePocket.Details}}
+    <hr/>
+    {{Captain.Stats}}
+    </p>
+
+    <p>
+    <strong>Pirates</strong>
+    <hr/>
+    {{Monster.Stats}}
+    {%if Monster.NumberAppearingLair<10%}
+    <div class="hpmarks">{%for m in range(Monster.NumberAppearingLair)%}
+    <sub>{% for hp in range(dice(Monster.HitDiceRoll)) %}<span class="hp-mark">&#x274F;</span>{%endfor%}</sub><br/>{%endfor%}</div>
+    {%endif%}
+    <hr/>
+    {%if not Monster.TreasureType.Empty and (trim(Monster.TreasureType.Details))!=""%}
+    <ul><li>
+    <strong>Lair</strong> hoard (<strong>1-in-6</strong> base chance of finding if an encounter occured):
+    {{Monster.TreasureType.Details}}
+    </li></ul>
+    {%endif%}
+    </p>
+  %>
+}
+
+OceanFeatureMonster(OceanFeature) {
+  Monster! @ OceanFeatureEncounter
+  Name! = <%{{Monster.Title}}%>
+  NeutralState @ [
+    * swimming
+    * sleeping
+    * fishing
+    * wandering
+    * diving
+  ]
+  ChaoticState @ [
+    * lurking
+    * prowling
+    * scavenging
+    * wandering
+    * hiding
+    * sleeping
+    * diving
+  ]
+    Lair @ [
+    * a well-hidden cave
+    * an old abandoned copper mine
+    * an old forgotten gold mine
+    * the ruins of an abandoned stronghold
+    * the ruins of a forgotten keep
+    * the nearest dungeon
+  ]
+
+Details! ~ <%
+    <strong>
+    {%if Monster.NumberAppearingLair==1%}{{capitalize(articlize(Monster.Title))}}</strong> is
+    {%else%}{{Monster.NumberAppearingLair}} {{Monster.Title}}s</strong> are{%endif%}
+    {%if Monster.Alignment=="Chaotic"%}{{ChaoticState}}
+    {%else%}{{NeutralState}}{%endif%} here.
+
+    <p>
+    There’s a <strong>2-in-6</strong> chance of encountering
+    {%if Monster.NumberAppearingLair==1%}it{%if Monster.Activity and Monster.Activity%},  {{Monster.Activity.Wilderness}}{%endif%}.
+    {%else%}at least some of them{%if Monster.Activity and Monster.Activity%},  {{Monster.Activity.Wilderness}}{%endif%}.{%endif%}
+    </p>
+    <strong>{{Monster.Title}}</strong>
+    <hr/>
+    {{Monster.Stats}}
+    {%if Monster.NumberAppearingLair<10%}
+    <div class="hpmarks">{%for m in range(Monster.NumberAppearingLair)%}
+    <sub>{% for hp in range(dice(Monster.HitDiceRoll)) %}<span class="hp-mark">&#x274F;</span>{%endfor%}</sub><br/>{%endfor%}</div>
+    {%endif%}
+    <hr/>
+    {%if not Monster.TreasureType.Empty and (trim(Monster.TreasureType.Details))!=""%}
+    <ul><li>
+    <strong>Lair</strong> hoard (<strong>1-in-6</strong> base chance of finding if an encounter occured):
+    {{Monster.TreasureType.Details}}
+    </li></ul>
+    {%endif%}
+
+  %>
+}
+
+OceanFeatureNone(OceanFeature) {
+  Name! @ [
+    * Empty Water
+    * Endless Blue
+  ]
+}
+
+
+OceanWeather {
+  ^ [
+    * OceanWeatherVariant1
+    * OceanWeatherVariant2
+    * OceanWeatherVariant3
+    * OceanWeatherVariant4
+  ]
+  Parent! = OceanWeather
+  WindDirWarm @ [
+    * North
+    * North-East
+    * South-East
+    * South
+    * South-West
+    * North-West
+  ]
+  WindDirDry @ [
+    * North
+    * North-East
+    * South-East
+    * South
+    * South-West
+    * North-West
+  ]
+  WindDirWet @ [
+    * North
+    * North-East
+    * South-East
+    * South
+    * South-West
+    * North-West
+  ]
+  WindDirCold @ [
+    * North
+    * North-East
+    * South-East
+    * South
+    * South-West
+    * North-West
+  ]
+}
+
+OceanWeatherVariant1(OceanWeather) {
+  Description! ~ <%
+    <table class="condensed">
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Rainy         <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWarm}}  </small> </td> <td> Heatwave       <br/> <small> <strong> wind: </strong> None     / {{WindDirDry}} </small></td>  <td> Thuderstorms   <br/> <small> <strong> wind: </strong> Storm    / {{WindDirWet}} </small></td> <td> Blizzard   <br/> <small> <strong> wind: </strong> Hurricane / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Foggy         <br/> <small> <strong> wind: </strong> Strong   / {{WindDirWarm}}  </small> </td> <td> Clear & Humid  <br/> <small> <strong> wind: </strong> Calm     / {{WindDirDry}} </small></td>  <td> Stormy         <br/> <small> <strong> wind: </strong> Storm    / {{WindDirWet}} </small></td> <td> Snowstorm  <br/> <small> <strong> wind: </strong> Storm     / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear         <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWarm}}  </small> </td> <td> Clear          <br/> <small> <strong> wind: </strong> Moderate / {{WindDirDry}} </small></td>  <td> Rainy          <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWet}} </small></td> <td> Snowy      <br/> <small> <strong> wind: </strong> Gale      / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Partly Cloudy <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirWarm}}  </small> </td> <td> Partly Cloudy  <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirDry}} </small></td>  <td> Foggy          <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWet}} </small></td> <td> Frost      <br/> <small> <strong> wind: </strong> Moderate  / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Cloudy        <br/> <small> <strong> wind: </strong> Strong   / {{WindDirWarm}}  </small> </td> <td> Breezy         <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirDry}} </small></td>  <td> Cloudy         <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirWet}} </small></td> <td> Foggy      <br/> <small> <strong> wind: </strong> Calm      / {{WindDirCold}} </small> </td> </tr>
+    </table>
+
+  %>
+}
+
+OceanWeatherVariant2(OceanWeather) {
+  Description! ~ <%
+    <table class="condensed">
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Cloudy          <br/> <small> <strong> wind: </strong> Strong   / {{WindDirWarm}}  </small> </td> <td> Clear & Humid   <br/> <small> <strong> wind: </strong> Calm     / {{WindDirDry}} </small></td>  <td> Stormy       <br/> <small> <strong> wind: </strong> Storm    / {{WindDirWet}} </small></td> <td> Snowstorm      <br/> <small> <strong> wind: </strong> Storm     / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Partly Cloudy   <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWarm}}  </small> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Moderate / {{WindDirDry}} </small></td>  <td> Rainy        <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWet}} </small></td> <td> Snowy          <br/> <small> <strong> wind: </strong> Gale      / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirWarm}}  </small> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirDry}} </small></td>  <td> Drizzling    <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWet}} </small></td> <td> Foggy          <br/> <small> <strong> wind: </strong> Moderate  / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirWarm}}  </small> </td> <td> Partly Cloudy   <br/> <small> <strong> wind: </strong> Strong   / {{WindDirDry}} </small></td>  <td> Foggy        <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirWet}} </small></td> <td> Cloudy & Cold  <br/> <small> <strong> wind: </strong> Calm      / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirWarm}}  </small> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirDry}} </small></td>  <td> Cloudy       <br/> <small> <strong> wind: </strong> Calm     / {{WindDirWet}} </small></td> <td> Clear & Cold   <br/> <small> <strong> wind: </strong> Calm      / {{WindDirCold}} </small> </td> </tr>
+    </table>
+  %>
+}
+
+OceanWeatherVariant3(OceanWeather) {
+  Description! ~ <%
+    <table class="condensed">
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Partly Cloudy   <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWarm}}  </small> </td> <td> Clear           <br/> <small> <strong> wind: </strong> None     / {{WindDirDry}} </small></td>  <td> Stormy           <br/> <small> <strong> wind: </strong> Storm    / {{WindDirWet}} </small></td> <td> Blizzard      <br/> <small> <strong> wind: </strong> Hurricane / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Calm     / {{WindDirWarm}}  </small> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Calm     / {{WindDirDry}} </small></td>  <td> Rain & Wind      <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWet}} </small></td> <td> Snowstorm     <br/> <small> <strong> wind: </strong> Storm     / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Calm     / {{WindDirWarm}}  </small> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirDry}} </small></td>  <td> Rainy            <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWet}} </small></td> <td> Snowy         <br/> <small> <strong> wind: </strong> Gale      / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirWarm}}  </small> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirDry}} </small></td>  <td> Drizzling        <br/> <small> <strong> wind: </strong> Fresh    / {{WindDirWet}} </small></td> <td> Fog & Frost   <br/> <small> <strong> wind: </strong> Calm      / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirWarm}}  </small> </td> <td> Partly Cloudy   <br/> <small> <strong> wind: </strong> Moderate / {{WindDirDry}} </small></td>  <td> Cloudy           <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirWet}} </small></td> <td> Frost         <br/> <small> <strong> wind: </strong> Calm      / {{WindDirCold}} </small> </td> </tr>
+    </table>
+  %>
+}
+
+OceanWeatherVariant4(OceanWeather) {
+  Description! ~ <%
+    <table class="condensed">
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Heatwave        <br/> <small> <strong> wind: </strong> None     / {{WindDirWarm}}  </small> </td> <td> Scorching      <br/> <small> <strong> wind: </strong> None     / {{WindDirDry}} </small></td>  <td> Stormy  <br/> <small> <strong> wind: </strong> Storm    / {{WindDirWet}} </small></td> <td> Snowstorm    <br/> <small> <strong> wind: </strong> Storm     / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear & Humid   <br/> <small> <strong> wind: </strong> Calm     / {{WindDirWarm}}  </small> </td> <td> Heatwave       <br/> <small> <strong> wind: </strong> None     / {{WindDirDry}} </small></td>  <td> Rainy   <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWet}} </small></td> <td> Snowy        <br/> <small> <strong> wind: </strong> Gale      / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Partly Clouhy   <br/> <small> <strong> wind: </strong> Moderate / {{WindDirWarm}}  </small> </td> <td> Clear          <br/> <small> <strong> wind: </strong> Calm     / {{WindDirDry}} </small></td>  <td> Rainy   <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWet}} </small></td> <td> Snowy        <br/> <small> <strong> wind: </strong> Moderate  / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear           <br/> <small> <strong> wind: </strong> Calm     / {{WindDirWarm}}  </small> </td> <td> Clear & Breezy <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirDry}} </small></td>  <td> Rainy   <br/> <small> <strong> wind: </strong> Gale     / {{WindDirWet}} </small></td> <td> Frost        <br/> <small> <strong> wind: </strong> Moderate  / {{WindDirCold}} </small> </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  <br/> <small> <strong> wind: </strong> Breeze   / {{WindDirWarm}}  </small> </td> <td> Partly Cloudy  <br/> <small> <strong> wind: </strong> Moderate / {{WindDirDry}} </small></td>  <td> Cloudy  <br/> <small> <strong> wind: </strong> Calm     / {{WindDirWet}} </small></td> <td> Frost        <br/> <small> <strong> wind: </strong> Calm      / {{WindDirCold}} </small> </td> </tr>
+    </table>
+  %>
+}
+
+
+OceanHex {
+  Terrain! @ Ocean
+  RandomEncounters @ OceanRandomEncounterTable
+  Feature! @ OceanFeature
+  Weather @ OceanWeather
+
+  Details! ~ <%
+
+    <p>
+    {{Terrain.Supplemental}}
+    </p>
+
+    {%if Feature.class!="OceanFeatureNone"%}
+    <p>
+    {{Feature.Details}}
+    </p>
+    {%else%}
+
+    <h5> {{reroller(RandomEncounters, "", False)}} Random encounter </h5>
+    <p> There's a <strong>1 in 6</strong> chance when sailing here (or <strong>2 in 6</strong> chance
+        if anchoring overnight) to encounter: </p>
+
+    {%set counter.value=1%}
+    <table class="condensed">
+    <tr> <th> 1d4 </th> <th> Encounter </th> <th> Stats </th> </tr>
+    {%for e in RandomEncounters.OtherEncounters %}
+    <tr> <td> {{counter.value}} </td>
+         <td> {{e.TitlePluralizedByLair}} </td>
+         <td> {{e.Stats}} </td>
+    </tr>
+    {%set counter.value = counter.value+1%}
+    {%endfor%}
+    </table>
+    {%endif%}
+
+    {% if Weather %}
+    <p>
+    <h5> {{reroller(Weather.uuid, Weather.Parent, False)}} Marine Weather </h5>
+    {{Weather.Description}}
+    </p>
+    {% endif %}
+
+  %>
+
+  Breadcrumbs ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      The Vast Ocean >
+      Hex {{hex_coords(uuid)}} </span>
+   %>
+
+  Header! ~ <%
+    <div hidden id="doc-title"> Hex {{hex_coords(uuid)}} in the ocean </div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Name" data-entity="{{Feature.uuid}}">{{Feature.Name}}</span>
+    {{Breadcrumbs}}
+    </h4>
+    %>
+
+  <header%
+    {{Header}}
+  %header>
+
+  <metadata%
+  %metadata>
+
+  <body%
+    {{Details}}
+  %body>
+}

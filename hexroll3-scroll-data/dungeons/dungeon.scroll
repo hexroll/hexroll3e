@@ -1,0 +1,724 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonMap {
+}
+
+dungeon_classes = [
+  * Temple
+  * Tomb
+  * Cavern
+]
+
+DungeonExtension {
+  Prescript! ~ ""
+  Inscript! ~ ""
+  Postscript! ~ ""
+}
+
+
+Dungeon { ^ $dungeon_classes
+  EntrancesList << DungeonEntrance
+
+  Entrances! ~ <%
+    {% if EntrancesList %}
+    {% for e in EntrancesList %}
+    <p>
+      {{e.Description}}
+    </p>
+    {% endfor %}
+    {% else %}
+    <p> There is no known entrance to this dungeon! </p>
+    {% endif %}
+  %>
+
+
+    #dungeon_locks:
+    << DungeonDoorLock
+
+    #dungeon_keys:
+    << DungeonDoorKey
+
+    #dungeon_levers:
+    << DungeonDoorLever
+
+    #dungeon_passphrases:
+    << DungeonDoorPassphrase
+
+    #dungeon_portal_destinations:
+    << DungeonPortalDestination
+
+    #random_encoutners
+    # << Monster
+
+    DungeonTreasure? << TreasureType
+    QuestTreasures? << QuestTreasureHiding
+    QuestCells? << MissingPersonQuestCell
+    GeneratedMonsters? << Monster
+
+  Header! ~ <{{Name.Title}}>
+  Realm! =  *Realm.Title
+  Region! =  *Region.Name
+
+  $IndexRef @ IndexedEntity {
+    Render = "Name"
+    Details = "{{Realm}} > {{Region}}"
+    Link = &HexLink
+    Type = "hex"
+    Title = ""
+    Search = "{{Title}}"
+    Icon = "skull"
+  }
+
+  Treasure? ~ <%
+    {% set gold_value = sum(DungeonTreasure | map(attribute="GoldValue")) %}
+    {% set gems_value = sum(DungeonTreasure | map(attribute="GemsValue")) %}
+    {% set jewellery_value = sum(DungeonTreasure | map(attribute="JewelleryValue")) %}
+    <li> Possible treasure:
+    <ul>
+    {% if gold_value > 0 %}
+    <li>
+    <strong>{{currency(gold_value)}}</strong> in coins.
+    </li>
+    {% endif %}
+    {% if gems_value > 0 %}
+    <li>
+    <strong>{{currency(gems_value)}}</strong>  in gems.
+    </li>
+    {% endif %}
+    {% if jewellery_value > 0 %}
+    <li>
+    <strong>{{currency(jewellery_value)}}</strong>  in jewellery.
+    </li>
+    {% endif %}
+    </ul>
+    </li>
+  %>
+  QuestItems? ~ <%
+    {% for quest_item in QuestTreasures | map(attribute="Conspectus") | select("!=","null")%}
+    {% if quest_item!=false %}
+    <li>
+    {{quest_item}}
+    </li>
+    {% endif %}
+    {% endfor %}
+  %>
+
+  Captives? ~ <%
+    {% for quest_cell in QuestCells | map(attribute="Conspectus") | select("!=","null")%}
+    {% if quest_cell!=false %}
+    <li>
+    {{quest_cell}}
+    </li>
+    {% endif %}
+    {% endfor %}
+  %>
+
+  WanderingMonstersTable? ~ <%
+    {% if GeneratedMonsters %}
+    {% set monsters_count = 0 %}
+    {%for m in unique(GeneratedMonsters, "Title") %}
+    {% if m.HitDice < global("wandering_monsters_max_hd", 4) %}
+    {% set monsters_count = monsters_count + 1 %}
+    {% endif %}
+    {%endfor%}
+    {% if monsters_count > 0 %}
+    {% if monsters_count > 10 %}
+    {% set monsters_count = 10 %}
+    {%endif%}
+    <h5> Wandering Monsters </h5>
+    <p> There's a <strong>1-in-6</strong> chance of encountering one of: </p>
+    {%set counter.value=1%}
+    <div class='condensed'></div>
+    <table>
+    <tr> <th> 1d{{monsters_count}} </th> <th> Encounter </th> <th> Stats </th> </tr>
+    {%for m in unique(GeneratedMonsters,"Title") %}
+    {% if m.HitDice < global("wandering_monsters_max_hd", 4) and counter.value <= monsters_count%}
+    <tr> <td> {{counter.value}} </td>
+         <td> {{m.TitlePluralizedByLair}} </td>
+         <td> {{m.Stats}} </td>
+    </tr>
+    {%set counter.value = counter.value+1%}
+    {%endif%}
+    {%endfor%}
+    </table>
+    {%endif%}
+    {%endif%}
+  %>
+
+  Extension @ DungeonExtension
+  Description? ~ <%
+    {{Extension.Prescript}}
+    <h5> Conspectus </h5>
+    <ul>
+    {% if FactionLair and FactionLair.Faction %}
+    <li>
+    {{FactionLair.Faction}}
+    </li>
+    {% endif %}
+    {{Treasure}}
+    {{QuestItems}}
+    {{Captives}}
+    </ul>
+    {{Extension.Inscript}}
+    {%if WanderingMonstersTable%}
+      {{WanderingMonstersTable}}
+    {%endif%}
+    {{Extension.Postscript}}
+  %>
+
+  RealmUUID = :Realm.uuid
+  RealmType = :Realm.RealmType
+  RealmName = :Realm.Name
+  #Realm = <% {{RealmName.Title}} %>
+
+
+  # RegionSuffix = :Region.Suffix
+  # RegionName = :Region.NamePart
+  # Region! = <% {{RegionName.Full}} {{RegionSuffix}} %>
+
+
+
+  <metadata%
+    {{Coords}}
+  %metadata>
+
+
+  <header%
+    <div hidden id="doc-title"> {{capitalize(Name.Title)}} in {{Realm}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Title" data-entity="{{Name.uuid}}">{{Name.Title}}</span>
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/realm/{{RealmUUID}}"> {{Realm}} </a> >
+      {{Region}} > </span>
+    </h4>
+  %header>
+
+  <body%
+    {{Description}}
+  %body>
+
+  postprocessed = "no"
+
+  $TocEntry @ TocEntry {
+    Type = Dungeon
+    Title = *Name
+    Class = &class
+    UUID = &uuid
+  }
+
+}
+
+DungeonWanderingMonsters {
+  [10..10 monsters] % Monster
+  Trap @ AreaTrap
+
+  RandomTable! ~ <%
+    {% if Trap.Description %}
+    <h5> Trap! </h5>
+    {{Trap.Description}}
+    {% endif %}
+    {% set monsters_count = 0 %}
+    {%for m in unique(monsters, "Title") %}
+    {% if m.HitDice < 4 %}
+    {% set monsters_count = monsters_count + 1 %}
+    {% endif %}
+    {%endfor%}
+    {% if monsters_count > 0 %}
+    <h5> Wandering Monsters </h5>
+    <p> There's a <strong>1-in-6</strong> chance of encountering one of: </p>
+    {%set counter.value=1%}
+    <div class='condensed'></div>
+    <table>
+    <tr> <th> 1d{{monsters_count}} </th> <th> Encounter </th> <th> Stats </th> </tr>
+    {%for m in unique(monsters,"Title") %}
+    {% if m.HitDice < global("wandering_monsters_max_hd", 4) %}
+    <tr> <td> {{counter.value}} </td>
+         <td> {{m.TitlePluralizedByLair}} </td>
+         <td> {{m.Stats}} </td>
+    </tr>
+    {%set counter.value = counter.value+1%}
+    {%endif%}
+    {%endfor%}
+    </table>
+    {%endif%}
+  %>
+}
+
+AreaDescription {
+  Feature @ &FeatureLevelClass {
+    AreaNumber := &RoomNumber
+  }
+
+  Key @ DungeonDoorKey {
+    AreaNumber = &RoomNumber
+    AreaUUID = &uuid
+  }
+
+  KeyHide @ [
+    * a small wooden box
+    * a nook in the wall
+    * a cloth wrap under a stone
+    * a goat’s skull
+    * an old leather pouch
+    * a crack in the floor
+    * an old hollow torch
+  ]
+  Lever @ DungeonDoorLever {
+    AreaNumber = &RoomNumber
+    AreaUUID = &uuid
+  }
+
+  Passphrase @ DungeonDoorPassphrase {
+    AreaNumber = &RoomNumber
+    AreaUUID = &uuid
+  }
+
+  Cell @ MissingPersonQuestCell {
+    AreaNumber = &RoomNumber
+  }
+
+  TreasureHiding @ QuestTreasureHiding {
+    AreaNumber = &RoomNumber
+  }
+
+  PortalDestination @ DungeonPortalDestination {
+    AreaNumber = &RoomNumber
+    AreaUUID = &uuid
+  }
+
+  Foreshadow! ~ <%
+    {% if Feature.Foreshadow or Cell.Active%}
+    <h5> Foreshadowing </h5>
+    <ul>
+    {%if Feature.Foreshadow%}
+    <li> {{Feature.Foreshadow}}. </li>
+    {%endif%}
+    {% if Cell.Active %}{% if Feature.Monster%}
+    <li> A successful listen roll will {%if Feature.Foreshadow %} also
+    {% endif %} reveal <strong>screams of fear</strong> coming from inside this area.
+    {% else %} </li>
+    <li> A successful listen roll will {%if Feature.Foreshadow %} also
+    {% endif %} reveal a faint <strong>sound of crying</strong> coming from inside this area. </li>
+    {%endif%}
+    {%endif%}
+    </ul>
+    {%endif%}
+    %>
+  Title! = <{{RoomType.Title}}>
+
+  AreaPropertiesText! ~ <%
+    <ul>
+    {%if Feature.class=="DungeonRemains" and Feature.AreaTrap.Description%}
+    <li> {{Feature.AreaTrap.Description}} </li>
+    {%endif%}
+    <li> {{reroller(Feature, "", False)}} {{Feature.Description}} </li>
+    <li> {{reroller(Debris, "", False)}} {{Debris.Description}} </li>
+    {%if Key.Active%}
+    <li> Searching will uncover {{KeyHide}} holding the {{Key.Active}} </li>
+    {%endif%}
+    {%if Lever.Active%}
+    <li> There’s {{articlize(Lever.Active)}} </li>
+    {%endif%}
+    {%if Passphrase.Active%}
+    <li> {{Passphrase.Active}} </li>
+    {%endif%}
+    {%if TreasureHiding.Active%}
+    <li> {{TreasureHiding.Active}} </li>
+    {%endif%}
+    {%if Cell.Active%}
+    <li> {{Cell.Active}}.
+      {%if Feature.class=="DungeonRemains"
+        and Feature.AreaTrap.Description
+           and dice("1d4")==3%}
+      Though {{Cell.QuestPronounPossessive}} mouth is gagged, {{Cell.QuestPronounSubject}} will
+      try to warn about the trap.{%endif%} </li>
+    {%endif%}
+    {%if PortalDestination.Active%}
+    <li> {{PortalDestination.Active}}. </li>
+    {%endif%}
+    </ul>
+  %>
+  DescriptionText! ~ <%
+
+    <h5> Description </h5>
+    <blockquote>
+      {{RoomType.Preface}} and {{Appearance.Description}}.
+      {%if Cell.Active%}{{capitalize(Cell.Hint)}} and {{Feature.Hint | lower}}.
+      {%else%}
+      {{Feature.Hint}}.
+      {%endif%}
+
+    </blockquote>
+    %>
+}
+
+CorridorDescription {
+  doors = null-array
+  HexLink = :Hex.uuid
+  Wandering @ DungeonWanderingMonsters
+  Atmosphere @ [
+    * The corridor here is damp and slippery from sludge.
+    * Smelly liquid is flowing on the floor here.
+    * Roaches crawl over the walls and floor of this passage.
+    * Oozing spores litter the walls here.
+    * The darkness here is deep and paralyzing.
+    * An ice-cold breeze can be felt in the passage here.
+    * The corrider here is dark and damp.
+    * Droplets of moisture, or so you hope, are dripping down here.
+    * This corridor is dark and cold.
+    * The corridor here stinks from excrements.
+    * The air in here is dense and misty.
+    * Dense spiderwebs drape the passage here.
+    * Each step here sends countless creepy crawlies back into the dark.
+  ]
+  Description! ~ <%
+    {%if doors and doors%}
+    <h5> Doorways </h5>
+    <ul>
+      {%for d in doors%}
+      <li> {{reroller(d, "", False)}} {{d.DescriptionOpposite}} </li>
+      {%endfor%}
+    </ul>
+    {%endif%}
+    <h5> Description </h5>
+    <blockquote>
+    {{Atmosphere}}
+    </blockquote>
+    {% if Entrance%}
+    There are stairs here leading in and <a href="{{sandbox()}}/location/{{HexLink}}"><strong>out of the dungeon</strong></a>.
+    {% endif %}
+    {% if Deadend %}
+    {{Deadend.Description}}
+    {% endif %}
+    {% if Length > 3 %}
+    {{Wandering.RandomTable}}
+    {% endif %}
+  %>
+
+  <metadata%
+  <a class="map-coords" hex="{{HexLink}}" x="{{x_coords}}" y="{{y_coords}}" zoom="2"> </a>
+  %metadata>
+
+  DungeonName = :Dungeon.Name
+  DungeonUUID = :Dungeon.uuid
+  Breadcrumbs! ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/location/{{DungeonUUID}}">{{DungeonName.Title}}</a> >
+      Area # {{RoomNumber}}
+      </span>
+  %>
+  Title ~ "Dungeon Corridor"
+  <header%
+    <div hidden id="doc-title"> Dungeon Corridor in {{DungeonName.Title}} </div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Title">{{Title}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+  {{Description}}
+  %body>
+}
+
+RoomDescription(AreaDescription) {
+  Appearance @ DungeonAreaAppearance
+
+  RoomType @ RoomType
+
+  Debris @ RoomDebris
+  | AreaDescription
+
+  DungeonName = :Dungeon.Name
+  DungeonUUID = :Dungeon.uuid
+
+  Breadcrumbs! ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/location/{{DungeonUUID}}">{{DungeonName.Title}}</a> >
+      Area # {{RoomNumber}}
+      </span>
+   %>
+
+  HexLink = :Hex.uuid
+
+  Description! ~ <%
+
+      {{Foreshadow}}
+
+      <h5> Doorways </h5>
+
+      <ul>
+        {%if door_1%}
+        <li> {{reroller(door_1, "", False)}} {{door_1.Description}} </li>
+        {%endif%}
+
+        {%if door_2%}
+        <li> {{reroller(door_2, "", False)}} {{door_2.Description}} </li>
+        {%endif%}
+
+        {%if door_3%}
+        <li> {{reroller(door_3, "", False)}} {{door_3.Description}} </li>
+        {%endif%}
+
+        {%if door_4%}
+        <li> {{reroller(door_4, "", False)}} {{door_4.Description}} </li>
+        {%endif%}
+
+        {%if door_5%}
+        <li> {{reroller(door_5, "", False)}} {{door_5.Description}} </li>
+        {%endif%}
+
+        {%if secret_door_1%}
+        <li> {{reroller(secret_door_1, "", False)}} {{secret_door_1.Description}} </li>
+        {%endif%}
+
+        {%if secret_door_2%}
+        <li> {{reroller(secret_door_2, "", False)}} {{secret_door_2.Description}} </li>
+        {%endif%}
+
+        {%if secret_door_3%}
+        <li> {{reroller(secret_door_3, "", False)}} {{secret_door_3.Description}} </li>
+        {%endif%}
+
+        {%if secret_door_4%}
+        <li> {{reroller(secret_door_4, "", False)}} {{secret_door_4.Description}} </li>
+        {%endif%}
+
+        {%if secret_door_5%}
+        <li> {{reroller(secret_door_5, "", False)}} {{secret_door_5.Description}} </li>
+        {%endif%}
+
+        {%if passage_1%}
+        <li> {{passage_1.Description}} </li>
+        {%endif%}
+
+        {%if passage_2%}
+        <li> {{passage_2.Description}} </li>
+        {%endif%}
+
+        {%if passage_3%}
+        <li> {{passage_3.Description}} </li>
+        {%endif%}
+
+        {%if passage_4%}
+        <li> {{passage_4.Description}} </li>
+        {%endif%}
+
+        {%if passage_5%}
+        <li> {{passage_5.Description}} </li>
+        {%endif%}
+      </ul>
+
+      {{DescriptionText}}
+
+      {{AreaPropertiesText}}
+  %>
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="{{x_coords}}" y="{{y_coords}}" zoom="2"> </a>
+  %metadata>
+
+  <header%
+    <div hidden id="doc-title"> Dungeon area #{{RoomNumber}} in {{DungeonName.Title}} </div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Title" data-entity="{{RoomType.uuid}}">{{RoomType.Title}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+  {{Description}}
+  %body>
+}
+
+CaveDescription(AreaDescription) {
+  Appearance @ CaveAreaAppearance
+
+  RoomType @ CaveType
+
+  Debris @ CaveDebris
+  | AreaDescription
+
+  DungeonName = :Dungeon.Name
+  DungeonUUID = :Dungeon.uuid
+
+  Breadcrumbs! ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/location/{{DungeonUUID}}">{{DungeonName.Title}}</a> >
+      Area # {{RoomNumber}}
+      </span>
+   %>
+
+  HexLink = :Hex.uuid
+
+  Description! ~ <%
+
+      {{Foreshadow}}
+
+      {% if Entrance%}
+      <h5> Cave Entrance </h5>
+      There is a passage here leading <a href="{{sandbox()}}/location/{{HexLink}}"><strong>in and out of the cave</strong></a>.
+      {% endif %}
+
+      {{DescriptionText}}
+
+      {{AreaPropertiesText}}
+  %>
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="{{x_coords}}" y="{{y_coords}}" zoom="2"> </a>
+  %metadata>
+
+  <header%
+    <div hidden id="doc-title"> Cave area #{{RoomNumber}} in {{DungeonName.Title}} </div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Title" data-entity="{{RoomType.uuid}}">{{RoomType.Title}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+  {{Description}}
+  %body>
+}
+
+
+DungeonMonsterRumor (RealmRumor) {
+  DungeonName = :Dungeon.Name
+  DungeonUUID = :Dungeon.uuid
+  AreaUUID = :AreaDescription.uuid
+  DungeonMonster = none
+  Details! ~ <%
+    There’s <strong>{{articlize(DungeonMonster.Title)}}</strong> in the
+    <a href="{{sandbox()}}/location/{{AreaUUID}}">
+    <strong>{{title(DungeonName.Title)}}</strong></a>.
+  %>
+}
+
+DungeonTreasureRumor (RealmRumor) {
+  DungeonName = :Dungeon.Name
+  DungeonUUID = :Dungeon.uuid
+  AreaUUID = :AreaDescription.uuid
+  Details! ~ <%
+    There’s a <strong>huge treasure</strong> in the
+    <a href="{{sandbox()}}/location/{{AreaUUID}}">
+    <strong>{{title(DungeonName.Title)}}</strong></a>.
+  %>
+}
+
+
+DungeonEncounter {
+  Description! ~ <%
+    {%if Monster.NumberAppearingRoaming==1%}There’s {{articlize(Monster.Title)}}{%else%} There are {{Monster.NumberAppearingRoaming}} {{Monster.Title}}s {%endif%} inside{%if Monster.Activity and Monster.Activity%}, {{Monster.Activity.Dungeon}}{%endif%}.
+    {%if Monster.Intelligent %}Roll or decide for reaction.
+    {%else%}{%if Monster.NumberAppearingRoaming==1%}It {%else%} They {%endif%} will attack anyone stepping in. {%endif%}
+    <p>
+    <strong>{{Monster.Title}}</strong> {{note_button(uuid)}}
+    {{note_container(uuid)}}
+    <hr/>
+    {{Monster.Stats}}
+    {%if Monster.NumberAppearingRoaming<10%}
+    <div class="hpmarks">{%for m in range(Monster.NumberAppearingRoaming)%}
+    {% for hp in range(stable_dice(Monster.HitDiceRoll, Monster.uuid, m)) %}<span class="hp-mark">&#x274F</span>{%endfor%}<br/>{%endfor%}</div>
+    {%endif%}
+    <hr/>
+    <ul>
+    {%if not Monster.TreasureType.Empty and (trim(Monster.TreasureType.Details))!=""%}
+    <li>{{reroller(Monster.TreasureType, "", False)}}Monster Hoard:
+    <ul>
+    {{Monster.TreasureType.Details}}
+    </ul>
+    </li>
+    {%else%}
+    <li>{{reroller(Monster.TreasureType, "", False)}}There is no hoard.</li>
+    {%endif%}
+    </ul>
+    </p>
+    %>
+}
+
+Stats {
+  Text ~ <%
+    __Armour Class:__ {{Monster.ArmourClass}} __Hit Dice:__ {{Monster.HitDice}} __Attacks:__ {{Monster.Attacks}}
+    __THAC0:__ {{Monster.THAC0}} __Movement:__ {{Monster.Movement}} __Saving Throws:__ {{Monster.SavingThrows}}
+    %>
+}
+
+DungeonDeadEndFeature {
+  Feature @@ [
+        * DungeonPortal
+        * DeadEndTrap
+        * DungeonFountain
+        * DungeonRemains
+    ]~{
+      Origin := &AreaNumber
+      OriginUUID := &AreaUUID
+    }
+  Title ~ <%
+    {% if Feature.class=="DungeonPortal" %}
+    Dead End (Magical Portal)
+    {% else if Feature.class=="AreaTrap" and Feature.Description %}
+    Dead End (Trap!)
+    {% else if Feature.class=="DungeonFountain" %}
+    Dead End (Fountain)
+    {% else if Feature.class=="DungeonRemains" %}
+    Dead End (Body)
+    {% else %}
+    Dead End
+    {% endif %}
+  %>
+  Description! ~ <%
+    {% if Feature.Description%}
+    {{Feature.Description}}
+    {% else %}
+    There is nothing here.
+    {% endif %}
+    %>
+}
+
+DungeonAlcoveFeature = [
+  * There are oversized torches in the alcoves here.
+  * There are human-like statues in the alcoves here.
+  * There are hanging cages in the alcoves here. There are bare skeletons inside.
+]
+
+FactionLair {
+  FactionName = none
+  FactionLeader = none
+  DungeonUUID! = none
+  Name! = none
+  FactionUUID = none
+  Faction! = none
+  HexLink! = none
+  Coords! = none
+}
+

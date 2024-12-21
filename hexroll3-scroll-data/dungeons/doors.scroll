@@ -1,0 +1,398 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonDoorKey {
+  AreaNumber! = none
+  AreaUUID! = none
+  Title! = Key
+  Wall = none
+  Sigil! = none
+  DoorShape! = none
+  DoorMaterial! = none
+  Ref! = none
+  DungeonUUID = none
+  DoorAreaUUID = none
+  Active! = false
+}
+
+DungeonDoorLever {
+  AreaNumber! = none
+  AreaUUID! = none
+  LeverType = none
+  LeverRef = none
+  LeverRefUUID = none
+  LeverDoorPosition = none
+  Title! = Lever
+  Active! = false
+}
+
+DungeonDoorPassphrase {
+  AreaNumber! = none
+  AreaUUID! = none
+  PassphraseAdj = none
+  PassphraseNoun = none
+  PassphraseLanguage = none
+  PassphraseForm = none
+  PassphraseRef = none
+  PassphraseRefUUID = none
+  PassphraseDoorPosition = none
+  Title! = Lever
+  Active! = false
+}
+
+DungeonPassage {
+  Ref = :RoomDescription.RoomNumber
+  DoorPosition = none
+  Description! ~ <%
+    <strong>{{Wall}}</strong> side - passage to area {{Room}}.
+  %>
+}
+
+DungeonDoor {
+  Ref = :RoomDescription.RoomNumber
+  DoorPosition = none
+  Material @ [
+    *(x4) wooden
+    *(x2) iron
+    *(x2) bronze
+    * marble
+  ]
+
+  Shape @ [
+    *(x5) rectangular
+    *(x4) arched
+    *(x3) round
+    * triangle
+    * odd-shaped
+  ]
+
+  State @ DungeonDoorState {
+    Wall := &Wall
+    Ref := &Ref
+    DoorMaterial := &Material
+    DoorShape := &Shape
+    DoorPosition := &DoorPosition
+  }
+
+  Description! ~ <%
+    <strong>{{Wall}}</strong> side - {{Shape}} {{Material}} door (<strong>{{State.Description}}</strong>)
+    {%if State.AdditionalInfo%}
+    {{State.AdditionalInfo}}
+    {%endif%}
+  %>
+
+  DescriptionOpposite! ~ <%
+    <strong>{{opposite(Wall)}}</strong> side - {{Shape}} {{Material}} door (<strong>{{State.Description}}</strong>)
+    {%if State.AdditionalInfo%}
+    {{State.AdditionalInfo}}
+    {%endif%}
+  %>
+
+
+}
+
+DungeonDoorState {
+  ^ [
+    *(x3) DungeonDoorLocked
+    *(x3) DungeonDoorStuck
+    *(x3) DungeonDoorBarricaded
+    *(x3) DungeonDoorHalfBroken
+    * DungeonDoorTrapped
+    ]
+}
+
+KeySecret(Secret) {
+  | Secret
+  Details! ~ <%
+    {%if Key%}
+    * The key to unlock the {{Link.Shape}} {{Link.Material}} door in area {{Ref}}
+    in the {{title(DungeonContext.Name.Title)}} is in area {{Key.RoomContext.Ref}}
+    {% endif %}
+    %>
+}
+
+LeverSecret(Secret) {
+  | Secret
+  Details! @ [
+    * The lever to open the secret door in area {{Ref}}
+    in the {{title(DungeonContext.Name.Title)}} is in area
+    {{Lever.RoomContext.Ref}}
+    ]
+}
+
+
+DungeonDoorLocked {
+  Sigil @ Sigil
+
+  Description! ~ <%
+    Locked <span class='alchemy'>{{Sigil.Symbol}}</span>%>
+
+  DungeonUUID = :Dungeon.uuid
+  AreaUUID = :AreaDescription.uuid
+
+  Key ? DungeonDoorKey {
+        Wall = &Wall
+        Sigil = &Sigil
+        DoorShape = &DoorShape
+        DoorMaterial = &DoorMaterial
+        Ref = &Ref
+        DungeonUUID = &DungeonUUID
+        DoorAreaUUID = &AreaUUID
+        Active = <%
+          <strong>key (<span class='alchemy'>{{Sigil.Symbol}}</span>)</strong> to unlock {{begin_spoiler()}}
+          the {{DoorShape}} {{DoorMaterial}} door
+          (to the {{Wall}}) in <a href="{{sandbox()}}/location/{{DoorAreaUUID}}">area {{Ref}}</a>{{end_spoiler()}}
+          %>
+  }
+
+  AdditionalInfo! ~ <%
+    {% if Key %}
+    <ul><li> {{reroller(Key, "", False)}} {{begin_spoiler()}}The key is in <a href="{{sandbox()}}/location/{{Key.AreaUUID}}"><strong>area {{Key.AreaNumber}}</strong></a>{{end_spoiler()}}</li> </ul>
+    {% else %}
+    <ul><li> The key was lost long time ago.</li> </ul>
+    {% endif %}
+  %>
+}
+
+DungeonDoorStuck {
+  Description! = Stuck
+  AdditionalInfo! = none
+}
+
+DungeonDoorBarricaded {
+  Description! = Barricaded
+  AdditionalInfo! = none
+}
+
+DungeonDoorHalfBroken {
+  Description! = <Half-broken>
+  AdditionalInfo! = none
+}
+
+DungeonDoorTrapped {
+  Description! = Trapped
+  Trap! @ DoorTrap
+  AdditionalInfo! ~ <% <ul><li> {{Trap.Description}} </li> </ul>%>
+}
+
+DungeonSecretDoor {
+  Ref = :RoomDescription.RoomNumber
+
+  SecretDoorTrigger @ DungeonSecretDoorTrigger {
+    Wall := &Wall
+    Ref := &Ref
+  }
+
+  Description! ~ <%
+    <strong>{{Wall}}</strong> side - secret door ({{SecretDoorTrigger.Description}})
+    {% if SecretDoorTrigger.Details %}
+    <ul><li>
+    {{SecretDoorTrigger.Details}}
+    </li></ul>
+    {% endif %}
+  %>
+
+  DescriptionOpposite! ~ <%
+    <strong>{{opposite(Wall)}}</strong> side - secret door ({{SecretDoorTrigger.Description}})
+    {% if SecretDoorTrigger.Details %}
+    <ul><li>
+    {{SecretDoorTrigger.Details}}
+    </li></ul>
+    {% endif %}
+  %>
+
+
+}
+
+DungeonSecretDoorTrigger {
+  ^ [
+    * DungeonSecretDoorLever
+    * DungeonSecretDoorPassphrase
+    * DungeonSecretDoorConcealed
+    ]
+}
+
+DungeonSecretDoorPassphraseType {
+  ^ [
+    * DungeonSecretDoorPassphraseWhisper
+    * DungeonSecretDoorPassphraseScream
+    * DungeonSecretDoorPassphraseSing
+    * DungeonSecretDoorPassphraseCarve
+    * DungeonSecretDoorPassphraseMime
+    ]
+}
+
+DungeonSecretDoorPassphraseWhisper {
+  Hint! ~ <If detected, a soft whisper will sound the word>
+  Action! ~ <Whisper its words to open>
+}
+
+DungeonSecretDoorPassphraseScream {
+  Hint! ~ <If detected, a sudden scream will say>
+  Action! ~ <Scream the phrase to open>
+}
+
+DungeonSecretDoorPassphraseSing {
+  Hint! ~ <If detected, a gentle voice will sing>
+  Action! ~ <Sing or use the phrase in a song to open>
+}
+
+DungeonSecretDoorPassphraseCarve {
+  Hint! ~ <If detected, a carving on the wall will spell>
+  Action! ~ <Carve and complete the phrase to open>
+}
+
+DungeonSecretDoorPassphraseMime {
+  Hint! ~ <If detected, one of the characters will uncontrollably gesture or act the word>
+  Action! ~ <Gesture or mime the complete passphrase to open>
+}
+
+DungeonSecretDoorPassphrase {
+
+  Action! @ DungeonSecretDoorPassphraseType
+
+  Form @ [
+    * are carved on one of the walls
+    * are graffitied on the ceiling
+    * were written down on a torn piece of parchment
+    * were inscribed on wooden plaque fixed to a wall
+    ]
+
+  Language @ [
+    * Common language
+    * Deepcommon language
+    * Lawful symbols
+    * Neutral symbols
+    * Chaotic symbols
+    * Elvish script
+    * Dwarvish language
+    * Gargoyle language
+    * Dragon language
+    ]
+
+  Noun @ [
+    * dagger
+    * gods
+    * flames
+    * spirit
+    * soul
+    * heart
+    * heretic
+    * traitor
+    * wizard
+    * horror
+    * bones
+    * goblin
+    * fiend
+  ]
+
+  Adj @ [
+    * wondrous
+    * exiled
+    * blessed
+    * eternal
+    * dark
+    * dreaded
+    * fearful
+    * forbidden
+    * painful
+    * darkened
+    * shadowy
+    * sorrowful
+    * violent
+    * cruel
+    * hopeless
+    * terrifying
+    * miraculous
+    * dead
+    * magical
+    ]
+
+  Hint! @ [
+    * {{capitalize(Noun)}}
+    * {{capitalize(Adj)}}
+    ]
+
+  Text = "{{Adj}} {{Noun}}"
+
+  AreaUUID = :AreaDescription.uuid
+
+  Passphrase ? DungeonDoorPassphrase {
+    PassphraseAdj = &Adj
+    PassphraseNoun = &Noun
+    PassphraseLanguage = &Language
+    PassphraseForm = &Form
+    PassphraseRef = &Ref
+    PassphraseRefUUID = &AreaUUID
+    PassphraseDoorPosition = &Wall
+    Active = <% The words <strong>"{{title(PassphraseAdj)}} {{title(PassphraseNoun)}}"</strong> in {{PassphraseLanguage}} {{PassphraseForm}}.
+            {{begin_spoiler()}}It is the passphrase for the secret door in <a href="{{sandbox()}}/location/{{PassphraseRefUUID}}">area {{PassphraseRef}}</a> (to the {{PassphraseDoorPosition}}){{end_spoiler()}}%>
+  }
+
+  Description! ~ <% requiring a <strong>passphrase</strong>  %>
+
+  Details! ~ <%
+      {{Action.Hint}} <strong>"{{Hint}}"</strong>. {{begin_spoiler()}}The full passphrase is in
+      <strong><a href="{{sandbox()}}/location/{{Passphrase.AreaUUID}}">area {{Passphrase.AreaNumber}}</a></strong>.
+      {{Action.Action}}.{{end_spoiler()}}
+  %>
+}
+
+DungeonSecretDoorConcealed {
+  Description! ~ <% <strong>concealed</strong> %>
+  Details! @ [
+    * This doorway is concealed behind a thin layer of plaster
+    * This doorway is concealed as part of a fresco on the wall
+    ]
+}
+
+DungeonSecretDoorLever {
+  Type @ [
+    * rope-pull
+    * crank
+    * pressure plate
+    ]
+
+  Description! ~ <%
+    operated by {{articlize(Type)}} lever%>
+
+  AreaUUID = :AreaDescription.uuid
+
+  Lever ? DungeonDoorLever {
+    LeverType = &Type
+    LeverRef = &Ref
+    LeverRefUUID = &AreaUUID
+    LeverDoorPosition = &Wall
+    Active = <%
+    <strong>{{LeverType}} lever</strong> that can open the secret door in
+    <a href="{{sandbox()}}/location/{{LeverRefUUID}}">area {{LeverRef}}</a> (to the {{LeverDoorPosition}})%>
+  }
+
+  Details! ~ <%
+    <ul><li> {{reroller(Lever, "", False)}} {{begin_spoiler()}}The lever is in <a href="{{sandbox()}}/location/{{Lever.AreaUUID}}"><strong>area {{Lever.AreaNumber}}</strong></a>{{end_spoiler()}}</li> </ul>
+  %>
+
+}
+

@@ -1,0 +1,112 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+kNPCState = [
+  * Aggressive
+  * Aghast
+  * Agitated
+  * Alone
+  * Angry
+  * Annoyed
+  * Anxious
+  * Apprehensive
+  * Arrogant
+  * Ashamed
+  * Bothered
+  * Calm
+  * Cheerful
+  * Confident
+  * Contented
+  * Crushed
+  * Delighted
+  * Depressed
+  * Desperate
+  * Determined
+  * Disorganized
+  * Disoriented
+  * Distressed
+  * Drained
+  * Ecstatic
+  * Elated
+  * Embarrassed
+  * Energetic
+  * Enraged
+  * Excited
+  * Exhausted
+  * Fearful
+  * Forceful
+  * Frustrated
+  * Guilty
+  * Happy
+  * Heartbroken
+  * Helpless
+  * Hopeless
+  * Horny
+  * Horrified
+  * Hurt
+  * Joyful
+  * Livid
+  * Lazy
+  * Lifeless
+  * Lost
+  * Irritated
+  * Mellow
+  * Moody
+  * Nervous
+  * Offended
+  * Outraged
+  * Overwhelmed
+  * Pained
+  * Panicky
+  * Paranoid
+  * Persuasive
+  * Petrified
+  * Pleased
+  * Proud
+  * Puzzled
+  * Queasy
+  * Rejected
+  * Relieved
+  * Remorseful
+  * Repentant
+  * Sad
+  * Satisfied
+  * Scared
+  * Shocked
+  * Sickened
+  * Sorrowful
+  * Surprised
+  * Terrified
+  * Timid
+  * Tired
+  * Troubled
+  * Uncomfortable
+  * Unimpressed
+  * Unsatisfied
+  * Unsure
+  * Upset
+  * Worried
+  * Worthless
+]

@@ -1,0 +1,5378 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+# This document contains Open Game Content, subject to the Open Game License,
+# released un the Open Game License, Version 1.0a (enclosed in the LICENSE
+# file), as described in Section 1(d) of the License.
+OsrMonster (Monster) {
+  Title! :: STRING
+  ArmourClass! :: STRING
+  HitDiceText :: STRING
+  ExHitDice! :: STRING
+  HitDiceRoll! :: STRING
+  HitDice! :: INTEGER
+  Attacks! :: STRING
+  THAC0! :: STRING
+  Movement! :: STRING
+  SavingThrows! :: STRING
+  Morale! :: STRING
+  Alignment! :: STRING
+  XP! :: STRING
+  NumberAppearingRoaming! :: DICE
+  NumberAppearingLair! :: DICE
+  TreasureType! :: TYPE(TreasureType)
+  Stats! ~ <%
+    <span class='monsterstats'>
+    <strong>Armour Class:</strong> {{ArmourClass}} <strong>Hit Dice:</strong> {{ExHitDice}} <strong>Attacks:</strong> {{Attacks}}
+    <strong>THAC0:</strong> {{THAC0}} <strong>Movement:</strong> {{Movement}} <strong>Saving Throws:</strong> {{SavingThrows}}
+    <strong>Morale:</strong> {{Morale}} <strong>Alignment:</strong> {{Alignment}} <strong>XP:</strong> {{XP}}
+    </span>
+  %>
+  | Monster
+}
+Acolyte (OsrMonster) {
+  Title! ~ "Acolyte"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × mace (1d6)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D11 W12 P14 B16 S15 (C1)"
+  Morale! = "7"
+  Alignment! ~ "Any"
+  XP! = "10"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d20
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ MinionActivity {
+      NumberAppearingRoaming = &NumberAppearingRoaming
+      NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+ApeWhite (OsrMonster) {
+  Title! ~ "White Ape"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × claw(1d4) or 1 × thrown rock (1d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Bandit (OsrMonster) {
+  Title! ~ "Bandit"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D13 W14 P13 B16 S15 (T1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral or Chaotic"
+  XP! = "10"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeU  {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Basilisk (OsrMonster) {
+  Title! ~ "Basilisk"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "6+1** (28hp)"
+  ExHitDice! = 6+1
+  HitDiceRoll! = "6d8+1"
+  HitDice! = 6
+  Attacks! ~ "Att 1 × bite (1d10 + petrification), 1 × gaze (petrification)"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "950"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeF {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantBat (OsrMonster) {
+  Title! ~ "Giant Bat"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite(1d4)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "30’ (10’) /180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 1d10
+  NumberAppearingLair! @ 1d10
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 10
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantVampireBat (OsrMonster) {
+  Title! ~ "Giant Vampire Bat"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d4 + unconsciousness)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "30’ (10’) / 180’ (60’) flying"
+  SavingThrows! ~ "D12W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 1d10
+  NumberAppearingLair! @ 1d10
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 10
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalBat (OsrMonster) {
+  Title! ~ "Bat"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1hp"
+  ExHitDice! = 1hp
+  HitDiceRoll! = "1d1"
+  HitDice! = 1
+  Attacks! ~ "1 × swarm (confusion)"
+  THAC0! ~ "20 [–1]"
+  Movement! ~ "9’ (3’) / 120’ (40’) flying"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "5"
+  NumberAppearingRoaming! @ 1d100
+  NumberAppearingLair! @ 1d100
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 100
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+BlackBear (OsrMonster) {
+  Title! ~ "Black Bear"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × claw(1d3), 1 × bite(1d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16(2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DarkHag (OsrMonster) {
+  Title! ~ "Dark Hag"
+  Intelligent! = True
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "8* (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "2 × talon(1d8 + 3), 1 × bite(1d8 + 3)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12(8)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "1,200"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 1
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+CaveBear (OsrMonster) {
+  Title! ~ "Cave Bear"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "7 (31hp)"
+  ExHitDice! = 7
+  HitDiceRoll! = "7d8"
+  HitDice! = 7
+  Attacks! ~ "2 × claw(1d8), 1 × bite(2d6)"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16(3)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "450"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d2
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GrizzlyBear (OsrMonster) {
+  Title! ~ "Grizzly Bear"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "5 (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "2 × claw(1d4), 1 × bite(1d8)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "175"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeU {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+PolarBear (OsrMonster) {
+  Title! ~ "Polar Bear"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "2 × claw(1d6), 1 × bite(1d10)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d2
+  TreasureType! @ TreasureTypeU {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FireBeetle (OsrMonster) {
+  Title! ~ "Fire Beetle"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "1+2 (6hp)"
+  ExHitDice! = 1+2
+  HitDiceRoll! = "1d8+2"
+  HitDice! = 1
+  Attacks! ~ "1 × bite(2d4)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "15"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+OilBeetle (OsrMonster) {
+  Title! ~ "Oil Beetle"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d6)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+TigerBeetle (OsrMonster) {
+  Title! ~ "Tiger Beetle"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "3+1 (14hp)"
+  ExHitDice! = 3+1
+  HitDiceRoll! = "3d8+1"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (2d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Berserker (OsrMonster) {
+  Title! ~ "Berserker"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1+1* (5hp)"
+  ExHitDice! = 1+1
+  HitDiceRoll! = "1d8+1"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "19"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeP  {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+BlackPudding (OsrMonster) {
+  Title! ~ "Black Pudding"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "10* (45hp)"
+  ExHitDice! = 10
+  HitDiceRoll! = "10d8"
+  HitDice! = 10
+  Attacks! ~ "1 × touch (3d8)"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "1,600"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+BlinkDog (OsrMonster) {
+  Title! ~ "Blink Dog"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (1d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "6"
+  Alignment! ~ "Lawful"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Boar (OsrMonster) {
+  Title! ~ "Boar"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × tusk(2d4)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "35"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Brigand (OsrMonster) {
+  Title! ~ "Brigand"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4x10
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Buccaneer (OsrMonster) {
+  Title! ~ "Buccaneer"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12] or 5 [14]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 ×weapon (1d6 or by weapon)"
+  THAC0! ~ "19[0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15S16 (1)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Bugbear (OsrMonster) {
+  Title! ~ "Bugbear"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "3+1 (14hp)"
+  ExHitDice! = 3+1
+  HitDiceRoll! = "3d8+1"
+  HitDice! = 3
+  Attacks! ~ "1 × weapon (2d4 or by weapon +1)"
+  THAC0! ~ "16[+3]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15S16 (3)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "50"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 5d4
+  TreasureType! @ TreasureTypeB {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Caecilia (OsrMonster) {
+  Title! ~ "Caecilia"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "6* (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × bite (1d8)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "500"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeB {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Camel (OsrMonster) {
+  Title! ~ "Camel"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1), 1 × hoof (1d4)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "150’(50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Cost! = 100
+  | OsrMonster
+}
+
+CarcassCrawler (OsrMonster) {
+  Title! ~ "Carcass Crawler"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3+1* (14hp)"
+  ExHitDice! = 3+1
+  HitDiceRoll! = "3d8+1"
+  HitDice! = 3
+  Attacks! ~ "8 × tentacle (paralysis)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeB {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ VerminActivity {
+      NumberAppearingRoaming = &NumberAppearingRoaming
+      NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Lion (OsrMonster) {
+  Title! ~ "Lion"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "5 (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "2 × claw (1d4+1), 1 × bite (1d10)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16(3)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "175"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+MountainLion (OsrMonster) {
+  Title! ~ "Mountain Lion"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "3+2 (15hp)"
+  ExHitDice! = 3+2
+  HitDiceRoll! = "3d8+2"
+  HitDice! = 3
+  Attacks! ~ "2 × claw (1d3), 1 × bite (1d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Panther (OsrMonster) {
+  Title! ~ "Panther"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × claw (1d4), 1 × bite (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "210’ (70’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SabreToothedTiger (OsrMonster) {
+  Title! ~ "Sabre-Toothed Tiger"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "2 × claw (1d8), 1 × bite (2d8)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "650"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Tiger (OsrMonster) {
+  Title! ~ "Tiger"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "2 × claw (1d6), 1 × bite (2d6)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeU {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+CaveLocust (OsrMonster) {
+  Title! ~ "Cave Locust"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d2) or 1 × jump (1d4) or 1 × spit (stench)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "60’ (20’) / 180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "5"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 2d10
+  NumberAppearingLair! @ 1d10
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 20
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Centaur (OsrMonster) {
+  Title! ~ "Centaur"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × hoof (1d6), 1 × weapon (1d6 or by weapon),"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d10
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+CentipedeGiant (OsrMonster) {
+  Title! ~ "Giant Centipede"
+  Intelligent! = False
+  ArmourClass! ~ "9 [10]"
+  HitDiceText ~ "½* (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × bite (poison)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "6"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Chimera (OsrMonster) {
+  Title! ~ "Chimera"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "9** (40hp)"
+  ExHitDice! = 9
+  HitDiceRoll! = "9d8"
+  HitDice! = 9
+  Attacks! ~ "2 × claw (1d3), goat = 1 × gore (2d4), lion = 1 × bite (2d4), dragon = 1 × bite (3d4) or 1 × breath (3d6)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’) / 180’ (60’) flying"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (9)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "2,300"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeF {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Cockatrice (OsrMonster) {
+  Title! ~ "Cockatrice"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "5** (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "1 × beak (1d6 + petrification)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "90’ (30’) / 180’ (60’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "425"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+CrabGiant (OsrMonster) {
+  Title! ~ "Giant Crab"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "2 × pincer (2d6)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "35"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantCrocodile (OsrMonster) {
+  Title! ~ "Giant Crocodile"
+  Intelligent! = False
+  ArmourClass! ~ "1 [18]"
+  HitDiceText ~ "15 (67hp)"
+  ExHitDice! = 15
+  HitDiceRoll! = "15d8"
+  HitDice! = 15
+  Attacks! ~ "1 × bite (3d8)"
+  THAC0! ~ "9 [+10]"
+  Movement! ~ "90’ (30’) / 90’ (30’) swimming"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "1,350"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+LargeCrocodile (OsrMonster) {
+  Title! ~ "Large Crocodile"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × bite (2d8)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "90’ (30’) / 90’ (30’) swimming"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalCrocodile (OsrMonster) {
+  Title! ~ "Crocodile"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d8)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’) / 90’ (30’) swimming"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Cyclops (OsrMonster) {
+  Title! ~ "Cyclops"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "13* (58hp)"
+  ExHitDice! = 13
+  HitDiceRoll! = "13d8"
+  HitDice! = 13
+  Attacks! ~ "1 × club (3d10) or 1 × rock (3d6)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D4 W5 P6 B5 S8 (13)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeE  {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Dervish (OsrMonster) {
+  Title! ~ "Dervish"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13] or 4 [15]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "10"
+  Alignment! ~ "Lawful"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d6+1x10
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DjinniLesser (OsrMonster) {
+  Title! ~ "Djinni"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "7+1* (32hp)"
+  ExHitDice! = 7+1
+  HitDiceRoll! = "7d8+1"
+  HitDice! = 7
+  Attacks! ~ "1 × fists (2d8), magic"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D4 W5 P6 B5 S8 (14)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "850"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Doppelganger (OsrMonster) {
+  Title! ~ "Doppelgänger"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (1d12)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (10)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+BlackDragon (OsrMonster) {
+  Title! ~ "Black Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "7** (31hp)"
+  ExHitDice! = 7
+  HitDiceRoll! = "7d8"
+  HitDice! = 7
+  Attacks! ~ "[2 × claw (1d4 + 1), 1 × bite (2d10)] or breath"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (7)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "1,250"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+BlueDragon (OsrMonster) {
+  Title! ~ "Blue Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "9** (40hp)"
+  ExHitDice! = 9
+  HitDiceRoll! = "9d8"
+  HitDice! = 9
+  Attacks! ~ "[2 × claw (1d6 + 1), 1 × bite (3d10)] or breath"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (9)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GoldDragon (OsrMonster) {
+  Title! ~ "Gold Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "–2 [21]"
+  HitDiceText ~ "11** (49hp)"
+  ExHitDice! = 11
+  HitDiceRoll! = "11d8"
+  HitDice! = 11
+  Attacks! ~ "[2 × claw (2d4), 1 × bite (6d6)] or breath"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (11)"
+  Morale! = "10"
+  Alignment! ~ "Lawful"
+  XP! = "2,700"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GreenDragon (OsrMonster) {
+  Title! ~ "Green Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "1 [18]"
+  HitDiceText ~ "8** (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "[2 × claw (1d6), 1 × bite (3d8)] or breath"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "1,750"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+RedDragon (OsrMonster) {
+  Title! ~ "Red Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "–1 [20]"
+  HitDiceText ~ "10** (45hp)"
+  ExHitDice! = 10
+  HitDiceRoll! = "10d8"
+  HitDice! = 10
+  Attacks! ~ "[2 × claw (1d8), 1 × bite (4d8)] or breath"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (10)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SeaDragon (OsrMonster) {
+  Title! ~ "Sea Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "1 [18]"
+  HitDiceText ~ "8** (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "1 × bite (3d8) or breath"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "180’ (60’) swimming / 180’ (60’) gliding"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "1,750"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+WhiteDragon (OsrMonster) {
+  Title! ~ "White Dragon"
+  Intelligent! = True
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "6** (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "[2 × claw (1d4), 1 × bite (2d8)] or breath"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "725"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeH {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DragonTurtle (OsrMonster) {
+  Title! ~ "Dragon Turtle"
+  Intelligent! = False
+  ArmourClass! ~ "–2 [21]"
+  HitDiceText ~ "30* (135hp)"
+  ExHitDice! = 30
+  HitDiceRoll! = "30d8"
+  HitDice! = 30
+  Attacks! ~ "2 × claw (1d8), 1 × bite (1d6 × 10) or breath"
+  THAC0! ~ "5 [+14]"
+  Movement! ~ "30’ (10’) / 90’ (30’) swimming"
+  SavingThrows! ~ "D4 W5 P6 B5 S8 (15)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "9,000"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeH {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+DriverAnt (OsrMonster) {
+  Title! ~ "Driver Ant"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (2d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7 (12 in melee)"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 4d6
+  TreasureType! @ TreasureTypeU  {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ VerminActivity {
+      NumberAppearingRoaming = &NumberAppearingRoaming
+      NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Dryad (OsrMonster) {
+  Title! ~ "Dryad"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × magic (charm)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeD {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DwarfMonster (OsrMonster) {
+  Title! ~ "Dwarf (OsrMonster)"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D8 W9 P10 B13 S12 (D1)"
+  Morale! = "8 (10 with leader)"
+  Alignment! ~ "Lawful or Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 5d8
+  TreasureType! @ TreasureTypeG {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+EfreetiLesser (OsrMonster) {
+  Title! ~ "Efreeti"
+  Intelligent! = True
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "10* (45hp)"
+  ExHitDice! = 10
+  HitDiceRoll! = "10d8"
+  HitDice! = 10
+  Attacks! ~ "1 × fists (2d8), magic"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D4 W5 P6 B5 S8 (15)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "1,600"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+AirElemental (OsrMonster) {
+  Title! ~ "Air Elemental"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17] / 0 [19] / –2 [21]"
+  HitDiceText ~ "8/12/16* (36/54/72hp)"
+  ExHitDice! = "8/12/16"
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "1 × blow (1d8/2d8/3d8)"
+  THAC0! ~ "12 [+7] / 10 [+9] / 8 [+11]"
+  Movement! ~ "360’ (120’) flying"
+  SavingThrows! ~ "See main entry (8/12/16)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "1,200/1,900/2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+EarthElemental (OsrMonster) {
+  Title! ~ "Earth Elemental"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17] / 0 [19] / –2 [21]"
+  HitDiceText ~ "8/12/16* (36/54/72hp)"
+  ExHitDice! = "8/12/16"
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "1 × blow (1d8/2d8/3d8)"
+  THAC0! ~ "12 [+7] / 10 [+9] / 8 [+11]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "See main entry (8/12/16)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "1,200/1,900/2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+FireElemental (OsrMonster) {
+  Title! ~ "Fire Elemental"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17] / 0 [19] / –2 [21]"
+  HitDiceText ~ "8/12/16* (36/54/72hp)"
+  ExHitDice! = "8/12/16"
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "1 × blow (1d8/2d8/3d8)"
+  THAC0! ~ "12 [+7] / 10 [+9] / 8 [+11]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "See main entry (8/12/16)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "1,200/1,900/2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+WaterElemental (OsrMonster) {
+  Title! ~ "Water Elemental"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17] / 0 [19] / –2 [21]"
+  HitDiceText ~ "8/12/16* (36/54/72hp)"
+  ExHitDice! = 8/12/16
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "1 × blow (1d8/2d8/3d8)"
+  THAC0! ~ "12 [+7] / 10 [+9] / 8 [+11]"
+  Movement! ~ "60’ (20’) / 180’ (60’) swimming"
+  SavingThrows! ~ "See main entry (8/12/16)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "1,200/1,900/2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Elephant (OsrMonster) {
+  Title! ~ "Elephant"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "9 (40hp)"
+  ExHitDice! = 9
+  HitDiceRoll! = "9d8"
+  HitDice! = 9
+  Attacks! ~ "2 × tusk (2d4) or 1 × trample (4d8)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "900"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d20
+  TreasureType! @ TreasureTypeTusks {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+ElfMonster (OsrMonster) {
+  Title! ~ "Elf (OsrMonster)"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "1+1* (5hp)"
+  ExHitDice! = 1+1
+  HitDiceRoll! = "1d8+1"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P13 B15 S15 (E1)"
+  Morale! = "8 (10 with leader)"
+  Alignment! ~ "Neutral"
+  XP! = "19"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 2d12
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FerretGiant (OsrMonster) {
+  Title! ~ "Giant Ferret"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "1+1 (5hp)"
+  ExHitDice! = 1+1
+  HitDiceRoll! = "1d8+1"
+  HitDice! = 1
+  Attacks! ~ "1 × bite (1d8)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "15"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FlailSnail (OsrMonster) {
+  Title! ~ "Flail Snail"
+  Intelligent! = False
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "4 to 6 × club tentacle (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "30’ (10’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "10 (7)"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 1
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+GelatinousCube (OsrMonster) {
+  Title! ~ "Gelatinous Cube"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × touch (2d4 + paralysis)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 1
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+GiantBass (OsrMonster) {
+  Title! ~ "Giant Bass"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d6)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone  {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantCatfish (OsrMonster) {
+  Title! ~ "Giant Catfish"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "8+3 (39hp)"
+  ExHitDice! = 8+3
+  HitDiceRoll! = "8d8+3"
+  HitDice! = 8
+  Attacks! ~ "Att 1 × bite (2d8), 4 × feeler (1d4)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "650"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d2
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantPiranha (OsrMonster) {
+  Title! ~ "Giant Piranha"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "3+3 (16hp)"
+  ExHitDice! = 3+3
+  HitDiceRoll! = "3d8+3"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantRockfish (OsrMonster) {
+  Title! ~ "Giant Rockfish"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "5+5* (27hp)"
+  ExHitDice! = 5+5
+  HitDiceRoll! = "5d8+5"
+  HitDice! = 5
+  Attacks! ~ "4 × spine (1d4 + poison)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "400"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantSturgeon (OsrMonster) {
+  Title! ~ "Giant Sturgeon"
+  Intelligent! = False
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "10+2* (47hp)"
+  ExHitDice! = 10+2
+  HitDiceRoll! = "10d8+2"
+  HitDice! = 10
+  Attacks! ~ "1 × bite (2d10)"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "1,600"
+  NumberAppearingRoaming! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Gargoyle (OsrMonster) {
+  Title! ~ "Gargoyle"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × claw (1d3), 1 × bite (1d6), 1 × horn (1d4)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "90’ (30’) / 150’ (50’) flying"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "11"
+  Alignment! ~ "Chaotic"
+  XP! = "75"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GelatinousCube (OsrMonster) {
+  Title! ~ "Gelatinous Cube"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × touch (2d4 + paralysis)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeV {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Ghoul (OsrMonster) {
+  Title! ~ "Ghoul"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "2 × claw (1d3 + paralysis), 1 × bite (1d3 + paralysis)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d8
+  TreasureType! @ TreasureTypeB {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+CloudGiant (OsrMonster) {
+  Title! ~ "Cloud Giant"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "12+3 (57hp)"
+  ExHitDice! = 12+3
+  HitDiceRoll! = "12d8+3"
+  HitDice! = 12
+  Attacks! ~ "1 × weapon (6d6) or 1 × boulder (3d6)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (12)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "1,100"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeE  {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FireGiant (OsrMonster) {
+  Title! ~ "Fire Giant"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "11+2 (51hp)"
+  ExHitDice! = 11+2
+  HitDiceRoll! = "11d8+2"
+  HitDice! = 11
+  Attacks! ~ "1 × weapon (5d6) or 1 × boulder (3d6)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (11)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "1,100"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeE  {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FrostGiant (OsrMonster) {
+  Title! ~ "Frost Giant"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "10+1 (46hp)"
+  ExHitDice! = 10+1
+  HitDiceRoll! = "10d8+1"
+  HitDice! = 10
+  Attacks! ~ "1 × weapon (4d6) or 1 × boulder (3d6)"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (10)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "900"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeE  {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+HillGiant (OsrMonster) {
+  Title! ~ "Hill Giant"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "1 × weapon (2d8)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "650"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeE  {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+StoneGiant (OsrMonster) {
+  Title! ~ "Stone Giant"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "9 (40hp)"
+  ExHitDice! = 9
+  HitDiceRoll! = "9d8"
+  HitDice! = 9
+  Attacks! ~ "1 × weapon (3d6) or 1 × boulder (3d6)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (9)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "900"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeE  {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+StormGiant (OsrMonster) {
+  Title! ~ "Storm Giant"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "15 (67hp)"
+  ExHitDice! = 15
+  HitDiceRoll! = "15d8"
+  HitDice! = 15
+  Attacks! ~ "1 × weapon (8d6), 1 × lightning bolt"
+  THAC0! ~ "9 [+10]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D4 W5 P6 B5 S8 (15)"
+  Morale! = "10"
+  Alignment! ~ "Lawful"
+  XP! = "1,350"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeE  {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GibberingMouther (OsrMonster) {
+  Title! ~ "Gibbering Mouther"
+  Intelligent! = True
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "4+3*** (21hp)"
+  ExHitDice! = 4+3
+  HitDiceRoll! = "4d8+3"
+  HitDice! = 4
+  Attacks! ~ "6 × bite (1hp + attach + slip)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "30’ (10’)"
+  SavingThrows! ~ "D12 W13 P13 B15 S15 (2)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "350"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeL {
+        MaxNumberAppearingRoaming = 1
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Gnoll (OsrMonster) {
+  Title! ~ "Gnoll"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × weapon (2d4 or by weapon + 1)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "20 (leader = 35)"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 3d6
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ HumanoidActivity {
+      NumberAppearingRoaming = &NumberAppearingRoaming
+      NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Gnome (OsrMonster) {
+  Title! ~ "Gnome"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D8 W9 P10 B13 S12 (D1)"
+  Morale! = "8 (10 in sight of leader or chieftain)"
+  Alignment! ~ "Lawful or Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 5d8
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Goblin (OsrMonster) {
+  Title! ~ "Goblin"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1–1 (3hp)"
+  ExHitDice! = 1–1
+  HitDiceRoll! = "1d8-1"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "7 (9 with king)"
+  Alignment! ~ "Chaotic"
+  XP! = "5 (bodyguard = 20, king = 35)"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 6d10
+  TreasureType! @ TreasureTypeR  {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ HumanoidActivity {
+      NumberAppearingRoaming = &NumberAppearingRoaming
+      NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+AmberGolem (OsrMonster) {
+  Title! ~ "Amber Golem"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "10** (45hp)"
+  ExHitDice! = 10
+  HitDiceRoll! = "10d8"
+  HitDice! = 10
+  Attacks! ~ "2 × claw (2d6), 1 × bite (2d10)"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "2,300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+BoneGolem (OsrMonster) {
+  Title! ~ "Bone Golem"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "2 or 4 × weapon (1d6 or by weapon)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "650"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+BronzeGolem (OsrMonster) {
+  Title! ~ "Bronze Golem"
+  Intelligent! = False
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "20** (90hp)"
+  ExHitDice! = 20
+  HitDiceRoll! = "20d8"
+  HitDice! = 20
+  Attacks! ~ "1 × fist (3d10 + 1d10 heat)"
+  THAC0! ~ "6 [+13]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (10)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "4"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+WoodGolem (OsrMonster) {
+  Title! ~ "Wood Golem"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2+2 (11hp)"
+  ExHitDice! = 2+2
+  HitDiceRoll! = "2d8+2"
+  HitDice! = 2
+  Attacks! ~ "1 × fist (1d8)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Gorgon (OsrMonster) {
+  Title! ~ "Gorgon"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "8* (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "1 × gore (2d6) or 1 × breath (petrify)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "1,200"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GreenSlime (OsrMonster) {
+  Title! ~ "Green Slime"
+  Intelligent! = False
+  ArmourClass! ~ "No hit roll required"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × touch (consume flesh)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "3’ (1’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+GreyOoze (OsrMonster) {
+  Title! ~ "Grey Ooze"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "3* (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × touch (2d8)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "10’ (3’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Griffon (OsrMonster) {
+  Title! ~ "Griffon"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "7 (31hp)"
+  ExHitDice! = 7
+  HitDiceRoll! = "7d8"
+  HitDice! = 7
+  Attacks! ~ "2 × claw (1d4), 1 × bite (2d8)"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "120’ (40’) / 360’ (120’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "450"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d8
+  TreasureType! @ TreasureTypeE {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+HalflingMonster (OsrMonster) {
+  Title! ~ "Halfling (OsrMonster)"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1–1 (3hp)"
+  ExHitDice! = 1–1
+  HitDiceRoll! = "1d8-1"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D8 W9 P10 B13 S12 (H1)"
+  Morale! = "7"
+  Alignment! ~ "Lawful"
+  XP! = "5 (guard = 20)"
+  NumberAppearingRoaming! @ 3d6
+  NumberAppearingLair! @ 5d8
+  TreasureType! @ TreasureTypeV  {
+        MaxNumberAppearingRoaming = 18
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Harpy (OsrMonster) {
+  Title! ~ "Harpy"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3* (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "2 × claw (1d4), 1 × weapon (1d6 or by weapon), 1 × song (charm)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "60’ (20’) / 150’ (50’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "7"
+  Alignment! ~ "Chaotic"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantHawk (OsrMonster) {
+  Title! ~ "Giant Hawk"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "3+3 (16hp)"
+  ExHitDice! = 3+3
+  HitDiceRoll! = "3d8+3"
+  HitDice! = 3
+  Attacks! ~ "1 × talons or beak (1d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "450’ (150’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalHawk (OsrMonster) {
+  Title! ~ "Hawk"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "½ (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × talons or beak (1d2)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "480’ (160’) flying"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "5"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Hellhound (OsrMonster) {
+  Title! ~ "Hellhound"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "3 to 7* (13/18/22/27/ 31hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (1d6) or 1 × breath (1d6 per HD)"
+  THAC0! ~ "By HD (17 [+2] to 13 [+6])"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "By HD"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "50/125/300/500/850"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+LargeHerdAnimal (OsrMonster) {
+  Title! ~ "Large Herd Animal"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × butt (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "5"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+MediumHerdAnimal (OsrMonster) {
+  Title! ~ "Medium Herd Animal"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × butt (1d6)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "5"
+  Alignment! ~ "Neutral"
+  XP! = "35"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SmallHerdAnimal (OsrMonster) {
+  Title! ~ "Small Herd Animal"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1 to 2 (4/9hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × butt (1d4)"
+  THAC0! ~ "19 [0]/18 [+1]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "5"
+  Alignment! ~ "Neutral"
+  XP! = "10/20"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Hippogriff (OsrMonster) {
+  Title! ~ "Hippogriff"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "3+1 (14hp)"
+  ExHitDice! = 3+1
+  HitDiceRoll! = "3d8+1"
+  HitDice! = 3
+  Attacks! ~ "2 × claw (1d6), 1 × bite (1d10)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "180’ (60’) / 360’ (120’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d8
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Hobgoblin (OsrMonster) {
+  Title! ~ "Hobgoblin"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1+1 (5hp)"
+  ExHitDice! = 1+1
+  HitDiceRoll! = "1d8+1"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8 (10 with king)"
+  Alignment! ~ "Chaotic"
+  XP! = "15 (bodyguard = 75)"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 4d6
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ HumanoidActivity
+  {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DraftHorse (OsrMonster) {
+  Title! ~ "Draft Horse"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "None"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "35"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  Cost! = 40
+  | OsrMonster
+}
+
+RidingHorse (OsrMonster) {
+  Title! ~ "Riding Horse"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "2 × hoof (1d4)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  Cost! = 75
+  | OsrMonster
+}
+
+WarHorse (OsrMonster) {
+  Title! ~ "War Horse"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "2 × hoof (1d6)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "35"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  Cost! = 250
+  | OsrMonster
+}
+
+WildHorse (OsrMonster) {
+  Title! ~ "Wild Horse"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "2 × hoof (1d4)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d10x10
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Hydra (OsrMonster) {
+  Title! ~ "Hydra"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "5 to 12 (8hp per HD)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "5 to 12 × bite (1d10)"
+  THAC0! ~ "By HD (15 [+4] to 10 [+9])"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "By HD"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "175/275/450/50/900/900/1,100/1,100"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeB {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+InsectSwarm (OsrMonster) {
+  Title! ~ "Insect Swarm"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2 to 4 (9/13/18hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × swarm (2 or 4hp)"
+  THAC0! ~ "18 [+1]/17 [+2]/16 [+3]"
+  Movement! ~ "30’ (10’) / 60’ (20’) flying"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "11"
+  Alignment! ~ "Neutral"
+  XP! = "20/35/75"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+InvisibleStalkerMonster (OsrMonster) {
+  Title! ~ "Invisible Stalker (OsrMonster)"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "8* (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "1 × blow (4d4)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "1,200"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+KillerBee (OsrMonster) {
+  Title! ~ "Killer Bee"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "½* (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × sting (1d3 + poison + lodged stinger)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "150’ (50’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "6 (guard = 13"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 5d6
+  TreasureType! @ TreasureTypeHoney {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Kobold (OsrMonster) {
+  Title! ~ "Kobold"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "½ (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d4 or by weapon – 1)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "6 (8 with chieftain)"
+  Alignment! ~ "Chaotic"
+  XP! = "5 (bodyguard = 15, chieftain = 20)"
+  NumberAppearingRoaming! @ 4d4
+  NumberAppearingLair! @ 6d10
+  TreasureType! @ TreasureTypeP  {
+        MaxNumberAppearingRoaming = 18
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ HumanoidActivity
+  {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+LeechGiant (OsrMonster) {
+  Title! ~ "Giant Leech"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × bite (1d6 + blood drain)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Lich (OsrMonster) {
+  Title! ~ "Lich"
+  Intelligent! = True
+  ArmourClass! ~ "0 [19+]"
+  HitDiceText ~ "12"
+  ExHitDice! = 12
+  HitDiceRoll! = "10d8+2"
+  HitDice! = 10
+  Attacks! ~ "1 × touch, weapon or spell"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D8 W9 P8 B11 S8"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "1,490"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeG {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+CrystalLivingStatue (OsrMonster) {
+  Title! ~ "Crystal Living Statue"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "2 × blow (1d6)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "11"
+  Alignment! ~ "Lawful"
+  XP! = "35"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+IronLivingStatue (OsrMonster) {
+  Title! ~ "Iron Living Statue"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × blow (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "30’ (10’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "11"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+RockLivingStatue (OsrMonster) {
+  Title! ~ "Rock Living Statue"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "5** (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "2 × magma jet (2d6)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "11"
+  Alignment! ~ "Chaotic"
+  XP! = "425"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Draco (OsrMonster) {
+  Title! ~ "Draco"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4+2 (20hp)"
+  ExHitDice! = 4+2
+  HitDiceRoll! = "4d8+2"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (1d10)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "120’ (40’) / 210’ (70’) gliding"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeU  {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Gecko (OsrMonster) {
+  Title! ~ "Gecko"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "3+1 (14hp)"
+  ExHitDice! = 3+1
+  HitDiceRoll! = "3d8+1"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d10
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+HornedChameleon (OsrMonster) {
+  Title! ~ "Horned Chameleon"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "5* (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "1 × tongue/bite (2d4), 1 × horn (1d6), 1 × tail (knock down"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "300"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Tuatara (OsrMonster) {
+  Title! ~ "Tuatara"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "2 × claw (1d4)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+LizardMan (OsrMonster) {
+  Title! ~ "Lizard Man"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "2+1 (10hp)"
+  ExHitDice! = 2+1
+  HitDiceRoll! = "2d8+1"
+  HitDice! = 2
+  Attacks! ~ "1 × weapon (1d6+1 or by weapon + 1)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "60’ (20’) / 120’ (40’) in water"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 6d6
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DevilSwine (OsrMonster) {
+  Title! ~ "Devil Swine"
+  Intelligent! = True
+  ArmourClass! ~ "3 [16] (9 [10] in human form)"
+  HitDiceText ~ "9* (40hp)"
+  ExHitDice! = 9
+  HitDiceRoll! = "9d8"
+  HitDice! = 9
+  Attacks! ~ "1 × gore (2d6) or 1 × weapon (1d6 or by weapon) or 1 × magic (charm)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "180’ (60’) / 120’ (40’) in human form"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (9)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "1,600"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Werebear (OsrMonster) {
+  Title! ~ "Werebear"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17] (8 [11] in human form)"
+  HitDiceText ~ "6* (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "2 × claw (2d4), 1 × bite (2d8)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "500"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Wereboar (OsrMonster) {
+  Title! ~ "Wereboar"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15] (9 [10] in human form)"
+  HitDiceText ~ "4+1* (19hp)"
+  ExHitDice! = 4+1
+  HitDiceRoll! = "4d8+1"
+  HitDice! = 4
+  Attacks! ~ "1 × tusk/bite (2d6)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "200"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Wererat (OsrMonster) {
+  Title! ~ "Wererat"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12] (9 [10] in human form)"
+  HitDiceText ~ "3* (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (1d4) or 1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 2d8
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Weretiger (OsrMonster) {
+  Title! ~ "Weretiger"
+  Intelligent! = True
+  ArmourClass! ~ "3 [16] (9 [10] in human form)"
+  HitDiceText ~ "5* (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "2 × claw (1d6), 1 × bite (2d6)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "300"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Werewolf (OsrMonster) {
+  Title! ~ "Werewolf"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14] (9 [10] in human form)"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (2d4)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "125 (leader = 300)"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Manticore (OsrMonster) {
+  Title! ~ "Manticore"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "6+1 (28hp)"
+  ExHitDice! = 6+1
+  HitDiceRoll! = "6d8+1"
+  HitDice! = 6
+  Attacks! ~ "[2 × claw (1d4), 1 × bite (2d4)] or 6 × tail spike (1d6)"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "120’ (40’) / 180’ (60’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "350"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Mastodon (OsrMonster) {
+  Title! ~ "Mastodon"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "15 (67hp)"
+  ExHitDice! = 15
+  HitDiceRoll! = "15d8"
+  HitDice! = 15
+  Attacks! ~ "2 × tusk (2d6) or 1 × trample (4d8)"
+  THAC0! ~ "9 [+10]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "1,350"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d8
+  TreasureType! @ TreasureTypeTusks {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Medium (OsrMonster) {
+  Title! ~ "Medium"
+  Intelligent! = True
+  ArmourClass! ~ "9 [10]"
+  HitDiceText ~ "1** (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × dagger (1d4) or 1 × spell"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D13 W14 P13 B16 S15 (MU1)"
+  Morale! = "7"
+  Alignment! ~ "Any"
+  XP! = "16"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ MinionActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Medusa (OsrMonster) {
+  Title! ~ "Medusa"
+  Intelligent! = True
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "4** (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × snakebites (1d6 + poison)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "8"
+  Alignment! ~ "Chaotic"
+  XP! = "175"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeF {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Merchant (OsrMonster) {
+  Title! ~ "Merchant"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "Varies"
+  Alignment! ~ "Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d20
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Merman (OsrMonster) {
+  Title! ~ "Merman"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "10 (leader = 20/75)"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d20
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Mimic (OsrMonster) {
+  Title! ~ "Mimic"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "9* (40hp)"
+  ExHitDice! = 9
+  HitDiceRoll! = "9d8"
+  HitDice! = 9
+  Attacks! ~ "[1 × pseudopod (3d4)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "30’ (10’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "1,600"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 1
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  Activity! @ MimicActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Minotaur (OsrMonster) {
+  Title! ~ "Minotaur"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "[1 × gore (1d6), 1 × bite] or 1 × weapon (1d6 + 2 or by weapon + 2)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "275"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ OversizedHumanoidActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+
+Mule (OsrMonster) {
+  Title! ~ "Mule"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × kick (1d4) or 1 × bite (1d3)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Cost! = 30
+  | OsrMonster
+}
+
+Mummy (OsrMonster) {
+  Title! ~ "Mummy"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "5+1* (23hp)"
+  ExHitDice! = 5+1
+  HitDiceRoll! = "5d8+1"
+  HitDice! = 5
+  Attacks! ~ "1 × touch (1d12 + disease)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (5)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "400"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NeanderthalCaveman (OsrMonster) {
+  Title! ~ "Neanderthal"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × weapon (2d4 or by weapon + 1)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Lawful"
+  XP! = "20"
+  NumberAppearingRoaming! @ 1d10
+  NumberAppearingLair! @ 1d4x10
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 10
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Nixie (OsrMonster) {
+  Title! ~ "Nixie"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d4) or 1 × group spell (charm)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P13 B15 S15 (E1)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d20
+  TreasureType! @ TreasureTypeB {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Noble (OsrMonster) {
+  Title! ~ "Noble"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Any"
+  XP! = "35"
+  NumberAppearingRoaming! @ 2d6
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeV  {
+        MaxNumberAppearingRoaming = 12
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Nomad (OsrMonster) {
+  Title! ~ "Nomad"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12] to 4"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Any"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4x10
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalHuman (OsrMonster) {
+  Title! ~ "Human"
+  Intelligent! = True
+  ArmourClass! ~ "9 [10]"
+  HitDiceText ~ "½ (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "20 [–1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "6"
+  Alignment! ~ "Any"
+  XP! = "5"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d20
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+OchreJelly (OsrMonster) {
+  Title! ~ "Ochre Jelly"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "5* (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "1 × touch (2d6)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "30’ (10’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "300"
+  NumberAppearingRoaming! = 1
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+OctopusGiant (OsrMonster) {
+  Title! ~ "Giant Octopus"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "8 × tentacle (1d3 + constriction), 1 × bite (1d6)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "650"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d2
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Ogre (OsrMonster) {
+  Title! ~ "Ogre"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4+1 (19hp)"
+  ExHitDice! = 4+1
+  HitDiceRoll! = "4d8+1"
+  HitDice! = 4
+  Attacks! ~ "1 × club (1d10)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeC  {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ OversizedHumanoidActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Orc (OsrMonster) {
+  Title! ~ "Orc"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "6 (8 with leader)"
+  Alignment! ~ "Chaotic"
+  XP! = "10 (leader = 10)"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 1d6x10
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Activity! @ HumanoidActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+OwlBear (OsrMonster) {
+  Title! ~ "Owl Bear"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "5 (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "2 × claw (1d8), 1 × bite (1d8)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "175"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Pegasus (OsrMonster) {
+  Title! ~ "Pegasus"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2+2 (11hp)"
+  ExHitDice! = 2+2
+  HitDiceRoll! = "2d8+2"
+  HitDice! = 2
+  Attacks! ~ "2 × hoof (1d6)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "240’ (80’) / 480’ (160’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Lawful"
+  XP! = "25"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Piercer (OsrMonster) {
+  Title! ~ "Piercer"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "1 to 4 (4/9/13/19hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × drop (1d6 per HD)"
+  THAC0! ~ "By HD = 19 [0] to 16 [+3]"
+  Movement! ~ "10’ (3’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1 to 2)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "10/20/35/75"
+  NumberAppearingRoaming! @ 3d6
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Pirate (OsrMonster) {
+  Title! ~ "Pirate"
+  Intelligent! = True
+  ArmourClass! ~ "7 [12] or 5"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Chaotic"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeA {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Pixie (OsrMonster) {
+  Title! ~ "Pixie"
+  Intelligent! = True
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "1* (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × dagger (1d4)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "90’ (30’) / 180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P13 B15 S15 (E1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "13"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 1d4x10
+  TreasureType! @ TreasureTypeR  {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Pteranodon (OsrMonster) {
+  Title! ~ "Pteranodon"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "5 (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "1 × bite (1d12)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "240’ (80’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "175"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeV {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Pterodactyl (OsrMonster) {
+  Title! ~ "Pterodactyl"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × bite (1d3)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+PurpleWorm (OsrMonster) {
+  Title! ~ "Purple Worm"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "15* (67hp)"
+  ExHitDice! = 15
+  HitDiceRoll! = "15d8"
+  HitDice! = 15
+  Attacks! ~ "1 × bite (2d8), 1 × sting (1d8 + poison)"
+  THAC0! ~ "9 [+10]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "2,300"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantRat (OsrMonster) {
+  Title! ~ "Giant Rat"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "½ (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × bite (1d3 + disease)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’) / 60’ (20’) swimming"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "5"
+  NumberAppearingRoaming! @ 3d6
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 18
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Sound! = shriek
+  Activity! @ VerminActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalRat (OsrMonster) {
+  Title! ~ "Rat"
+  Intelligent! = False
+  ArmourClass! ~ "9 [10]"
+  HitDiceText ~ "1hp"
+  ExHitDice! = 1hp
+  HitDiceRoll! = "1d1"
+  HitDice! = 1
+  Attacks! ~ "1 × bite per pack (1d6 + disease)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’) / 30’ (10’) swimming"
+  SavingThrows! ~ "D14 W15 P16 B17 S18 (NH)"
+  Morale! = "5"
+  Alignment! ~ "Neutral"
+  XP! = "5"
+  NumberAppearingRoaming! @ 5d10
+  NumberAppearingLair! @ 2d10
+  TreasureType! @ TreasureTypeL {
+        MaxNumberAppearingRoaming = 50
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Sound! = shriek
+  Activity! @ VerminActivity {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Rhagodessa (OsrMonster) {
+  Title! ~ "Rhagodessa"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4+2 (20hp)"
+  ExHitDice! = 4+2
+  HitDiceRoll! = "4d8+2"
+  HitDice! = 4
+  Attacks! ~ "1 × sucker (grab), 1 × bite (2d8)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalRhinoceros (OsrMonster) {
+  Title! ~ "Rhinoceros"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × horn (2d4) or 1 × trample (2d8)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+WoollyRhinoceros (OsrMonster) {
+  Title! ~ "Woolly Rhinoceros"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "1 × horn (2d6) or 1 × trample (2d12)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "650"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+RobberFly (OsrMonster) {
+  Title! ~ "Robber Fly"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d8)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’) / 180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantRoc (OsrMonster) {
+  Title! ~ "Giant Roc"
+  Intelligent! = False
+  ArmourClass! ~ "0 [19]"
+  HitDiceText ~ "36 (162hp)"
+  ExHitDice! = 36
+  HitDiceRoll! = "36d8"
+  HitDice! = 36
+  Attacks! ~ "2 × claw (3d6), 1 × bite (8d6)"
+  THAC0! ~ "5 [+14]"
+  Movement! ~ "60’ (20’) / 480’ (160’) flying"
+  SavingThrows! ~ "D2 W3 P4 B3 S6 (18)"
+  Morale! = "10 (12 in lair)"
+  Alignment! ~ "Lawful"
+  XP! = "6,250"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeI {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+LargeRoc (OsrMonster) {
+  Title! ~ "Large Roc"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "12 (54hp)"
+  ExHitDice! = 12
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "2 × claw (1d8), 1 × bite (2d10)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "60’ (20’) / 480’ (160’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "9 (12 in lair)"
+  Alignment! ~ "Lawful"
+  XP! = "1,100"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeI {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SmallRoc (OsrMonster) {
+  Title! ~ "Small Roc"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "2 × claw (1d4+1), 1 × bite (2d6)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "60’ (20’) / 480’ (160’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8 (12 in lair)"
+  Alignment! ~ "Lawful"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeI {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+RockBaboon (OsrMonster) {
+  Title! ~ "Rock Baboon"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × club (1d6), 1 × bite (1d3)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! @ 2d6
+  NumberAppearingLair! @ 5d6
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 12
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+RustMonster (OsrMonster) {
+  Title! ~ "Rust Monster"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "5 (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "1 × feeler (rusting)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "175"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FlameSalamander (OsrMonster) {
+  Title! ~ "Flame Salamander"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "8* (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "2 × claw (1d4), 1 × bite (1d8), 1 × heat aura (1d8)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "1,200"
+  NumberAppearingRoaming! @ 1d4+1
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeF {
+        MaxNumberAppearingRoaming = 5
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FrostSalamander (OsrMonster) {
+  Title! ~ "Frost Salamander"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "12* (54hp)"
+  ExHitDice! = 12
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "4 × claw (1d6), 1 × bite (2d6), 1 × cold aura (1d8)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (12)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "1,900"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+ScorpionGiant (OsrMonster) {
+  Title! ~ "Giant Scorpion"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × claw (1d10), 1 × sting (1d4 + poison)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "11"
+  Alignment! ~ "Chaotic"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SeaSerpentLesser (OsrMonster) {
+  Title! ~ "Sea Serpent"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × bite (2d6) or 1 × squeeze (1d10 hull damage)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Shadow (OsrMonster) {
+  Title! ~ "Shadow"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2+2* (11hp)"
+  ExHitDice! = 2+2
+  HitDiceRoll! = "2d8+2"
+  HitDice! = 2
+  Attacks! ~ "1 × touch (1d4 + strength drain)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "35"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d12
+  TreasureType! @ TreasureTypeF {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+BullShark (OsrMonster) {
+  Title! ~ "Bull Shark"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (2d4) or 1 × ram (stun)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "20"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 3d6
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GreatWhiteShark (OsrMonster) {
+  Title! ~ "Great White Shark"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "1 × bite (2d10)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "650"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+MakoShark (OsrMonster) {
+  Title! ~ "Mako Shark"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (2d6)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+ShrewGiant (OsrMonster) {
+  Title! ~ "Giant Shrew"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "2 × bite (1d6)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "10"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Shrieker (OsrMonster) {
+  Title! ~ "Shrieker"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "3 (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "None"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "9’ (3’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "35"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! = 0
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Skeleton (OsrMonster) {
+  Title! ~ "Skeleton"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "10"
+  NumberAppearingRoaming! @ 3d4
+  NumberAppearingLair! @ 3d10
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 12
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+GiantRattler (OsrMonster) {
+  Title! ~ "Giant Rattler"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × bite (1d4 + poison)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+PitViper (OsrMonster) {
+  Title! ~ "Pit Viper"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d4 + poison)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+RockPython (OsrMonster) {
+  Title! ~ "Rock Python"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "5* (22hp)"
+  ExHitDice! = 5
+  HitDiceRoll! = "5d8"
+  HitDice! = 5
+  Attacks! ~ "1 × bite (1d4 + constriction)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "300"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SeaSnake (OsrMonster) {
+  Title! ~ "Sea Snake"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "3* (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (1hp + poison)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SpittingCobra (OsrMonster) {
+  Title! ~ "Spitting Cobra"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1* (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × spit (blindness) or 1 × bite (1d3 + poison)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "13"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Spectre (OsrMonster) {
+  Title! ~ "Spectre"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "6** (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × touch (1d8 + energy drain)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "150’ (50’) / 300’ (100’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "11"
+  Alignment! ~ "Chaotic"
+  XP! = "725"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+BlackWidow (OsrMonster) {
+  Title! ~ "Black Widow"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "3* (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × bite (2d6 + poison)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "60’ (20’) / 120’ (40’) in webs"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+CrabSpider (OsrMonster) {
+  Title! ~ "Crab Spider"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d8 + poison)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Tarantella (OsrMonster) {
+  Title! ~ "Tarantella"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (1d8 + poison)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d3
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeU {
+        MaxNumberAppearingRoaming = 3
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Sprite (OsrMonster) {
+  Title! ~ "Sprite"
+  Intelligent! = True
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "½* (2hp)"
+  ExHitDice! = ½
+  HitDiceRoll! = "1d4"
+  HitDice! = 1
+  Attacks! ~ "1 × spell (curse)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’) / 180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P13 B15 S15 (E1)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "6"
+  NumberAppearingRoaming! @ 3d6
+  NumberAppearingLair! @ 5d8
+  TreasureType! @ TreasureTypeS {
+        MaxNumberAppearingRoaming = 18
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SquidGiant (OsrMonster) {
+  Title! ~ "Giant Squid"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "8 × small tentacle (1d4 + constriction), 2 × large tentacle (1d4 + constriction or 1d10 hull damage), 1 × beak (1d10 or 2 hull damage)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeV {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Stegosaurus (OsrMonster) {
+  Title! ~ "Stegosaurus"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "11 (49hp)"
+  ExHitDice! = 11
+  HitDiceRoll! = "11d8"
+  HitDice! = 11
+  Attacks! ~ "1 × tail (2d8) or 1 × trample (2d8)"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "1,100"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Stirge (OsrMonster) {
+  Title! ~ "Stirge"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "1* (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × beak (1d3 + blood sucking)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "30’ (10’) / 180’ (60’) flying"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Neutral"
+  XP! = "13"
+  NumberAppearingRoaming! @ 1d10
+  NumberAppearingLair! @ 3d12
+  TreasureType! @ TreasureTypeL {
+        MaxNumberAppearingRoaming = 10
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  Sound! = screech
+  | OsrMonster
+}
+
+Thoul (OsrMonster) {
+  Title! ~ "Thoul"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "3** (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "2 × claw (1d3 + paralysis) or 1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "10"
+  Alignment! ~ "Chaotic"
+  XP! = "65"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d10
+  TreasureType! @ TreasureTypeC {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Titanothere (OsrMonster) {
+  Title! ~ "Titanothere"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "12 (54hp)"
+  ExHitDice! = 12
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "1 × butt (2d6) or 1 × trample (3d8)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "1,100"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+ToadGiant (OsrMonster) {
+  Title! ~ "Giant Toad"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2+2 (11hp)"
+  ExHitDice! = 2+2
+  HitDiceRoll! = "2d8+2"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d4+1)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "6"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Trader (OsrMonster) {
+  Title! ~ "Trader"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "1 (4hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d6 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "7"
+  Alignment! ~ "Any"
+  XP! = "10"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 3d6
+  TreasureType! @ TreasureTypeU  {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Treant (OsrMonster) {
+  Title! ~ "Treant"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "8 (36hp)"
+  ExHitDice! = 8
+  HitDiceRoll! = "8d8"
+  HitDice! = 8
+  Attacks! ~ "2 × fist (2d6)"
+  THAC0! ~ "12 [+7]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "9"
+  Alignment! ~ "Lawful"
+  XP! = "650"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeC {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Triceratops (OsrMonster) {
+  Title! ~ "Triceratops"
+  Intelligent! = False
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "11 (49hp)"
+  ExHitDice! = 11
+  HitDiceRoll! = "11d8"
+  HitDice! = 11
+  Attacks! ~ "1 × gore (3d6) or 1 × trample (3d6)"
+  THAC0! ~ "11 [+8]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "1,100"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Troglodyte (OsrMonster) {
+  Title! ~ "Troglodyte"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "Att 2 x claw (1d4), 1 x bite (1d4)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 5d8
+  TreasureType! @ TreasureTypeA {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Troll (OsrMonster) {
+  Title! ~ "Troll"
+  Intelligent! = True
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "6+3* (30hp)"
+  ExHitDice! = 6+3
+  HitDiceRoll! = "6d8+3"
+  HitDice! = 6
+  Attacks! ~ "2 × talon (1d6), 1 × bite (1d10)"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "10 (8 fear of fire)"
+  Alignment! ~ "Chaotic"
+  XP! = "650"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+TyrannosaurusRex (OsrMonster) {
+  Title! ~ "Tyrannosaurus Rex"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "20 (90hp)"
+  ExHitDice! = 20
+  HitDiceRoll! = "20d8"
+  HitDice! = 20
+  Attacks! ~ "1 × bite (6d6)"
+  THAC0! ~ "6 [+13]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (10)"
+  Morale! = "11"
+  Alignment! ~ "Neutral"
+  XP! = "2,000"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! = 1
+  TreasureType! @ TreasureTypeV  {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+  }
+  | OsrMonster
+}
+
+Unicorn (OsrMonster) {
+  Title! ~ "Unicorn"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "4* (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "2 × hoof (1d8), 1 × horn (1d8)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (8)"
+  Morale! = "7"
+  Alignment! ~ "Lawful"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Vampire (OsrMonster) {
+  Title! ~ "Vampire"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "7 to 9** (31/36/40hp)"
+  ExHitDice! = 7
+  HitDiceRoll! = "7d8"
+  HitDice! = 7
+  Attacks! ~ "1 × touch (1d10 + energy drain) or 1 × gaze (charm)"
+  THAC0! ~ "13 [+6]/12 [+7]/12 [+7]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D8 W9 P10 B10 S12 (7 to 9)"
+  Morale! = "11"
+  Alignment! ~ "Chaotic"
+  XP! = "1,250/1,750/2,300"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeF {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Veteran (OsrMonster) {
+  Title! ~ "Veteran"
+  Intelligent! = True
+  ArmourClass! ~ "2 [17]"
+  HitDiceText ~ "1 to 3 (4/9/13hp)"
+  ExHitDice! = 1
+  HitDiceRoll! = "1d8"
+  HitDice! = 1
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "19 [0]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (F1 to F3)"
+  Morale! = "9"
+  Alignment! ~ "Any"
+  XP! = "10/20/35"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 2d6
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+WarpBeast (OsrMonster) {
+  Title! ~ "Warp Beast"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "6* (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "2 × tentacle (2d4)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (6)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "500"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeD {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+FreshwaterTermite (OsrMonster) {
+  Title! ~ "Freshwater Termite"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "2+1 (10hp)"
+  ExHitDice! = 2+1
+  HitDiceRoll! = "2d8+1"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d4) or 1 × spray (stun)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "120’ (40’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SaltwaterTermite (OsrMonster) {
+  Title! ~ "Saltwater Termite"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "4 (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (1d6) or 1 × spray (stun)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "11"
+  Alignment! ~ "Neutral"
+  XP! = "75"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d6+1
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SwampTermite (OsrMonster) {
+  Title! ~ "Swamp Termite"
+  Intelligent! = False
+  ArmourClass! ~ "4 [15]"
+  HitDiceText ~ "1+1 (5hp)"
+  ExHitDice! = 1+1
+  HitDiceRoll! = "1d8+1"
+  HitDice! = 1
+  Attacks! ~ "1 × bite (1d3) or 1 × spray (stun)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "15"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+WeaselGiant (OsrMonster) {
+  Title! ~ "Giant Weasel"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "4+4 (22hp)"
+  ExHitDice! = 4+4
+  HitDiceRoll! = "4d8+4"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (2d4 + blood sucking)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeV {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+KillerWhale (OsrMonster) {
+  Title! ~ "Killer Whale"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "6 (27hp)"
+  ExHitDice! = 6
+  HitDiceRoll! = "6d8"
+  HitDice! = 6
+  Attacks! ~ "1 × bite (1d20)"
+  THAC0! ~ "14 [+5]"
+  Movement! ~ "240’ (80’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "10"
+  Alignment! ~ "Neutral"
+  XP! = "275"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeV {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Narwhal (OsrMonster) {
+  Title! ~ "Narwhal"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "12 (54hp)"
+  ExHitDice! = 12
+  HitDiceRoll! = "12d8"
+  HitDice! = 12
+  Attacks! ~ "1 × bite (1d8), 1 × horn (2d6)"
+  THAC0! ~ "10 [+9]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D6 W7 P8 B8 S10 (12)"
+  Morale! = "8"
+  Alignment! ~ "Lawful"
+  XP! = "1,100"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeHorn {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+SpermWhale (OsrMonster) {
+  Title! ~ "Sperm Whale"
+  Intelligent! = True
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "36 (162hp)"
+  ExHitDice! = 36
+  HitDiceRoll! = "36d8"
+  HitDice! = 36
+  Attacks! ~ "1 × bite (3d20) or 1 × ram (6d6 hull damage)"
+  THAC0! ~ "5 [+14]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D4 W5 P6 B5 S8 (15)"
+  Morale! = "7"
+  Alignment! ~ "Neutral"
+  XP! = "6,250"
+  NumberAppearingRoaming! = 0
+  NumberAppearingLair! @ 1d3
+  TreasureType! @ TreasureTypeV {
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Wight (OsrMonster) {
+  Title! ~ "Wight"
+  Intelligent! = False
+  ArmourClass! ~ "5 [14]"
+  HitDiceText ~ "3* (13hp)"
+  ExHitDice! = 3
+  HitDiceRoll! = "3d8"
+  HitDice! = 3
+  Attacks! ~ "1 × touch (energy drain)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "90’ (30’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (3)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "50"
+  NumberAppearingRoaming! @ 1d6
+  NumberAppearingLair! @ 1d8
+  TreasureType! @ TreasureTypeB {
+        MaxNumberAppearingRoaming = 6
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+DireWolf (OsrMonster) {
+  Title! ~ "Dire Wolf"
+  Intelligent! = False
+  ArmourClass! ~ "6 [13]"
+  HitDiceText ~ "4+1 (19hp)"
+  ExHitDice! = 4+1
+  HitDiceRoll! = "4d8+1"
+  HitDice! = 4
+  Attacks! ~ "1 × bite (2d4)"
+  THAC0! ~ "15 [+4]"
+  Movement! ~ "150’ (50’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "8"
+  Alignment! ~ "Neutral"
+  XP! = "125"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 2d4
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+NormalWolf (OsrMonster) {
+  Title! ~ "Wolf"
+  Intelligent! = False
+  ArmourClass! ~ "7 [12]"
+  HitDiceText ~ "2+2 (11hp)"
+  ExHitDice! = 2+2
+  HitDiceRoll! = "2d8+2"
+  HitDice! = 2
+  Attacks! ~ "1 × bite (1d6)"
+  THAC0! ~ "17 [+2]"
+  Movement! ~ "180’ (60’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "6 (8 in larger packs)"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 2d6
+  NumberAppearingLair! @ 3d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 12
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Wraith (OsrMonster) {
+  Title! ~ "Wraith"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "4** (18hp)"
+  ExHitDice! = 4
+  HitDiceRoll! = "4d8"
+  HitDice! = 4
+  Attacks! ~ "1 × touch (1d6 + energy drain)"
+  THAC0! ~ "16 [+3]"
+  Movement! ~ "120’ (40’) / 240’ (80’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "175"
+  NumberAppearingRoaming! @ 1d4
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 4
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Wyvern (OsrMonster) {
+  Title! ~ "Wyvern"
+  Intelligent! = False
+  ArmourClass! ~ "3 [16]"
+  HitDiceText ~ "7* (31hp)"
+  ExHitDice! = 7
+  HitDiceRoll! = "7d8"
+  HitDice! = 7
+  Attacks! ~ "1 × bite (2d8), 1 × sting (1d6 + poison)"
+  THAC0! ~ "13 [+6]"
+  Movement! ~ "90’ (30’) / 240’ (80’) flying"
+  SavingThrows! ~ "D10 W11 P12 B13 S14 (4)"
+  Morale! = "9"
+  Alignment! ~ "Chaotic"
+  XP! = "850"
+  NumberAppearingRoaming! @ 1d2
+  NumberAppearingLair! @ 1d6
+  TreasureType! @ TreasureTypeE {
+        MaxNumberAppearingRoaming = 2
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+YellowMould (OsrMonster) {
+  Title! ~ "Yellow Mould"
+  Intelligent! = False
+  ArmourClass! ~ "No hit roll required"
+  HitDiceText ~ "2* (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × spores (1d6 + choking)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "None"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (2)"
+  Morale! = "12"
+  Alignment! ~ "Neutral"
+  XP! = "25"
+  NumberAppearingRoaming! @ 1d8
+  NumberAppearingLair! @ 1d4
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}
+
+Zombie (OsrMonster) {
+  Title! ~ "Zombie"
+  Intelligent! = False
+  ArmourClass! ~ "8 [11]"
+  HitDiceText ~ "2 (9hp)"
+  ExHitDice! = 2
+  HitDiceRoll! = "2d8"
+  HitDice! = 2
+  Attacks! ~ "1 × weapon (1d8 or by weapon)"
+  THAC0! ~ "18 [+1]"
+  Movement! ~ "60’ (20’)"
+  SavingThrows! ~ "D12 W13 P14 B15 S16 (1)"
+  Morale! = "12"
+  Alignment! ~ "Chaotic"
+  XP! = "20"
+  NumberAppearingRoaming! @ 2d4
+  NumberAppearingLair! @ 4d6
+  TreasureType! @ TreasureTypeNone {
+        MaxNumberAppearingRoaming = 8
+        NumberAppearingRoaming = &NumberAppearingRoaming
+        NumberAppearingLair = &NumberAppearingLair
+    }
+  | OsrMonster
+}

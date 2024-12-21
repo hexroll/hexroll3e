@@ -1,0 +1,686 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Inn(Tavern) {
+  x_coords = 0
+  y_coords = 0
+  Name! @@ [
+    *(x1) InnName
+    *(x2) TavernName
+  ]
+  RealmUUID = :Realm.uuid
+  RealmType = :Realm.RealmType
+  RealmName = :Realm.Name
+  Realm = <% {{RealmName.Title}} %>
+  Breadcrumbs ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/realm/{{RealmUUID}}"> {{Realm}} </a>
+    </span>
+   %>
+  SettlementName! = :Hex.Region
+  TavernLocation! = "{{Realm}}"
+  | Tavern
+  Coords! = <%
+    <a class="map-coords" hex="{{HexLink}}" x="0" y="0" zoom="50"> </a>
+  %>
+}
+
+Encounter {
+  NeutralState @ [
+    * wandering
+    * sleeping
+    * foraging
+  ]
+  ChaoticState @ [
+    * lurking
+    * prowling
+    * scavenging
+    * wandering
+    * hiding
+    * sleeping
+  ]
+  Lair @ [
+    * a well-hidden cave
+    * an old abandoned copper mine
+    * an old forgotten gold mine
+    * the ruins of an abandoned stronghold
+    * the ruins of a forgotten keep
+    * the nearest dungeon
+  ]
+  EncounterName! ~ <%
+    {%if Monster.NumberAppearingLair==1%}{{capitalize(articlize(Monster.Title))}}
+    {%else%}{{Monster.Title}}s{%endif%}
+  %>
+  EncounterDesc! ~ <%
+    <strong>
+    {%if Monster.NumberAppearingLair==1%}{{capitalize(articlize(Monster.Title))}}</strong> is
+    {%else%}{{Monster.NumberAppearingLair}} {{Monster.Title}}s</strong> are{%endif%}
+    {%if Monster.Alignment=="Chaotic"%}{{ChaoticState}}
+    {%else%}{{NeutralState}}{%endif%}
+  %>
+  EncounterProbability! ~ <%
+    <p>
+    There’s a <strong>2-in-6</strong> chance of encountering
+    {%if Monster.NumberAppearingLair==1%}it{%if Monster.Activity and Monster.Activity%},  {{Monster.Activity.Wilderness}}{%endif%}.
+    {%else%}at least some of them outside{%if Monster.Activity and Monster.Activity%},  {{Monster.Activity.Wilderness}}{%endif%}
+    (the rest will be in their lair inside {{Lair}}).{%endif%}
+    </p>
+  %>
+  EncounterSupplemental! ~ <%
+    <p>
+    <strong>{{Monster.Title}}</strong> {{note_button(uuid)}}
+    {{note_container(uuid)}}
+    <hr/>
+    {{Monster.Stats}}
+    {%if Monster.NumberAppearingLair<10%}
+    <div class="hpmarks">{%for m in range(Monster.NumberAppearingLair)%}
+    {% for hp in range(stable_dice(Monster.HitDiceRoll, Monster.uuid, m)) %}<span class="hp-mark">&#x274F;</span>{%endfor%}<br/>{%endfor%}</div>
+    {%endif%}
+    <hr/>
+    {%if not Monster.TreasureType.Empty and (trim(Monster.TreasureType.Details))!=""%}
+    <ul><li>
+    <strong>Lair</strong> hoard (<strong>1-in-6</strong> base chance of finding if an encounter occured):
+    <ul>
+    {{Monster.TreasureType.Details}}
+    </ul>
+    </li></ul>
+    </p>
+    {%endif%}
+  %>
+  HexRegion = :Hex.Region
+  HexUUID = :Hex.uuid
+  Rumor @ EncounterRumor {
+    Monster = &Monster
+    Region = &HexRegion
+    HexUUID = &HexUUID
+    Details = "{{Desc}}"
+  }
+}
+
+EncounterRumor (RealmRumor) {
+  Monster = null
+  Region = null
+  HexUUID = null
+  DescIndex @ 1d5
+  Desc ~ <%
+    {% if DescIndex and DescIndex == 1 %}
+      I heard there’s <strong>{{articlize(Monster.Title)}}</strong> in
+      <a href="{{sandbox()}}/hex/{{HexUUID}}"><strong>{{Region}}</strong></a>.
+    {% elif DescIndex and DescIndex == 2 %}
+      <strong>{{capitalize(articlize(Monster.Title))}}</strong> was spotted in
+      <a href="{{sandbox()}}/hex/{{HexUUID}}"><strong>{{Region}}</strong></a>.
+    {% elif DescIndex and DescIndex == 3 %}
+      I think I saw <strong>{{articlize(Monster.Title)}}</strong> in
+      <a href="{{sandbox()}}/hex/{{HexUUID}}"><strong>{{Region}}</strong></a>.
+    {% elif DescIndex and DescIndex == 4 %}
+      Avoid going to <a href="{{sandbox()}}/hex/{{HexUUID}}"><strong>{{Region}}</strong></a>.
+      There’s <strong>{{articlize(Monster.Title)}}</strong> there.
+    {% else %}
+      There’s <strong>{{articlize(Monster.Title)}}</strong> somewhere in
+      <a href="{{sandbox()}}/hex/{{HexUUID}}"><strong>{{Region}}</strong></a>.
+    {% endif %}
+  %>
+  |RealmRumor
+}
+
+FeatureRumor (HexRumor) {
+  Region = null
+  HexUUID = null
+  Ref ~ <%<a href="{{sandbox()}}/hex/{{HexUUID}}"><strong>{{Region}}</strong></a>%>
+  | HexRumor
+}
+
+Portal {
+  Glow @ [
+    * blue
+    * red
+    * purple
+    * green
+  ]
+  UndesiredEffect @ [
+    * will teleport to a completely random hex instead
+    * will lose half of the character’s carried gold (roll per character)
+    * will change the character’s alignment (roll per character)
+    * will give the character donkey ears (roll per character)
+  ]
+  Name! = Portal
+  Description! ~ <There’s a magical portal to another hex>
+  Supplemental! ~ <%
+    The portal is a large slab of dark rock that has a seemingly hollow
+    arch-shaped stone gate on top.  There’s a strange {{Glow}} glow surrounding
+    it. Anyone or anything passing through the gate will get teleported into a
+    different hex (preselected by the referee), but there’s a 1-in-6 chance
+    that the portal {{UndesiredEffect}}.%>
+  HexRegion = :Hex.Region
+  HexUUID = :Hex.uuid
+  Rumor @ FeatureRumor {
+    Region = &HexRegion
+    HexUUID = &HexUUID
+    Details = "There's a wierd artifact in {{Ref}}"
+  }
+}
+
+
+Caravan { ^ [
+    * MerchantCaravan
+ ]
+}
+
+CaravanMerchant(Character) {
+  HostingEntity! = :Hex.uuid
+  | Character
+  RegionName! = :Hex.Region
+  URLExt! = "/location/{{HostingEntity}}/npc/{{uuid}}"
+  $IndexRef @ IndexedEntity {
+    Render = "Name"
+    RegionName = &RegionName
+    Details = "Caravan merchant from {{RegionName}}"
+    Anchor = &uuid
+    Link = &HostingEntity
+    Type = "location"
+    Full = ""
+    Search = "{{Full}}"
+    Icon = "user"
+  }
+}
+
+MerchantCaravan(Caravan) {
+  ^ [
+    * ArmorWeaponCaravan
+    * GrocerCaravan
+    * ToolsCaravan
+  ]
+  Merchant @ CaravanMerchant
+  Type @ [
+    * wooden
+    * canvas-covered
+    * heavily-shielded
+  ]
+  Color @ [
+    * red
+    * blue
+    * green
+    * golden
+    * silver
+    * black
+  ]
+  Description! ~ <%
+      <a class="npc-anchor" id="{{Merchant.uuid}}"></a>
+      <h5> {{reroller(Merchant, "", False)}} {{Merchant.Name.Full}}'s Caravan</h5>
+
+      <p>
+      This {{Type}} {{Color}}-colored wagon is owned by {{ Merchant.Description }}
+      {% if Merchant.Association %}
+      <ul>
+      {{Merchant.Association}}
+      </ul>
+      {% endif %}
+      </p>
+
+      {{Merchant.Name.First}} is offering the following items for sale:
+      <div class='condensed'></div>
+      <table><tr><th>Item</th><th>Price</th </tr>
+      {% for i in unique(Items,"class")%}
+      <tr>
+        <td>{{i.Title}}</td> <td>{{currency(i.Cost)}}</td>
+      </tr>
+      {% endfor %}
+      </table>
+  %>
+  HexRegion = :Hex.Region
+  HexUUID = :Hex.uuid
+  Rumor @ FeatureRumor {
+    Region = &HexRegion
+    HexUUID = &HexUUID
+    Details = "You can find some merchants traveling in {{Ref}}"
+  }
+}
+
+ArmorWeaponCaravan(MerchantCaravan) {
+  [5..10 Items] @ ArmorWeapon
+  | MerchantCaravan
+}
+
+GrocerCaravan(MerchantCaravan) {
+  [10..15 Items] @ Food
+  | MerchantCaravan
+}
+
+ToolsCaravan(MerchantCaravan) {
+  [10..15 Items] @ Tools
+  | MerchantCaravan
+}
+
+AdventurersCaravan {
+  | Caravan
+  Description! ~ <%
+    Adventurers
+  %>
+}
+
+CaravanCamp(Feature) {
+  HideRandomEncounters! = true
+  Name! = Caravan Camp
+  RegionName! = :Hex.Region
+  HexUUID! = :Hex.uuid
+  [3..6 caravans] @ Caravan
+  [6..6 rumors] % RealmRumor
+  [3..5 visitors] @ TavernVisitor {
+    HostingEntity := &HexUUID
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+    SettlementName = &RegionName
+  }
+  Description! ~ <%
+    Several caravans are circling a large camp fire
+  %>
+  Sounds @ [
+    * singin
+    * music
+    * shouting
+  ]
+  Supplemental! ~ <%
+    The sounds of {{Sounds}} can be heard from afar.
+
+    {% for c in caravans %}
+    {{c.Description}}
+    {% endfor %}
+
+    <h5> Around the Campfire </h5>
+    {%for v in visitors%}
+    <hr/>
+    {{reroller(v, "", False)}}
+    <a class="npc-anchor" id="{{v.uuid}}"></a> {{v.Description}}
+    {{v.Stats}}
+    {% if v.Association %}
+    <ul>
+    {{v.Association}}
+    </ul>
+    {% endif %}
+    {%endfor%}
+
+    <h5> Rumors </h5>
+    <table>
+    <tr> <th> d6 </th> <th> Rumor </th> </tr>
+    {% set counter = namespace(value=0) %}
+    {%for r in rumors%}
+    {% if trim(r.Details) != "" %}
+    {%set counter.value=counter.value+1%}
+    <tr> <td> {{counter.value}} </td> <td> {{begin_spoiler()}}{{r.Details}}{{end_spoiler()}} </td> </tr>
+    {% endif %}
+    {%endfor%}
+    </table>
+  %>
+}
+
+Artifact(Feature) {
+  Name! = Ancient Artifact
+  Description! @ [
+    * When exploring this area, a <strong>huge disc-shaped artifact</strong> made
+      of polished iron, with wierd geometrical engravings, can be found wedged
+    * When exploring this area, a <strong>giant triangular artifact</strong> made
+      of polished iron, with large pointy spears attached, can be found wedged
+  ]
+
+  Supplemental! ~ <%
+    <p>
+    There's a <strong>1-in-6</strong> chance to find a secret a door leading
+    inside the artifact and a successful <strong>INT</strong> check will allow
+    using a contraption inside it.
+    </p>
+    <p>
+    If used, the object will magically levitate and will travel <strong>1d6
+    hexes</strong> in a matter of minutes before crashing into the ground again,
+    dealing <strong>1d6 damage</strong> to anyone inside.
+    </p>
+  %>
+}
+
+
+
+Arena(Feature) {
+  HideRandomEncounters! = true
+  Name! = Fighting Arena
+  Description! @ [
+    * An improvised but crowded fighting arena stands
+    * There's a crowded fighting pit
+  ]
+
+  SettlementName = :Hex.Region
+  HexUUID = :Hex.uuid
+
+  JudgeAlignment @ [
+    * Neutral
+    * Chaotic
+  ]
+
+  Judge @ ArenaJudge {
+    Alignment = &JudgeAlignment
+    HostingEntity := &HexUUID
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+    SettlementName = &SettlementName
+  }
+
+  [3..10 contestants] @ ArenaContestant {
+    HostingEntity := &HexUUID
+    URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+    SettlementName = &SettlementName
+    Alignment @ [
+      * Lawful
+      * Neutral
+      * Chaotic
+    ]
+  }
+
+  RewardGoldBase @ 100d4
+
+  Supplemental! ~ <%
+    A melee fighting contest takes place here and there's
+    a trophy for the winner.
+
+    <h5> Rules </h5>
+    <ul>
+    <li> One vs one only</li>
+    <li> No magic of any kind is allowed </li>
+    <li> Lawful can only fight Chaotic</li>
+    <li> Neutral can fight Neutral and Chaotic </li>
+    <li> Chaotic can fight anyone </li>
+    </ul>
+    </p>
+
+    <h5> Trophy </h5>
+    <p>
+    <strong>{{currency(RewardGoldBase * length(contestants))}}</strong> will be awarded to the winner.
+    </p>
+
+    <h5> Contestants </h5>
+    {% for c in contestants %}
+    <hr/>
+    {{reroller(c, "", False)}}
+    <a class="npc-anchor" id="{{c.uuid}}"></a> {{c.Description}}
+    {{c.Stats}}
+    {% if c.Association %}
+    <ul>
+    {{c.Association}}
+    </ul>
+    {% endif %}
+    <div class="hpmarks">
+    {% for hp in range(int(c.HitPoints)) %}<span class="hp-mark">&#x274F</span>{%endfor%}<br/>
+    </div>
+    {% endfor %}
+    <hr/>
+    <br/>
+
+    <h5> Judge </h5>
+    <hr/>
+    {{reroller(Judge, "", False)}}
+    <a class="npc-anchor" id="{{Judge.uuid}}"></a> {{Judge.Description}}
+    {{Judge.Stats}}
+    {% if Judge.Association %}
+    <ul>
+    {{Judge.Association}}
+    </ul>
+    {% endif %}
+  %>
+
+  HexRegion = :Hex.Region
+  HexUUID = :Hex.uuid
+  Rumor @ FeatureRumor {
+    Region = &HexRegion
+    HexUUID = &HexUUID
+    Details = "You can make some money by fighting a contest in {{Ref}}"
+  }
+
+}
+
+
+Graveyard (Feature){
+  HideRandomEncounters! = true
+  Name! = Graveyard
+  Description! @ [
+    * An ancient crumbling graveyard is hidden
+    * Dozens of old and aged tombstones stand hidden
+  ]
+  Monster @@ [
+    * MonsterUndeadTier1
+    * MonsterUndeadTier2
+  ]
+
+  Supplemental! ~ <%
+    There'a a <strong>1-in-6</strong> chance that {{reroller(Monster, "", False)}}<strong>{{plural_with_count(Monster.NumberAppearingLair,Monster.Title)}}</strong> will
+    rise up from the graves if staying here overnight, or <strong>3-in-6</strong> chance if digging up the graves:
+
+    <p>
+    <strong>{{Monster.Title}}</strong> {{note_button(uuid)}}
+    {{note_container(uuid)}}
+    <hr/>
+
+    {{Monster.Stats}}
+
+    {%if Monster.NumberAppearingLair<10%}
+    <div class="hpmarks">{%for m in range(Monster.NumberAppearingLair)%}
+    {% for hp in range(stable_dice(Monster.HitDiceRoll, Monster.uuid, m)) %}<span class="hp-mark">&#x274F;</span>{%endfor%}<br/>{%endfor%}</div>
+    {%endif%}
+
+    <hr/>
+
+    {%if not Monster.TreasureType.Empty and (trim(Monster.TreasureType.Details))!=""%}
+    <ul><li>
+    <strong>Hoard</strong> inside the graves:
+    <ul>
+    {{Monster.TreasureType.Details}}
+    </ul>
+    </li></ul>
+    </p>
+    {%endif%}
+  %>
+}
+
+Watchtower (Feature){
+  Name! = Watchtower
+  Description! @ [
+    * The ruins of an ancient watchtower are
+    * There’s an old abandoned watchtower
+    * There's a recently built but seemingly unstaffed watchtower
+  ]
+  Supplemental! = ""
+}
+
+CaravansPark (Feature){
+  Name! = CaravansPark
+  Description! ~ <There’s a colourful and noisy caravans park>
+  Supplemental! = ""
+}
+
+BridgeEncounter {
+  Desc! ~ <%
+    {{Motive}} {%if Monster.NumberAppearingLair==1%} <strong>{{Monster.Title}}</strong>
+    {%else%}<strong>{{Monster.Title}}s</strong>{%endif%}
+
+    <hr/>
+
+    {{Monster.Stats}}
+    {%if Monster.NumberAppearingLair<10 and Monster.HitDice<6%}
+
+
+    <div class="hpmarks">{%for m in range(Monster.NumberAppearingLair)%}
+    <sub>{% for hp in range(stable_dice(Monster.HitDiceRoll, Monster.uuid, m)) %}&#x274F;{%endfor%}</sub><br/>{%endfor%}</div>
+    {%endif%}
+
+    <hr/>
+
+    {%if not Monster.TreasureType.Empty%}
+      <p>
+      <ul><li>
+      <strong>Lair</strong> hoard (if found through tracking, deception or any other reasonable way):
+      <ul>
+      {{Monster.TreasureType.Details}}
+      </ul>
+      </li></ul>
+      </p>
+    {%endif%}
+    %>
+  Supplemental! = ""
+}
+
+BridgeTroll (BridgeEncounter){
+  Motive @ [
+    * an extortionist
+    * a hungry
+    * a greedy
+  ]
+  Monster! @ BridgeMonsterTroll {
+      NumberAppearingLair = 1
+  }
+  | BridgeEncounter
+}
+
+BridgeOgre (BridgeEncounter){
+  Motive @ [
+    * a hungry
+    * a deranged
+  ]
+  Monster! @ BridgeMonsterOgre {
+      NumberAppearingLair = 1
+  }
+  | BridgeEncounter
+}
+
+BridgeThugs (BridgeEncounter){
+  Motive @ [
+    * thieving
+    * murderous
+    * brutal
+    * violent
+  ]
+  Monster! @ BridgeMonsterThugs
+  | BridgeEncounter
+}
+
+BridgeUnguarded (BridgeEncounter){
+  Motive! = none
+  Monster! = none
+  | BridgeEncounter
+  Desc! = none
+}
+
+Bridge (Feature){
+  Name! = Bridge
+  Description! @ [
+    * There’s a half-broken stone bridge
+    * There’s a recently built wooden bridge
+    * There’s a dangerous looking rope bridge
+  ]
+  GuardedBy @@ [
+    * BridgeTroll
+    * BridgeOgre
+    *(x3) BridgeThugs
+    *(x5) BridgeUnguarded
+  ]
+  Supplemental! ~ <% {%if GuardedBy.Monster%}<ul><li>The bridge is guarded by {{GuardedBy.Desc}}</li></ul>{%endif%} %>
+}
+
+AbandonedVillage (Feature){
+  Name! = Abandoned Village
+  Description! @ [
+    * The burned remains of a small village can be found
+    * There's a recently abandoned village
+  ]
+  Supplemental! = ""
+}
+
+Altar (Feature){
+  Name! = Altar
+  Description! @ [
+    * The crumbling ruins of an ancient altar can be found
+  ]
+  Supplemental! = ""
+}
+
+SignalingTower(Feature) {
+  Name! = Signaling Tower
+  Description! @ [
+    * There’s a stone-made signaling tower
+    * There’s a wood-made signaling tower
+  ]
+  Supplemental! @ [
+    * Finding the tower will eliminate any risk of getting lost in this region.
+  ]
+}
+
+Wagons (Feature){
+  Name! = Wagons
+  Number @ [
+    * three
+    * four
+    * five
+    * six
+  ]
+  Description! @ [
+    * There are {{Number}} abandoned and half-broken wagons
+    * {{capitalize(Number)}} wagons were abandoned and looted
+    * {{capitalize(Number)}} heavily damaged wagons were left to decay
+  ]
+  Supplemental! = ""
+}
+
+DeadAdventurers (Feature){
+  Name! = Dead Adventurers
+  Number @ [
+    * three
+    * four
+    * five
+    * six
+  ]
+  Description! @ [
+    * The bodies of {{Number}} dead adventurers were thrown to rot
+    * {{capitalize(Number)}} unfortunate adventurers met their death
+  ]
+  Supplemental! = ""
+}
+
+SacrificialSite(Feature) {
+  Name! = Sacrificial Grounds
+  Subject @ [
+    * human
+    * animal
+    * and unrecognizable
+  ]
+  Description! ~ <There's a sacrificial site with burnt {{Subject}} remains>
+  Supplemental! = ""
+}
+
+DeadMonster (Feature){
+  FeatureMonster = none
+  Name! = <Dead {{FeatureMonster.Title}} Remains>
+  Description! @ [
+    * The headless remains of {{articlize(FeatureMonster.Title)}} can be found
+    * The headless rotting remains of a beheaded {{FeatureMonster.Title}} can be found
+    * The chopped head of {{articlize(FeatureMonster.Title)}} was left to rot
+    * The brutalized remains of {{articlize(FeatureMonster.Title)}} were left to rot
+  ]
+  Supplemental! = ""
+}

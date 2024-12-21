@@ -1,0 +1,124 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+minimum_number_of_regions = 6
+maximum_number_of_regions = 12
+
+mountains_probability= 3
+forest_probability= 5
+desert_probability= 1
+plains_probability= 4
+jungle_probability= 0
+swamps_probability= 2
+tundra_probability= 0
+
+minimum_number_of_settlements= 6
+maximum_number_of_settlements= 9
+cities_probability= 2
+towns_probability= 3
+villages_probability= 3
+minimum_number_of_dwellings= 7
+maximum_number_of_dwellings= 11
+house_probability= 2
+stronghold_probability= 3
+minimum_number_of_inns= 3
+maximum_number_of_inns= 6
+minimum_number_of_dungeons= 6
+maximum_number_of_dungeons= 9
+tombs_probability= 1
+temples_probability= 1
+caves_probability= 1
+minimum_number_of_factions= 3
+maximum_number_of_factions= 5
+cults_probability= 1
+militias_probability= 1
+syndicates_probability= 1
+wandering_monsters_max_hd= 4
+treasure_factor= 1
+
+RealmExtension {
+  Prescript! ~ ""
+  Postscript! ~ ""
+}
+
+Realm {
+  ^ [
+  * RuledRealm
+  * UnruledRealm
+  ]
+
+  Title! ` "The {{RealmType.Title}} of {{Name.Title}}"
+
+  << Plant
+  << Shard
+
+  << HexRumor
+  << RealmRumor
+  << Character
+  << Residency
+  << Settlement
+  << Tavern
+  << FactionLair
+  << DungeonTreasureTier3
+  << MissingPersonQuestCell
+  << QuestTreasureHiding
+  << Hex
+  << LostItemMagical
+  << Castle
+  toc! << TocEntry
+
+  [$minimum_number_of_regions..$maximum_number_of_regions regions] @ Region
+
+  HexLink = "Realm"
+
+
+    Breadcrumbs! ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+    </span>
+    %>
+
+
+    <metadata%
+      <a class="map-coords" zoom="0.5"> </a>
+    %metadata>
+
+    <header%
+      <div hidden id="doc-title">
+      {{Title}}
+      </div>
+      <h4 id="title">
+      <span id="editable-title" data-attr="Title" data-map-label="true">{{Title}}</span>
+      {{Breadcrumbs}}
+      </h4>
+    %header>
+
+    <body%
+      {{Extension.Prescript}}
+      {{Description}}
+      {{Extension.Postscript}}
+    %body>
+}

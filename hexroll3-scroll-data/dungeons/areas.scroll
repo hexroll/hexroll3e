@@ -1,0 +1,274 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+RoomType {
+  ^ [
+    * RoomTypePantry
+    *(x2) RoomTypeShrine
+    * RoomTypeLibrary
+    * RoomTypeTortureChamber
+    * RoomTypeCrypt
+    * RoomTypeLaboratory
+  ]
+  Several @ [
+    * three or four
+    * four or five
+    * five or six
+  ]
+}
+
+RoomTypePantry {
+  | RoomType
+  Title!= Pantry
+  Preface! @ [
+    *(x2) It is dark and damp here
+    *(x2) You hear the sound of water dripping down
+    *(x2) This area is dark and cold
+    *(x2) This area stinks from excrements
+    *(x2) The air in this area is dense and misty
+    *(x2) There are stains of what seems to be blood all over the place
+    *(x2) Dense spiderwebs cover the corners of the room
+    *(x2) Countless creepy crawlies all over rush back into the darkness
+    *(x3) This area was likely used as a pantry
+    *(x3) This place was likely used to store food in the past
+    *(x3) A few small rats, so it seems, scurried back into hiding
+    *(x3) Smashed wooden boxes litter boundaries
+    *(x3) Torn and empty grain bags are scattered all around
+    *(x3) Old and rotting food remains are stacked in several piles
+    *(x3) {{capitalize(Several)}} small hay bales are stacked here
+    *(x3) Empty storage crates are thrown all over
+    *(x3) Assorted dusty bottles and jars are stored inside recessed shalves
+  ]
+}
+  
+RoomTypeShrine {
+  | RoomType
+  Title! @ [
+    * Shrine
+    * Ceremonial Chamber
+  ]
+  Preface! @ [
+    *(x2) It is dark and damp here
+    *(x2) You hear the sound of water dripping down
+    *(x2) This area is dark and cold
+    *(x2) This area stinks from excrements
+    *(x2) The air in this area is dense and misty
+    *(x2) Dense spiderwebs cover the corners of the room
+    *(x2) Countless creepy crawlies all over rush back into the darkness
+    *(x3) Large symbols and letters were painted all over the place
+    *(x3) Countless humanoid skulls “decorate” the boundaries
+    *(x3) A large pentagram was painted here
+    *(x3) A small wooden altar is placed here
+    *(x3) An engraved stone altar is placed here
+    *(x3) An altar decorated with horned demons figurines stands here
+    *(x3) An altar decorated with winged women figurines stands here
+    *(x3) A decorated ceremonial stone was placed here
+    *(x3) A red-painted ceremonial totem stands here
+    *(x3) A red-painted ceremonial straw-doll is hanging from above
+    *(x3) Countless melted candles cover the place
+    *(x3) {{capitalize(Several)}} old quern stones lay around here
+  ]
+}
+
+   
+RoomTypeLibrary {
+  | RoomType
+  Title! = Library
+  Preface! @ [
+    *(x2) It is dark and damp here
+    *(x2) You hear the sound of water dripping down
+    *(x2) This area is dark and cold
+    *(x2) This area stinks from excrements
+    *(x2) The air in this area is dense and misty
+    *(x2) Dense spiderwebs cover the corners of the room
+    *(x2) Countless creepy crawlies all over rush back into the darkness
+    *(x3) This room was likely used as a library in the past
+    *(x3) Numerous fragments of torn paper are scattered all over the place
+    *(x3) Tall shelves made of rotting wood are fixtured here
+    *(x3) There are numerous scroll storage cavities
+    *(x3) There is an old reading stand made of rotting wood here
+    *(x3) Dense inscriptions are inked everywhere
+    *(x3) Dense runes are carved everywhere
+    *(x3) There are several reading alcoves here
+  ]
+}
+   
+RoomTypeTortureChamber {
+  | RoomType
+  Title! = Torture Chamber
+  Preface! @ [
+    *(x2) It is dark and damp here
+    *(x2) You hear the sound of water dripping down
+    *(x2) This area is dark and cold
+    *(x2) This area stinks from excrements
+    *(x2) The air in this area is dense and misty
+    *(x2) There are stains of what seems to be blood all over the place
+    *(x2) Dense spiderwebs cover the corners of the room
+    *(x2) Countless creepy crawlies all over rush back into the darkness
+    *(x3) This place seems to be an old dungeon cell
+    *(x3) This place seems to have been used for torturing
+    *(x3) {{capitalize(Several)}} wooden racks were fixtured here
+    *(x3) Various torturing devices are fixtured here
+    *(x3) Pieces of humanoid skeletons are chained down from above
+    *(x3) An oversized wooden rack with shackles is fixtured here
+    *(x3) Rusting iron cages with inward spikes are hanging from above
+    *(x3) Chains and shackles are fixtured all around
+  ]
+}
+   
+RoomTypeCrypt {
+  | RoomType
+  Title! = Crypt
+
+  Material @ [
+    * stone-made
+    * bronze-made
+    * wooden
+    * marble
+  ]
+  
+  Preface! @ [
+    *(x2) It is dark and damp here
+    *(x2) You hear the sound of water dripping down
+    *(x2) This area is dark and cold
+    *(x2) This area stinks from excrements
+    *(x2) There are stains of what seems to be blood all over the place
+    *(x2) The air in this area is dense and misty
+    *(x2) Dense spiderwebs cover the corners of the room
+    *(x2) Countless creepy crawlies all over rush back into the darkness
+    *(x3) {{capitalize(Several)}} half-broken sarcophagi are laying here
+    *(x3) An unsealed {{Material}} sarcophagus is laying here
+    *(x3) A sealed {{Material}} sarcophagus is laying here
+    *(x3) An oversized {{Material}} sarcophagus is laying open here
+    *(x3) An oversized {{Material}} sarcophagus is laying bare here
+    *(x3) {{capitalize(Several)}} crumbling coffins are scattered here to rot
+    *(x3) {{capitalize(Several)}} rotting wooden coffins were smashed here
+    *(x3) An oversized wooden coffin was smashed to pieces here
+    *(x3) The strong foul smell of rotting flesh is unavoidable
+    *(x3) There are about a dozen body-sized alcoves here
+    *(x3) Various embalming tools are hanging beside strips of linen
+  ]
+}
+   
+RoomTypeLaboratory {
+  | RoomType
+  Title! = Laboratory
+  Preface! @ [
+    *(x2) It is dark and damp here
+    *(x2) You hear the sound of water dripping down
+    *(x2) This area is dark and cold
+    *(x2) This area stinks from excrements
+    *(x2) There are stains of what seems to be blood all over the place
+    *(x2) The air in this area is dense and misty
+    *(x2) Dense spiderwebs cover the corners of the room
+    *(x2) Countless creepy crawlies all over rush back into the darkness
+    *(x3) Broken vials and beakers are scattered all over the place
+    *(x3) {{capitalize(Several)}} cauldrons were placed on top of stone-made blocks
+    *(x3) Broken glass is scattered under tipped-over wooden shelves
+    *(x3) Preserved organs in glass jars are placed inside wall cavities
+    *(x3) Deformed humanoid skulls are displayed inside recessed shelves
+    *(x3) Various minerals and stone samples are placed on recessed shelves
+    *(x3) Assorted dusty bottles and jars are stored inside recessed shalves
+    *(x3) Torn and bloody canvas curtains partition the area
+    *(x3) Worn and bloody leather curtains partition the area
+    *(x3) Various cutting tools are hanging beside strips of linen
+  ]
+}
+   
+RoomTypeCeremonial {
+  | RoomType
+  Title! = Ceremonial Chamber
+  Preface! @ [
+    * It is dark and damp here
+    * You hear the sound of water dripping down
+    * This area is dark and cold
+    * This area stinks from excrements
+    * There are stains of what seems to be blood all over the place
+    * The air in this area is dense and misty
+    * Dense spiderwebs cover the corners of the room
+    * Countless creepy crawlies all over rush back into the darkness
+    * Large symbols and letters were painted all over the place
+    * Countless humanoid skulls “decorate” the boundaries here
+    * A large pentagram was painted here
+    * A small wooden altar is located at the center of this room
+  ]
+}
+
+CaveType {
+  ^ [
+    * CaveTypeChamber
+    * CaveTypeRoom
+    * CaveTypeCavern
+    * CaveTypeHall
+    * CaveTypeGrotto
+    * CaveTypeDig
+  ]
+  Preface! @ [
+    * It is dark and damp here
+    * You hear the sound of water dripping down
+    * This area is dark and cold
+    * The flowstone on the ground shimmers through the darkness
+    * This area stinks from excrements
+    * The air in this area is dense and misty
+    * There are stains of what seems to be blood on the ground
+    * Dense spiderwebs cover the stalactites and stalagmites
+    * Dense spiderwebs are stretched between cave columns
+    * The cave earth here makes the ground feel sticky
+    * This area is covered with egg-like cave blisters
+    * Pools of dark sludge are scattered all over the place
+    * Oversized fossilised mushrooms are covering this area
+    * Fossils of underwater creatures decorate the formations here
+  ]
+}
+
+CaveTypeChamber(CaveType) {
+  | CaveType
+  Title! = Chamber
+}
+
+CaveTypeRoom(CaveType) {
+  | CaveType
+  Title! = Cave Room
+}
+
+CaveTypeCavern(CaveType) {
+  | CaveType
+  Title! = Cavern
+}
+
+CaveTypeHall(CaveType) {
+  | CaveType
+  Title! = Cave Hall
+}
+
+CaveTypeGrotto(CaveType) {
+  | CaveType
+  Title! = Grotto
+}
+
+CaveTypeDig(CaveType) {
+  | CaveType
+  Title! = Cave Dig
+}

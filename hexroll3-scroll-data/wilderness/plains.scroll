@@ -1,0 +1,113 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Plains {
+  Name! = Plains
+  Supplemental! @ [
+    * There are several large craters in the green fields here. Something
+      violent must have hit the ground from the sky in the past.
+
+    * Crushed skulls and rusty swords are scattered around the hills here. 
+      You can almost hear the noises and screams of the ancient battlefield.
+
+    * A tall stone tower fell and now lay crushed on the ground. A few small
+      bunnies run and hide under its stone bricks.
+
+    * A violent earthquake left the ground here broken with deep and narrow
+      chasms. If listening carefully, one can hear eerie sounds coming from 
+      deep inside.
+
+    * Several large geysers discharge boiling streams of water and vapour every few
+      minutes.
+
+    * A vast field of colourful flowers covers the shallow hills here. Butterflies
+      and bees hop from flower to flower.
+
+    * There’s a perfect circle of large stones, each standing tall above
+      the ground. In the center, a shallow pit seems to have hosted a bonfire not
+      too long ago.
+
+    * A pile of stones form a pyramid of steps, tall enough to provide a better
+      vantage point over the region. At the top, a rusty old sword is planted 
+      blade first inside the ground.
+
+    * The grasslands here are lush and green, but every now and then there's a
+      perfectly dug cubic pit in the mud, much like a fresh and ready grave.
+
+    * Giant iron shrapnel, as big as tree trunks, erect from the ground every
+      hundred feet or so. It is as if they fell down from the sky.
+
+    * Carcasses of farm animals are scattered around, some in worse shape than
+      others. Swarms of flies are hovering over them like dark veils in the wind.
+
+    * A small lake sits between the lush green hills here. At night, countless
+      mysterious forms glow an eerie blue light in its deep water.
+
+    * A small lake sits between the black rocky hills here, its water darker
+      than night. Some dead fish are floating near its banks.
+  ]
+
+  Location! @ [
+    * in a valley
+    * at the top of a hill
+    * between two hills
+    * on a hill’s slope
+    * on the terraced hills
+    * in the grasslands
+    * atop a rocky hill
+  ]
+
+  Hideout! @ [
+    * behind a waterfall
+    * under the ruins of an old fortress
+    * inside an oak
+  ]
+}
+
+PlainsRandomEncounterTable {
+  [4..4 OtherEncounters!] @ PlainsRandomEncounter
+}
+
+PlainsHex (Hex) {
+  Terrain! @ Plains
+  Monster! @ PlainsFeatureEncounter
+  RandomEncounters @ PlainsRandomEncounterTable
+  ExtensionTypeClass = "PlainsHexExtension"
+  | Hex
+}
+
+PlainsRegion (Region) {
+  Suffix @ [
+    * Plains
+    * Prairie
+    * Steppe
+    * Meadows
+    * Fields
+  ]
+  | Region
+  Weather? @ NormalWeatherContainer
+  [$minimum_tiles_per_plains_region..$maximum_tiles_per_plains_region Hexmap?] @ PlainsHex
+}
+

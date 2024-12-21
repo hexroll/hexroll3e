@@ -1,0 +1,102 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Hut {
+  Name! = Hut
+  Motivation! @ [
+    * hiding here as a fugitive
+    * living in solitude here
+  ]
+}
+
+Cottage {
+  Name! = Cottage
+  Motivation! @ [
+    * finding refuge from the world
+    * seeking solitude from others
+    * spending retirement here 
+    * looking for some peace and quiet
+  ]
+}
+
+Farmhouse {
+  Name! = Farmhouse
+  Motivation! @ [
+    * trying to sustain independently here
+    * growing a unique specie of smoking-pipe leaves
+  ]
+}
+
+House (Residency){
+  Prefix @ [
+    * aging
+    * well-maintained
+    * decorated
+    * barricaded
+  ]
+  Encounter = "Yes"
+  Type! @@ [
+    * Hut
+    * Cottage
+    * Farmhouse
+  ]
+
+  Population = 1
+
+  HexLink = :Hex.uuid
+  HexRegion = :Hex.Region
+  Resident! @@ [
+    * Character
+  ]~{
+    HostingEntity := &HexLink
+    URLExt = "/location/{{HostingEntity}}"
+    SettlementName = &HexRegion
+  }
+
+  Quest @ [
+    * Feeling someone or something is lurking around the {{Type.Name}}
+    * Hearing strange noises at night and fearing someone or something will raid the {{Type.Name}}
+  ]
+
+  Details! =<%
+    <ul><li>
+    {{Resident.Name.First}} {{Resident.Gender.BeVerb}} {{Type.Motivation}}.
+
+    {{capitalize(Resident.Gender.PronounSubject)}} {{Resident.Gender.Possession}} {{Resident.Appearance}}
+    (<em>{{Resident.State}}</em>). {{Resident.InThePocket.Details}}
+
+    <ul>
+    {%if Resident.Association%}{{Resident.Association}}{%endif%}
+    {%if Resident.Story2%}{{Resident.Story2.Description}}{%endif%}
+    <li>
+      {{Quest}}.
+    </li>
+    </ul>
+    </li>
+    </ul>
+    %>
+  | Residency
+}
+

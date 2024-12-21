@@ -1,0 +1,55 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+[package]
+name = "hexroll3-testbed"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.82"
+chrono = "0.4.39"
+console_error_panic_hook = "0.1.7"
+dirs = "5.0.1"
+eframe = "0.29.1"
+egui = {version = "0.29.1", default-features = false}
+egui-file-dialog = "0.7.0"
+egui_extras = { version = "0.29.1", features = ["all_loaders"] }
+egui_json_tree = "0.8.0"
+hexroll3-scroll = { path = "../hexroll3-scroll" }
+html5ever = "0.29.0"
+image = { version = "0.25", features = ["jpeg", "png"] }
+log = "0.4.22"
+path-tree = "0.8.1"
+serde = "1.0.216"
+serde_json = "1.0.133"
+wasm-bindgen = "0.2.99"
+web-sys = { version = "0.3.76", features = ["Window", "Document", "HtmlElement", "Text"] }
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"

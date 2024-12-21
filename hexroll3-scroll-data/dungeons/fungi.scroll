@@ -1,0 +1,58 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonFungi {
+  Foreshadow! = none
+  Hint! @ [
+    * Faint colourful light is emitting from everywhere
+    * There’s also a colourful glow emitting from the ground
+  ]
+
+  Quantity @ [
+    * a few
+    * a few dozen of
+    * countless
+    ]
+
+  Effect @ [
+      * might be severely <strong>poisoned</strong> (<strong>1d4 of damage</strong> until a successful saving throw per turn)
+      *(x3) will be <strong>paralyzed</strong> with mind twisting hallucinations for <strong>1d6 turns</strong>
+      *(x4) will suffer a severe stomach ache and a <strong>-2 penalty</strong> to attack rolls for <strong>1d6 turns</strong>
+    ]
+
+  PotionEffect @ RandomPotion
+
+  Description! @ [
+    * {{capitalize(Quantity)}} green and purple bioluminescent mushrooms are
+      growing from cracks in the ground. Anyone consuming them {{Effect}}
+    * There are {{Quantity}} colourful bioluminescent mushrooms growing from
+      cracks in the ground. Anyone consuming these {{Effect}}
+    * {{capitalize(Quantity)}} blue, red and yellow bioluminescent mushrooms
+      are growing from cracks in the ground. Anyone consuming them {{Effect}}
+    * There are {{Quantity}} colourful bioluminescent mushrooms growing from
+      cracks in the ground. Anyone consuming these will gain the same
+      effect as if they consumed {{articlize(PotionEffect.Description)}}
+      ]
+}

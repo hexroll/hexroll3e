@@ -1,0 +1,1908 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+# This document contains Open Game Content, subject to the Open Game License,
+# released un the Open Game License, Version 1.0a (enclosed in the LICENSE
+# file), as described in Section 1(d) of the License.
+#
+ kClericSpellLevel1 = [
+        * Cure Light Wounds (Cause Lt. Wounds)
+        * Detect Evil
+        * Detect Magic
+        * Light (Darkness)
+        * Protection from Evil
+        * Purify Food and Water
+        * Remove Fear (Cause Fear)
+        * Resist Cold ]
+
+
+ kClericSpellLevel2 = [
+        * Bless (Blight)
+        * Find Traps
+        * Hold Person
+        * Know Alignment
+        * Resist Fire
+        * Silence 15’ Radius
+        * Snake Charm
+        * Speak with Animals ]
+
+ kClericSpellLevel3 = [
+        * Continual Light (Continual Darkness)
+        * Cure Disease (Cause Disease)
+        * Growth of Animal
+        * Locate Object
+        * Remove Curse (Curse)
+        * Striking
+]
+
+ kClericSpellLevel4 = [
+    * Create Water
+    * Cure Serious Wounds (Cause Sr. Wounds)
+    * Neutralize Poison
+    * Protection from Evil 10’ Radius
+    * Speak with Plants
+    * Sticks to Snakes
+]
+
+ kClericSpellLevel5 = [
+    * Commune
+    * Create Food
+    * Dispel Evil
+    * Insect Plague
+    * Quest (Remove Quest)
+    * Raise Dead (Finger of Death)
+]
+
+ kMagicuserSpellLevel1 = [
+        * Charm Person
+        * Detect Magic
+        * Floating Disc
+        * Hold Portal
+        * Light (Darkness)
+        * Magic Missile
+        * Protection from Evil
+        * Read Languages
+        * Read Magic
+        * Shield
+        * Sleep
+        * Ventriloquism
+]
+
+ kMagicuserSpellLevel2 = [
+        * Continual Light (Continual Darkness)
+        * Detect Evil
+        * Detect Invisible
+        * ESP
+        * Invisibility
+        * Knock
+        * Levitate
+        * Locate Object
+        * Mirror Image
+        * Phantasmal Force
+        * Web
+        * Wizard Lock
+]
+
+ kMagicuserSpellLevel3 = [
+        * Clairvoyance
+        * Dispel Magic
+        * Fire Ball
+        * Fly
+        * Haste
+        * Hold Person
+        * Infravision
+        * Invisibility 10’ Radius
+        * Lightning Bolt
+        * Protection from Evil 10’ Radius
+        * Protection from Normal Missiles
+        * Water Breathing
+]
+
+ kMagicuserSpellLevel4 = [
+        * Charm Monster
+        * Confusion
+        * Dimension Door
+        * Growth of Plants
+        * Hallucinatory Terrain
+        * Massmorph
+        * Polymorph Others
+        * Polymorph Self
+        * Remove Curse (Curse)
+        * Wall of Fire
+        * Wall of Ice
+        * Wizard Eye
+]
+
+ kMagicuserSpellLevel5 = [
+        * Animate Dead
+        * Cloudkill
+        * Conjure Elemental
+        * Contact Higher Plane
+        * Feeblemind
+        * Hold Monster
+        * Magic Jar
+        * Pass-Wall
+        * Telekinesis
+        * Teleport
+        * Transmute Rock to Mud (Mud to Rock)
+        * Wall of Stone
+]
+
+kMagicuserSpellLevel6 = [
+        * Anti-Magic Shell
+        * Control Weather
+        * Death Spell
+        * Disintegrate
+        * Geas (Remove Geas)
+        * Invisible Stalker
+        * Lower Water
+        * Move Earth
+        * Part Water
+        * Projected Image
+        * Reincarnation
+        * Stone to Flesh (Flesh to Stone)
+]
+
+kPrimaryAttribute = [
+        * 10
+        * 11
+        * 12
+        * 13
+        * 14
+        * 15
+        * 16
+        * 17
+        * 18 ]
+
+kSecondaryAttribute = [
+    * 6
+    * 7
+    * 8
+    * 9
+    * 10
+    * 11
+    * 12
+    * 13
+    * 14
+    * 15
+    * 16
+]
+
+kLesserAttribute = [
+   * 3
+   * 4
+   * 5
+   * 6
+   * 7
+   * 8
+   * 9
+   * 10
+   * 11
+   * 12
+   * 13
+   * 14
+]
+
+ArmorClass {
+  NPC_DEX = :NPC.DEX
+  Format! ~ <%
+    {%if NPC_DEX < 4 %}
+    {{AC + 3}} [{{AAC * 3}}] {{Text}}
+    {%elif NPC_DEX >= 4 and NPC_DEX <= 5 %}
+    {{AC + 2}} [{{AAC * 2}}] {{Text}}
+    {%elif NPC_DEX >=6 and NPC_DEX <=8 %}
+    {{AC + 1}} [{{AAC * 1}}] {{Text}}
+    {%elif NPC_DEX >=13 and NPC_DEX <=15 %}
+    {{AC * 1}} [{{AAC + 1}}] {{Text}}
+    {%elif NPC_DEX >=16 and NPC_DEX <=17 %}
+    {{AC * 2}} [{{AAC + 2}}] {{Text}}
+    {%elif NPC_DEX >17 %}
+    {{AC * 3}} [{{AAC + 3}}] {{Text}}
+    {%else%}
+    {{AC}} [{{AAC}}] {{Text}}
+    {%endif%} %>
+}
+
+NoArmor (ArmorClass){
+  Text = Unarmored
+  AC = 9
+  AAC = 10
+  | ArmorClass
+}
+
+
+LeatherArmor (ArmorClass) {
+  Text = Leather armor
+  AC = 7
+  AAC = 12
+  | ArmorClass
+}
+
+
+LeatherArmorWithShield (ArmorClass) {
+  Text = Leather armor + Shield
+  AC = 6
+  AAC = 13
+  | ArmorClass
+}
+
+
+ChainmailArmor (ArmorClass) {
+  Text = Chainmail armor
+  AC = 5
+  AAC = 14
+  | ArmorClass
+}
+
+
+ChainmailArmorWithShield (ArmorClass) {
+  Text = Chainmail armor + Shield
+  AC = 4
+  AAC = 15
+  | ArmorClass
+}
+
+
+PlatemailArmor (ArmorClass) {
+  Text = Plate-mail armor
+  AC = 3
+  AAC = 16
+  | ArmorClass
+}
+
+
+PlatemailArmorWithShield (ArmorClass) {
+  Text= Plate-mail armor + Shield
+  AC= 2
+  AAC= 17
+  | ArmorClass
+}
+
+
+NPC (Character) {
+  | Character
+  Profession! = none
+  $IndexRef @ IndexedEntity {
+    Render = "Name"
+    Details = <%A level {{Level}} {{Class}}{{maybe2(", the ", Profession)}} {{maybe2("from ",capitalize(SettlementName))}}%>
+    Anchor = &uuid
+    Link = &HostingEntity
+    Type = "location"
+    Full = ""
+    Search = "{{Full}}"
+    Icon = "user"
+  }
+  Description! ~ <%
+    <strong>{{Name.Full}}</strong>, a level {{Level}} {{Class}}.{{note_button(uuid)}}
+    {{DescriptionInscript}}
+    {{capitalize(Gender.PronounSubject)}} {{Gender.Possession}} {{Appearance}}
+    <em>({{State}})</em>. {{InThePocket.Details}}
+    {{note_container(uuid)}}
+    {{DescriptionPostscript}}
+  %>
+  Alignment = Neutral
+
+  Spells = ""
+  CON_modifier ~ <%
+    {% if int(CON) < 4 %} -3
+    {% elif int(CON) < 6 %} -2
+    {% elif int(CON) < 9 %} -1
+    {% elif int(CON) < 13 %} 0
+    {% elif int(CON) < 16 %} 1
+    {% elif int(CON) < 18 %} 2
+    {%else %} 3
+    {% endif %}
+  %>
+  HitPoints! = <%{{max(HP+int(CON_modifier)*HDRolls, 1)}}%>
+  Stats! ~ <%
+    <strong>Armour Class</strong> {{Armor.Format}}
+    <strong>Hit Points:</strong> {{max(HP+int(CON_modifier)*HDRolls, 1)}}
+    <strong>Attacks:</strong> 1 × {{Weapon.Title}} ({{Weapon.Damage}}) {%if Spell1 %}or 1 × spell {%endif%}
+    <strong>THAC0:</strong> {{THAC0}}
+    <strong>Movement Rate:</strong> 90' (30')
+    <strong>Saves:</strong> {{SavingThrows}}
+    <strong>Alignment:</strong> {{Alignment}}
+    <strong>STR:</strong> {{STR}} <strong>INT:</strong> {{INT}} <strong>WIS:</strong> {{WIS}}
+    <strong>DEX:</strong> {{DEX}} <strong>CON:</strong> {{CON}} <strong>CHA:</strong> {{CHA}}
+    <br/>
+    {% set Spells = [Spell1, Spell2, Spell3, Spell4, Spell5, Spell6, Spell7, Spell8, Spell9,
+                      Spell10,Spell11, Spell12, Spell13, Spell14, Spell15, Spell16, Spell17,
+                      Spell18, Spell19, Spell20, Spell21, Spell22, Spell23, Spell24, Spell25]
+                      | reject('undefined') | list |  count_identical %}
+    {% if Spells | list | length > 0 %} <strong>Spells:</strong> {% endif %}
+    {% for Spell in Spells | sort %} &#10022; {{Spells[Spell] ~ ' &times;' if Spells[Spell]>1}} {{Spell}}
+    {% endfor %}
+    %>
+}
+
+Magicuser (NPC) {
+  INT @ $kPrimaryAttribute
+  CON @ $kPrimaryAttribute
+  DEX @ $kSecondaryAttribute
+  WIS @ $kSecondaryAttribute
+  CHA @ $kLesserAttribute
+  STR @ $kLesserAttribute
+
+  Class! = "Magic-user"
+  Armor @ NoArmor
+
+  Weapon @ Dagger
+
+  Feature2 @ [
+    * long, skinny fingers
+    * a star tattooed on the forehead
+    * a nose ring
+    * a nose ring decorated with a skull
+    * a nose ring decorated with a star
+    * long black robe
+    * long crimson robe
+    * decorated book linked to a strap around the chest
+    * an oversized pointy hat made of dark leather
+    ]
+  | NPC
+
+}
+
+
+MagicuserLevel1 (Magicuser) {
+  Level! = 1
+  HD = "1d4"
+  HDRolls = 1
+  THAC0 = < 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 1d4
+  Spell1 @ $kMagicuserSpellLevel1
+  | Magicuser
+}
+
+
+MagicuserLevel2 (Magicuser){
+  Level! = 2
+  HD = "2d4"
+  HDRolls = 2
+  THAC0 = < 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 2d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  | Magicuser
+}
+
+MagicuserLevel3 (Magicuser){
+  Level! = 3
+  HD = "3d4"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 3d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  | Magicuser
+}
+
+MagicuserLevel4 (Magicuser){
+  Level! = 4
+  HD = "4d4"
+  HDRolls = 4
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 4d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  Spell4 @ $kMagicuserSpellLevel2
+  | Magicuser
+}
+
+MagicuserLevel5 (Magicuser){
+  Level! = 5
+  HD = "5d4"
+  HDRolls = 5
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 5d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel3
+  | Magicuser
+}
+
+MagicuserLevel6 (Magicuser){
+  Level! = 6
+  HD = "6d4"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D11 W12 P11 B14 S12
+  HP @ 6d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel3
+  Spell6 @ $kMagicuserSpellLevel3
+  | Magicuser
+}
+
+MagicuserLevel7 (Magicuser){
+  Level! = 7
+  HD = "7d4"
+  HDRolls = 7
+  THAC0 =< 17 [+2] >
+  SavingThrows = D11 W12 P11 B14 S12
+  HP @ 7d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel3
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel4
+  | Magicuser
+}
+
+MagicuserLevel8 (Magicuser){
+  Level! = 8
+  HD = "8d4"
+  HDRolls = 8
+  THAC0 =< 17 [+2] >
+  SavingThrows = D11 W12 P11 B14 S12
+  HP @ 8d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel4
+  Spell10 @ $kMagicuserSpellLevel4
+  | Magicuser
+}
+
+MagicuserLevel9 (Magicuser){
+  Level! = 9
+  HD = "9d4"
+  HDRolls = 9
+  THAC0 =< 17 [+2] >
+  SavingThrows = D11 W12 P11 B14 S12
+  HP @ 9d4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel4
+  Spell11 @ $kMagicuserSpellLevel4
+  Spell12 @ $kMagicuserSpellLevel5
+  | Magicuser
+}
+
+MagicuserLevel10 (Magicuser){
+  Level! = 10
+  HD = "9d4+1"
+  HDRolls = 9
+  THAC0 =< 17 [+2] >
+  SavingThrows = D11 W12 P11 B14 S12
+  HP @ 9d4+1
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel4
+  Spell11 @ $kMagicuserSpellLevel4
+  Spell12 @ $kMagicuserSpellLevel4
+  Spell13 @ $kMagicuserSpellLevel5
+  Spell14 @ $kMagicuserSpellLevel5
+  | Magicuser
+}
+
+MagicuserLevel11 (Magicuser){
+  Level! = 11
+  HD = "9d4+2"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P8 B11 S8
+  HP @ 9d4+2
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel1
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel2
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel3
+  Spell11 @ $kMagicuserSpellLevel4
+  Spell12 @ $kMagicuserSpellLevel4
+  Spell13 @ $kMagicuserSpellLevel4
+  Spell14 @ $kMagicuserSpellLevel5
+  Spell15 @ $kMagicuserSpellLevel5
+  Spell16 @ $kMagicuserSpellLevel6
+  | Magicuser
+}
+
+MagicuserLevel12 (Magicuser){
+  Level! = 12
+  HD = "9d4+3"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P8 B11 S8
+  HP @ 9d4+3
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel1
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel2
+  Spell8 @ $kMagicuserSpellLevel2
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel3
+  Spell11 @ $kMagicuserSpellLevel3
+  Spell12 @ $kMagicuserSpellLevel4
+  Spell13 @ $kMagicuserSpellLevel4
+  Spell14 @ $kMagicuserSpellLevel4
+  Spell15 @ $kMagicuserSpellLevel5
+  Spell16 @ $kMagicuserSpellLevel5
+  Spell17 @ $kMagicuserSpellLevel5
+  Spell18 @ $kMagicuserSpellLevel6
+  Spell19 @ $kMagicuserSpellLevel6
+  | Magicuser
+}
+
+MagicuserLevel13 (Magicuser){
+  Level! = 13
+  HD = "9d4+4"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P8 B11 S8
+  HP @ 9d4+4
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel1
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel2
+  Spell8 @ $kMagicuserSpellLevel2
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel3
+  Spell11 @ $kMagicuserSpellLevel3
+  Spell12 @ $kMagicuserSpellLevel3
+  Spell13 @ $kMagicuserSpellLevel4
+  Spell14 @ $kMagicuserSpellLevel4
+  Spell15 @ $kMagicuserSpellLevel4
+  Spell16 @ $kMagicuserSpellLevel5
+  Spell17 @ $kMagicuserSpellLevel5
+  Spell18 @ $kMagicuserSpellLevel5
+  Spell19 @ $kMagicuserSpellLevel6
+  Spell20 @ $kMagicuserSpellLevel6
+  Spell21 @ $kMagicuserSpellLevel6
+  | Magicuser
+}
+
+MagicuserLevel14 (Magicuser){
+  Level! = 14
+  HD = "9d4+5"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P8 B11 S8
+  HP @ 9d4+5
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel1
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel2
+  Spell8 @ $kMagicuserSpellLevel2
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel3
+  Spell11 @ $kMagicuserSpellLevel3
+  Spell12 @ $kMagicuserSpellLevel3
+  Spell13 @ $kMagicuserSpellLevel4
+  Spell14 @ $kMagicuserSpellLevel4
+  Spell15 @ $kMagicuserSpellLevel4
+  Spell16 @ $kMagicuserSpellLevel4
+  Spell17 @ $kMagicuserSpellLevel5
+  Spell18 @ $kMagicuserSpellLevel5
+  Spell19 @ $kMagicuserSpellLevel5
+  Spell20 @ $kMagicuserSpellLevel6
+  Spell21 @ $kMagicuserSpellLevel6
+  Spell22 @ $kMagicuserSpellLevel6
+  | Magicuser
+}
+
+Fighter (NPC) {
+  Class! = Fighter
+  STR @ $kPrimaryAttribute
+  DEX @ $kPrimaryAttribute
+  CON @ $kSecondaryAttribute
+  CHA @ $kSecondaryAttribute
+  WIS @ $kLesserAttribute
+  INT @ $kLesserAttribute
+  Armor @@ [
+        * LeatherArmor
+        * ChainmailArmor
+        * PlatemailArmor
+        * LeatherArmorWithShield
+        * ChainmailArmorWithShield
+        * PlatemailArmorWithShield
+  ]
+  Weapon @@ [
+        * BattleAxe
+        * Club
+        * CrossBow
+        * Dagger
+        * HandAxe
+        * Javelin
+        * Lance
+        * LongBow
+        * Mace
+        * Polearm
+        * ShortBow
+        * ShortSword
+        * SilverDagger
+        * Sling
+        * Spear
+        * Staff
+        * Sword
+        * TwoHandedSword
+        * Warhammer
+  ]
+  Feature2 @ [
+    * a strong, muscular physique
+    * a deep scar on the right arm
+    * a broken nose
+    * a big nose-ring
+    * a missing middle-finger
+  ]
+  | NPC
+}
+
+FighterLevel1 (Fighter){
+  Level! = 1
+  HD = "1d8"
+  HDRolls = 1
+  THAC0 =< 19 [0] >
+  SavingThrows = D12 W13 P14 B15 S16
+  HP @ 1d8
+  | Fighter
+}
+
+FighterLevel2 (Fighter){
+  Level! = 2
+  HD = "2d8"
+  HDRolls = 2
+  THAC0 =< 19 [0] >
+  SavingThrows = D12 W13 P14 B15 S16
+  HP @ 2d8
+  | Fighter
+}
+
+FighterLevel3 (Fighter){
+  Level! = 3
+  HD = "3d8"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D12 W13 P14 B15 S16
+  HP @ 3d8
+  | Fighter
+}
+
+FighterLevel4 (Fighter){
+  Level! = 4
+  HD = "4d8"
+  HDRolls = 4
+  THAC0 =< 17 [+2] >
+  SavingThrows = D10 W11 P12 B13 S14
+  HP @ 4d8
+  | Fighter
+}
+
+FighterLevel5 (Fighter){
+  Level! = 5
+  HD = "5d8"
+  HDRolls = 5
+  THAC0 =< 17 [+2] >
+  SavingThrows = D10 W11 P12 B13 S14
+  HP @ 5d8
+  | Fighter
+}
+
+FighterLevel6 (Fighter){
+  Level! = 6
+  HD = "6d8"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D10 W11 P12 B13 S14
+  HP @ 6d8
+  | Fighter
+}
+
+FighterLevel7 (Fighter){
+  Level! = 7
+  HD = "7d8"
+  HDRolls = 7
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P10 B10 S12
+  HP @ 7d8
+  | Fighter
+}
+
+FighterLevel8 (Fighter){
+  Level! = 8
+  HD = "8d8"
+  HDRolls = 8
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P10 B10 S12
+  HP @ 8d8
+  | Fighter
+}
+
+FighterLevel9 (Fighter){
+  Level! = 9
+  HD = "9d8"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P10 B10 S12
+  HP @ 9d8
+  | Fighter
+}
+
+FighterLevel10 (Fighter){
+  Level! = 10
+  HD = "9d8+2"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D6 W7 P8 B8 S10
+  HP @ 9d8+2
+  | Fighter
+}
+
+FighterLevel11 (Fighter){
+  Level! = 11
+  HD = "9d8+4"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D12 W13 P14 B15 S16
+  HP @ 9d8+4
+  | Fighter
+}
+
+FighterLevel12 (Fighter){
+  Level! = 12
+  HD = "9d8+6"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D6 W7 P8 B8 S10
+  HP @ 9d8+6
+  | Fighter
+}
+
+FighterLevel13 (Fighter){
+  Level! = 13
+  HD = "9d8+8"
+  HDRolls = 9
+  THAC0 =< 10 [+9] >
+  SavingThrows = D4 W5 P6 B5 S8
+  HP @ 9d8+8
+  | Fighter
+}
+
+FighterLevel14 (Fighter){
+  Level! = 14
+  HD = "9d8+10"
+  HDRolls = 9
+  THAC0 =< 10 [+9] >
+  SavingThrows = D4 W5 P6 B5 S8
+  HP @ 9d8+10
+  | Fighter
+}
+
+Cleric (NPC) {
+  Class! = Cleric
+  WIS @ $kPrimaryAttribute
+  STR @ $kSecondaryAttribute
+  CON @ $kSecondaryAttribute
+  INT @ $kSecondaryAttribute
+  DEX @ $kLesserAttribute
+  CHA @ $kLesserAttribute
+  Armor @@ [
+        * LeatherArmor
+        * ChainmailArmor
+        * PlatemailArmor
+        * LeatherArmorWithShield
+        * ChainmailArmorWithShield
+        * PlatemailArmorWithShield
+  ]
+  Weapon @@ [
+        * Club
+        * Mace
+        * Sling
+        * Staff
+        * Warhammer
+  ]
+  Feature2 @ [
+    * long, skinny fingers
+    * a holy symbol tattooed on the forehead
+    * a nose ring
+    * strong-looking hands
+  ]
+  | NPC
+}
+
+ClericLevel1 (Cleric) {
+  Level! = 1
+  HD = "1d6"
+  HDRolls = 1
+  THAC0 =< 19 [0] >
+  SavingThrows = D11 W12 P14 B16 S15
+  HP @ 1d6
+  | Cleric
+}
+
+ClericLevel2 (Cleric) {
+  Level! = 2
+  HD = "2d6"
+  HDRolls = 2
+  THAC0 =< 19 [0] >
+  SavingThrows = D11 W12 P14 B16 S15
+  HP @ 2d6
+  Spell1 @ $kClericSpellLevel1
+  | Cleric
+}
+
+ClericLevel3 (Cleric) {
+  Level! = 3
+  HD = "3d6"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D11 W12 P14 B16 S15
+  HP @ 3d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  | Cleric
+}
+
+ClericLevel4 (Cleric) {
+  Level! = 4
+  HD = "4d6"
+  HDRolls = 4
+  THAC0 =< 19 [0] >
+  SavingThrows = D11 W12 P14 B16 S15
+  HP @ 4d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel2
+  | Cleric
+}
+
+ClericLevel5 (Cleric) {
+  Level! = 5
+  HD = "5d6"
+  HDRolls = 5
+  THAC0 =< 17 [+2] >
+  SavingThrows = D9 W10 P12 B14 S12
+  HP @ 5d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel2
+  Spell4 @ $kClericSpellLevel2
+  | Cleric
+}
+
+ClericLevel6 (Cleric) {
+  Level! = 6
+  HD = "6d6"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D9 W10 P12 B14 S12
+  HP @ 6d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel2
+  Spell4 @ $kClericSpellLevel2
+  Spell5 @ $kClericSpellLevel3
+  Spell6 @ $kClericSpellLevel4
+  | Cleric
+}
+
+ClericLevel7 (Cleric) {
+  Level! = 7
+  HD = "7d6"
+  HDRolls = 7
+  THAC0 =< 17 [+2] >
+  SavingThrows = D9 W10 P12 B14 S12
+  HP @ 7d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel2
+  Spell4 @ $kClericSpellLevel2
+  Spell5 @ $kClericSpellLevel3
+  Spell6 @ $kClericSpellLevel3
+  Spell7 @ $kClericSpellLevel4
+  Spell8 @ $kClericSpellLevel5
+  | Cleric
+}
+
+ClericLevel8 (Cleric) {
+  Level! = 8
+  HD = "8d6"
+  HDRolls = 8
+  THAC0 =< 17 [+2] >
+  SavingThrows = D9 W10 P12 B14 S12
+  HP @ 8d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel2
+  Spell5 @ $kClericSpellLevel2
+  Spell6 @ $kClericSpellLevel2
+  Spell7 @ $kClericSpellLevel3
+  Spell8 @ $kClericSpellLevel3
+  Spell9 @ $kClericSpellLevel4
+  Spell10 @ $kClericSpellLevel4
+  Spell11 @ $kClericSpellLevel5
+  | Cleric
+}
+
+ClericLevel9 (Cleric) {
+  Level! = 9
+  HD = "9d6"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D6 W7 P9 B11 S9
+  HP @ 9d6
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel2
+  Spell5 @ $kClericSpellLevel2
+  Spell6 @ $kClericSpellLevel2
+  Spell7 @ $kClericSpellLevel3
+  Spell8 @ $kClericSpellLevel3
+  Spell9 @ $kClericSpellLevel3
+  Spell10 @ $kClericSpellLevel4
+  Spell11 @ $kClericSpellLevel4
+  Spell12 @ $kClericSpellLevel5
+  Spell13 @ $kClericSpellLevel5
+  | Cleric
+}
+
+ClericLevel10 (Cleric) {
+  Level! = 10
+  HD = "9d6+1"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D6 W7 P9 B11 S9
+  HP @ 9d6+1
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel1
+  Spell5 @ $kClericSpellLevel2
+  Spell6 @ $kClericSpellLevel2
+  Spell7 @ $kClericSpellLevel2
+  Spell8 @ $kClericSpellLevel2
+  Spell9 @ $kClericSpellLevel3
+  Spell10 @ $kClericSpellLevel3
+  Spell11 @ $kClericSpellLevel3
+  Spell12 @ $kClericSpellLevel4
+  Spell13 @ $kClericSpellLevel4
+  Spell14 @ $kClericSpellLevel4
+  Spell15 @ $kClericSpellLevel5
+  Spell16 @ $kClericSpellLevel5
+  | Cleric
+}
+
+ClericLevel11 (Cleric) {
+  Level! = 11
+  HD = "9d6+2"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D6 W7 P9 B11 S9
+  HP @ 9d6+2
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel1
+  Spell5 @ $kClericSpellLevel2
+  Spell6 @ $kClericSpellLevel2
+  Spell7 @ $kClericSpellLevel2
+  Spell8 @ $kClericSpellLevel2
+  Spell9 @ $kClericSpellLevel3
+  Spell10 @ $kClericSpellLevel3
+  Spell11 @ $kClericSpellLevel3
+  Spell12 @ $kClericSpellLevel3
+  Spell13 @ $kClericSpellLevel4
+  Spell14 @ $kClericSpellLevel4
+  Spell15 @ $kClericSpellLevel4
+  Spell16 @ $kClericSpellLevel5
+  Spell17 @ $kClericSpellLevel5
+  | Cleric
+  Spell18 @ $kClericSpellLevel5
+
+}
+
+ClericLevel12 (Cleric) {
+  Level! = 12
+  HD = "9d6+3"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D6 W7 P9 B11 S9
+  HP @ 9d6+3
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel1
+  Spell5 @ $kClericSpellLevel1
+  Spell6 @ $kClericSpellLevel2
+  Spell7 @ $kClericSpellLevel2
+  Spell8 @ $kClericSpellLevel2
+  Spell9 @ $kClericSpellLevel2
+  Spell10 @ $kClericSpellLevel2
+  Spell11 @ $kClericSpellLevel3
+  Spell12 @ $kClericSpellLevel3
+  Spell13 @ $kClericSpellLevel3
+  Spell14 @ $kClericSpellLevel3
+  Spell15 @ $kClericSpellLevel4
+  Spell16 @ $kClericSpellLevel4
+  Spell17 @ $kClericSpellLevel4
+  Spell18 @ $kClericSpellLevel4
+  Spell19 @ $kClericSpellLevel5
+  Spell20 @ $kClericSpellLevel5
+  | Cleric
+  Spell21 @ $kClericSpellLevel5
+
+}
+
+ClericLevel13 (Cleric) {
+  Level! = 13
+  HD = "9d6+4"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D3 W5 P7 B8 S7
+  HP @ 9d6+4
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel1
+  Spell5 @ $kClericSpellLevel1
+  Spell6 @ $kClericSpellLevel2
+  Spell7 @ $kClericSpellLevel2
+  Spell8 @ $kClericSpellLevel2
+  Spell9 @ $kClericSpellLevel2
+  Spell10 @ $kClericSpellLevel2
+  Spell11 @ $kClericSpellLevel3
+  Spell12 @ $kClericSpellLevel3
+  Spell13 @ $kClericSpellLevel3
+  Spell14 @ $kClericSpellLevel3
+  Spell15 @ $kClericSpellLevel3
+  Spell16 @ $kClericSpellLevel4
+  Spell17 @ $kClericSpellLevel4
+  Spell18 @ $kClericSpellLevel4
+  Spell19 @ $kClericSpellLevel4
+  Spell20 @ $kClericSpellLevel5
+  Spell21 @ $kClericSpellLevel5
+  Spell22 @ $kClericSpellLevel5
+  Spell23 @ $kClericSpellLevel5
+  | Cleric
+}
+
+ClericLevel14 (Cleric) {
+  Level! = 14
+  HD = "9d6+5"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D3 W5 P7 B8 S7
+  HP @ 9d6+5
+  Spell1 @ $kClericSpellLevel1
+  Spell2 @ $kClericSpellLevel1
+  Spell3 @ $kClericSpellLevel1
+  Spell4 @ $kClericSpellLevel1
+  Spell5 @ $kClericSpellLevel1
+  Spell6 @ $kClericSpellLevel1
+  Spell7 @ $kClericSpellLevel2
+  Spell8 @ $kClericSpellLevel2
+  Spell9 @ $kClericSpellLevel2
+  Spell10 @ $kClericSpellLevel2
+  Spell11 @ $kClericSpellLevel2
+  Spell12 @ $kClericSpellLevel3
+  Spell13 @ $kClericSpellLevel3
+  Spell14 @ $kClericSpellLevel3
+  Spell15 @ $kClericSpellLevel3
+  Spell16 @ $kClericSpellLevel3
+  Spell17 @ $kClericSpellLevel4
+  Spell18 @ $kClericSpellLevel4
+  Spell19 @ $kClericSpellLevel4
+  Spell20 @ $kClericSpellLevel4
+  Spell21 @ $kClericSpellLevel4
+  Spell22 @ $kClericSpellLevel5
+  Spell23 @ $kClericSpellLevel5
+  Spell24 @ $kClericSpellLevel5
+  Spell25 @ $kClericSpellLevel5
+  | Cleric
+}
+
+Dwarf (NPC){
+  Class! = Dwarf
+  STR @ $kPrimaryAttribute
+  CON @ $kPrimaryAttribute
+  DEX @ $kSecondaryAttribute
+  WIS @ $kSecondaryAttribute
+  INT @ $kLesserAttribute
+  CHA @ $kLesserAttribute
+  Armor @@ [
+        * LeatherArmor
+        * ChainmailArmor
+        * PlatemailArmor
+        * LeatherArmorWithShield
+        * ChainmailArmorWithShield
+        * PlatemailArmorWithShield
+  ]
+  Weapon @@ [
+        * BattleAxe
+        * Club
+        * CrossBow
+        * Dagger
+        * HandAxe
+        * Javelin
+        * Lance
+        * Mace
+        * Polearm
+        * ShortBow
+        * ShortSword
+        * SilverDagger
+        * Sling
+        * Spear
+        * Staff
+        * Sword
+        * Warhammer
+  ]
+  Feature2 @ [
+    * big, bulbous nose
+    * short, fat fingers
+    * a golden tooth
+    * big red cheeks
+    * chubby cheeks
+  ]
+  | NPC
+}
+
+DwarfLevel1 (Dwarf) {
+  Level! = 1
+  HD = "1d8"
+  HDRolls = 1
+  THAC0 =< 19 [0] >
+  SavingThrows = D8 W9 P10 B13 S12
+  HP @ 1d8
+  | Dwarf
+}
+
+DwarfLevel2 (Dwarf) {
+  Level! = 2
+  HD = "2d8"
+  HDRolls = 2
+  THAC0 =< 19 [0] >
+  SavingThrows = D8 W9 P10 B13 S12
+  HP @ 2d8
+  | Dwarf
+}
+
+DwarfLevel3 (Dwarf) {
+  Level! = 3
+  HD = "3d8"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D8 W9 P10 B13 S12
+  HP @ 3d8
+  | Dwarf
+}
+
+DwarfLevel4 (Dwarf) {
+  Level! = 4
+  HD = "4d8"
+  HDRolls = 4
+  THAC0 =< 17 [+2] >
+  SavingThrows = D6 W7 P8 B10 S10
+  HP @ 4d8
+  | Dwarf
+}
+
+DwarfLevel5 (Dwarf) {
+  Level! = 5
+  HD = "5d8"
+  HDRolls = 5
+  THAC0 =< 17 [+2] >
+  SavingThrows = D6 W7 P8 B10 S10
+  HP @ 5d8
+  | Dwarf
+}
+
+DwarfLevel6 (Dwarf) {
+  Level! = 6
+  HD = "6d8"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D6 W7 P8 B10 S10
+  HP @ 6d8
+  | Dwarf
+}
+
+DwarfLevel7 (Dwarf) {
+  Level! = 7
+  HD = "7d8"
+  HDRolls = 7
+  THAC0 =< 14 [+5] >
+  SavingThrows = D4 W5 P6 B7 S8
+  HP @ 7d8
+  | Dwarf
+}
+
+DwarfLevel8 (Dwarf) {
+  Level! = 8
+  HD = "8d8"
+  HDRolls = 8
+  THAC0 =< 14 [+5] >
+  SavingThrows = D4 W5 P6 B7 S8
+  HP @ 8d8
+  | Dwarf
+}
+
+DwarfLevel9 (Dwarf) {
+  Level! = 9
+  HD = "9d8"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D4 W5 P6 B7 S8
+  HP @ 9d8
+  | Dwarf
+}
+
+DwarfLevel10 (Dwarf) {
+  Level! = 10
+  HD = "9d8+3"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D2 W3 P4 B4 S6
+  HP @ 9d8+2
+  | Dwarf
+}
+
+DwarfLevel11 (Dwarf) {
+  Level! = 11
+  HD = "9d8+6"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D2 W3 P4 B4 S6
+  HP @ 9d8+4
+  | Dwarf
+}
+
+DwarfLevel12 (Dwarf) {
+  Level! = 12
+  HD = "9d8+9"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D2 W3 P4 B4 S6
+  HP @ 9d8+6
+  | Dwarf
+}
+
+
+Elf (NPC){
+  Class! = Elf
+  INT @ $kPrimaryAttribute
+  STR @ $kPrimaryAttribute
+  DEX @ $kSecondaryAttribute
+  CON @ $kSecondaryAttribute
+  WIS @ $kSecondaryAttribute
+  CHA @ $kLesserAttribute
+  Armor @@ [
+        * LeatherArmor
+        * ChainmailArmor
+        * PlatemailArmor
+        * LeatherArmorWithShield
+        * ChainmailArmorWithShield
+        * PlatemailArmorWithShield
+  ]
+  Weapon @@ [
+        * BattleAxe
+        * Club
+        * CrossBow
+        * Dagger
+        * HandAxe
+        * Javelin
+        * Lance
+        * LongBow
+        * Mace
+        * Polearm
+        * ShortBow
+        * ShortSword
+        * SilverDagger
+        * Sling
+        * Spear
+        * Staff
+        * Sword
+        * TwoHandedSword
+        * Warhammer
+  ]
+  Feature2 @ [
+    * long, pointy ears
+    * long, skinny fingers
+    * a sigil tattooed on the neck
+    * a nose ring
+    * silky light skin
+    * silky dark skin
+  ]
+  | NPC
+}
+
+ElfLevel1 (Elf) {
+  Level! = 1
+  HD = "1d6"
+  HDRolls = 1
+  THAC0 =< 19 [0] >
+  SavingThrows = D12 W13 P13 B15 S15
+  HP @ 1d6
+  Spell1 @ $kMagicuserSpellLevel1
+  | Elf
+}
+
+ElfLevel2 (Elf) {
+  Level! = 2
+  HD = "2d6"
+  HDRolls = 2
+  THAC0 =< 19 [0] >
+  SavingThrows = D12 W13 P13 B15 S15
+  HP @ 2d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  | Elf
+}
+
+ElfLevel3 (Elf) {
+  Level! = 3
+  HD = "3d6"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D12 W13 P13 B15 S15
+  HP @ 3d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  | Elf
+}
+
+ElfLevel4 (Elf) {
+  Level! = 4
+  HD = "4d6"
+  HDRolls = 4
+  THAC0 =< 17 [+2] >
+  SavingThrows = D10 W11 P11 B13 S12
+  HP @ 4d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  Spell4 @ $kMagicuserSpellLevel2
+  | Elf
+}
+
+ElfLevel5 (Elf) {
+  Level! = 5
+  HD = "5d6"
+  HDRolls = 5
+  THAC0 =< 17 [+2] >
+  SavingThrows = D10 W11 P11 B13 S12
+  HP @ 5d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel3
+  | Elf
+}
+
+ElfLevel6 (Elf) {
+  Level! = 6
+  HD = "6d6"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D10 W11 P11 B13 S12
+  HP @ 6d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel2
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel3
+  Spell6 @ $kMagicuserSpellLevel3
+  | Elf
+}
+
+ElfLevel7 (Elf) {
+  Level! = 7
+  HD = "7d6"
+  HDRolls = 7
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P9 B10 S10
+  HP @ 7d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel3
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel4
+  | Elf
+}
+
+ElfLevel8 (Elf) {
+  Level! = 8
+  HD = "8d6"
+  HDRolls = 8
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P9 B10 S10
+  HP @ 8d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel4
+  Spell10 @ $kMagicuserSpellLevel4
+  | Elf
+}
+
+ElfLevel9 (Elf) {
+  Level! = 9
+  HD = "9d6"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D8 W9 P9 B10 S10
+  HP @ 9d6
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel4
+  Spell11 @ $kMagicuserSpellLevel4
+  Spell12 @ $kMagicuserSpellLevel5
+  | Elf
+}
+
+ElfLevel10 (Elf) {
+  Level! = 10
+  HD = "9d6+2"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D6 W7 P8 B8 S8
+  HP @ 9d6+2
+  Spell1 @ $kMagicuserSpellLevel1
+  Spell2 @ $kMagicuserSpellLevel1
+  Spell3 @ $kMagicuserSpellLevel1
+  Spell4 @ $kMagicuserSpellLevel2
+  Spell5 @ $kMagicuserSpellLevel2
+  Spell6 @ $kMagicuserSpellLevel2
+  Spell7 @ $kMagicuserSpellLevel3
+  Spell8 @ $kMagicuserSpellLevel3
+  Spell9 @ $kMagicuserSpellLevel3
+  Spell10 @ $kMagicuserSpellLevel4
+  Spell11 @ $kMagicuserSpellLevel4
+  Spell12 @ $kMagicuserSpellLevel4
+  Spell13 @ $kMagicuserSpellLevel5
+  Spell14 @ $kMagicuserSpellLevel5
+  | Elf
+}
+
+Halfling (NPC){
+  Class! = Halfling
+  DEX @ $kPrimaryAttribute
+  STR @ $kPrimaryAttribute
+  CHA @ $kSecondaryAttribute
+  CON @ $kSecondaryAttribute
+  WIS @ $kLesserAttribute
+  INT @ $kLesserAttribute
+  Armor @@ [
+        * LeatherArmor
+        * ChainmailArmor
+        * PlatemailArmor
+        * LeatherArmorWithShield
+        * ChainmailArmorWithShield
+        * PlatemailArmorWithShield
+  ]
+  Weapon @@ [
+        * BattleAxe
+        * Club
+        * CrossBow
+        * Dagger
+        * HandAxe
+        * Javelin
+        * Lance
+        * Mace
+        * Polearm
+        * ShortBow
+        * ShortSword
+        * SilverDagger
+        * Sling
+        * Spear
+        * Staff
+        * Sword
+        * Warhammer
+  ]
+  Feature2 @ [
+    * short, chunky fingers
+    * extremely large feet, even for a halfling
+    * round, bulbous nose
+    * chubby cheeks
+    * big red cheeks
+  ]
+  | NPC
+}
+
+HalflingLevel1 (Halfling) {
+  Level! = 1
+  HD = "1d6"
+  HDRolls = 1
+  THAC0 =< 19 [0] >
+  SavingThrows = D8 W9 P10 B13 S12
+  HP @ 1d6
+  | Halfling
+}
+
+HalflingLevel2 (Halfling) {
+  Level! = 2
+  HD = "2d6"
+  HDRolls = 2
+  THAC0 =< 19 [0] >
+  SavingThrows = D8 W9 P10 B13 S12
+  HP @ 2d6
+  | Halfling
+}
+
+HalflingLevel3 (Halfling) {
+  Level! = 3
+  HD = "3d6"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D8 W9 P10 B13 S12
+  HP @ 3d6
+  | Halfling
+}
+
+HalflingLevel4 (Halfling) {
+  Level! = 4
+  HD = "4d6"
+  HDRolls = 4
+  THAC0 =< 17 [+2] >
+  SavingThrows = D6 W7 P8 B10 S10
+  HP @ 4d6
+  | Halfling
+}
+
+HalflingLevel5 (Halfling) {
+  Level! = 5
+  HD = "5d6"
+  HDRolls = 5
+  THAC0 =< 17 [+2] >
+  SavingThrows = D6 W7 P8 B10 S10
+  HP @ 5d6
+  | Halfling
+}
+
+HalflingLevel6 (Halfling) {
+  Level! = 6
+  HD = "6d6"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D6 W7 P8 B10 S10
+  HP @ 6d6
+  | Halfling
+}
+
+HalflingLevel7 (Halfling) {
+  Level! = 7
+  HD = "7d6"
+  HDRolls = 7
+  THAC0 =< 14 [+5] >
+  SavingThrows = D4 W5 P6 B7 S8
+  HP @ 7d6
+  | Halfling
+}
+
+HalflingLevel8 (Halfling) {
+  Level! = 8
+  HD = "8d6"
+  HDRolls = 8
+  THAC0 =< 14 [+5] >
+  SavingThrows = D4 W5 P6 B7 S8
+  HP @ 8d6
+  | Halfling
+}
+
+Thief (NPC){
+  Class! = Thief
+  DEX @ $kPrimaryAttribute
+  CHA @ $kPrimaryAttribute
+  STR @ $kSecondaryAttribute
+  CON @ $kSecondaryAttribute
+  INT @ $kLesserAttribute
+  WIS @ $kLesserAttribute
+  Armor @ LeatherArmor
+  Weapon @@ [
+        * BattleAxe
+        * Club
+        * CrossBow
+        * Dagger
+        * HandAxe
+        * Javelin
+        * Lance
+        * LongBow
+        * Mace
+        * Polearm
+        * ShortBow
+        * ShortSword
+        * SilverDagger
+        * Sling
+        * Spear
+        * Staff
+        * Sword
+        * TwoHandedSword
+        * Warhammer
+  ]
+  Feature2 @ [
+    * long, skinny fingers
+    * a sigil tattooed behind the ear
+    * a nose ring
+    * a scar across the eye
+    * rotting teeth
+    * small, thin lips
+    * sharp, pointy nose
+  ]
+  | NPC
+}
+
+ThiefLevel1 (Thief) {
+  Level! = 1
+  HD = "1d4"
+  HDRolls = 1
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 1d4
+  | Thief
+}
+
+ThiefLevel2 (Thief) {
+  Level! = 2
+  HD = "2d4"
+  HDRolls = 2
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 2d4
+  | Thief
+}
+
+ThiefLevel3 (Thief) {
+  Level! = 3
+  HD = "3d4"
+  HDRolls = 3
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 3d4
+  | Thief
+}
+
+ThiefLevel4 (Thief) {
+  Level! = 4
+  HD = "4d4"
+  HDRolls = 4
+  THAC0 =< 19 [0] >
+  SavingThrows = D13 W14 P13 B16 S15
+  HP @ 4d4
+  | Thief
+}
+
+ThiefLevel5 (Thief) {
+  Level! = 5
+  HD = "5d4"
+  HDRolls = 5
+  THAC0 =< 17 [+2] >
+  SavingThrows = D12 W13 P11 B14 S13
+  HP @ 5d4
+  | Thief
+}
+
+ThiefLevel6 (Thief) {
+  Level! = 6
+  HD = "6d4"
+  HDRolls = 6
+  THAC0 =< 17 [+2] >
+  SavingThrows = D12 W13 P11 B14 S13
+  HP @ 6d4
+  | Thief
+}
+
+ThiefLevel7 (Thief) {
+  Level! = 7
+  HD = "7d4"
+  HDRolls = 7
+  THAC0 =< 17 [+2] >
+  SavingThrows = D12 W13 P11 B14 S13
+  HP @ 7d4
+  | Thief
+}
+
+ThiefLevel8 (Thief) {
+  Level! = 8
+  HD = "8d4"
+  HDRolls = 8
+  THAC0 =< 17 [+2] >
+  SavingThrows = D12 W13 P11 B14 S13
+  HP @ 8d4
+  | Thief
+}
+
+ThiefLevel9 (Thief) {
+  Level! = 9
+  HD = "9d4"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D10 W11 P9 B12 S10
+  HP @ 9d4
+  | Thief
+}
+
+ThiefLevel10 (Thief) {
+  Level! = 10
+  HD = "9d4+2"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D10 W11 P9 B12 S10
+  HP @ 9d4+2
+  | Thief
+}
+
+ThiefLevel11 (Thief) {
+  Level! = 11
+  HD = "9d4+4"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D10 W11 P9 B12 S10
+  HP @ 9d4+4
+  | Thief
+}
+
+ThiefLevel12 (Thief) {
+  Level! = 12
+  HD = "9d4+6"
+  HDRolls = 9
+  THAC0 =< 14 [+5] >
+  SavingThrows = D10 W11 P9 B12 S10
+  HP @ 9d4+6
+  | Thief
+}
+
+ThiefLevel13 (Thief) {
+  Level! = 13
+  HD = "9d4+8"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D8 W9 P7 B10 S8
+  HP @ 9d4+8
+  | Thief
+}
+
+ThiefLevel14 (Thief) {
+  Level! = 14
+  HD = "9d4+10"
+  HDRolls = 9
+  THAC0 =< 12 [+7] >
+  SavingThrows = D8 W9 P7 B10 S8
+  HP @ 9d4+10
+  | Thief
+}
+
+TavernVisitor (NPC) { ^ [
+    *(x10) ClericLevel1
+    *(x5) ClericLevel2
+    *(x3) ClericLevel3
+    *(x2) ClericLevel4
+    * ClericLevel5
+    * ClericLevel6
+    * ClericLevel7
+    * ClericLevel8
+    *(x10) MagicuserLevel1
+    *(x5) MagicuserLevel2
+    *(x3) MagicuserLevel3
+    *(x2) MagicuserLevel4
+    * MagicuserLevel5
+    * MagicuserLevel6
+    * MagicuserLevel7
+    * MagicuserLevel8
+    *(x10) FighterLevel1
+    *(x5) FighterLevel2
+    *(x3) FighterLevel3
+    *(x2) FighterLevel4
+    * FighterLevel5
+    * FighterLevel6
+    * FighterLevel7
+    * FighterLevel8
+    *(x10) ThiefLevel1
+    *(x5) ThiefLevel2
+    *(x3) ThiefLevel3
+    *(x2) ThiefLevel4
+    * ThiefLevel5
+    * ThiefLevel6
+    * ThiefLevel7
+    * ThiefLevel8
+    *(x10) HalflingLevel1
+    *(x5) HalflingLevel2
+    *(x3) HalflingLevel3
+    *(x2) HalflingLevel4
+    * HalflingLevel5
+    * HalflingLevel6
+    * HalflingLevel7
+    * HalflingLevel8
+    *(x10) ElfLevel1
+    *(x5) ElfLevel2
+    *(x3) ElfLevel3
+    *(x2) ElfLevel4
+    * ElfLevel5
+    * ElfLevel6
+    * ElfLevel7
+    * ElfLevel8
+    *(x10) DwarfLevel1
+    *(x5) DwarfLevel2
+    *(x3) DwarfLevel3
+    *(x2) DwarfLevel4
+    * DwarfLevel5
+    * DwarfLevel6
+    * DwarfLevel7
+    * DwarfLevel8
+  ]
+}

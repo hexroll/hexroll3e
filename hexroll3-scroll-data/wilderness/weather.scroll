@@ -1,0 +1,553 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+WeatherRumor (RealmRumor) {
+
+  EffectPlural = null
+  EffectSingular = null
+  Region = null
+  DescIndex @ 1d5
+
+  Desc ~ <% 
+    {% if DescIndex==1 %}
+      The <strong>{{EffectPlural}}</strong> in <strong>{{Region}}</strong> are brutal.
+    {% elif DescIndex==2 %}
+      The <strong>{{EffectPlural}}</strong> in <strong>{{Region}}</strong> are very dangerous.
+    {% elif DescIndex==3 %}
+      Beware of the <strong>{{EffectPlural}}</strong> in <strong>{{Region}}</strong>.
+    {% elif DescIndex==4 %}
+      You do not want to be in <strong>{{Region}}</strong> during <strong>{{articlize(EffectSingular)}}</strong>.
+    {% else %}
+      I barely made it out alive from <strong>{{articlize(EffectSingular)}}</strong> in <strong>{{Region}}</strong>.
+    {% endif %}
+  %>
+
+  | RealmRumor
+}
+
+NormalWeatherContainer {
+  Weather! @ NormalWeather
+}
+
+DesertWeatherContainer {
+  Weather! @ DesertWeather
+}
+
+TropicalWeatherContainer {
+  Weather! @ TropicalWeather
+}
+
+ArcticWeatherContainer {
+  Weather! @ ArcticWeather
+}
+
+MountainWeatherContainer {
+  Weather! @ MountainWeather
+}
+
+NormalWeather { 
+  ^ [
+    * NormalWeatherVariant1
+    * NormalWeatherVariant2
+    * NormalWeatherVariant3
+    * NormalWeatherVariant4
+  ]
+  Parent! = NormalWeather
+}
+
+DesertWeather { 
+  ^ [
+    * DesertWeatherVariant1
+    * DesertWeatherVariant2
+    * DesertWeatherVariant3
+    * DesertWeatherVariant4
+  ]
+  Parent! = DesertWeather
+}
+
+TropicalWeather { 
+  ^ [
+    * TropicalWeatherVariant1
+    * TropicalWeatherVariant2
+    * TropicalWeatherVariant3
+  ]
+  Parent! = TropicalWeather
+}
+
+ArcticWeather { 
+  ^ [
+    * ArcticWeatherVariant1
+    * ArcticWeatherVariant2
+    * ArcticWeatherVariant3
+  ]
+  Parent! = ArcticWeather
+}
+
+MountainWeather { 
+  ^ [
+    * MountainWeatherVariant1
+    * MountainWeatherVariant2
+    * MountainWeatherVariant3
+    * MountainWeatherVariant4
+    * MountainWeatherVariant5
+  ]
+  Parent! = MountainWeather
+}
+
+NormalWeatherVariant1(NormalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Rainy           </td> <td> Heatwave       </td>  <td> Thunderstorms  </td> <td> Blizzard       </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Foggy           </td> <td> Clear & Humid  </td>  <td> Stormy         </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Rainy          </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Partly Cloudy   </td> <td> Partly Cloudy  </td>  <td> Foggy          </td> <td> Frost          </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Cloudy          </td> <td> Breezy         </td>  <td> Cloudy         </td> <td> Foggy          </td> </tr>
+    </table>
+  %>
+}
+
+NormalWeatherVariant2(NormalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Cloudy          </td> <td> Clear & Humid  </td>  <td> Stormy         </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Rainy          </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Drizzling      </td> <td> Foggy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear & Breezy  </td> <td> Partly Cloudy  </td>  <td> Foggy          </td> <td> Cloudy & Cold  </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  </td> <td> Clear & Breezy </td>  <td> Cloudy         </td> <td> Clear & Cold   </td> </tr>
+    </table>
+  %>
+}
+
+NormalWeatherVariant3(NormalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Stormy         </td> <td> Blizzard      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Rain & Wind    </td> <td> Snowstorm     </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear & Breezy </td>  <td> Rainy          </td> <td> Snowy         </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear & Breezy  </td> <td> Clear & Breezy </td>  <td> Drizzling      </td> <td> Fog & Frost   </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  </td> <td> Partly Cloudy  </td>  <td> Cloudy         </td> <td> Frost         </td> </tr>
+    </table>
+  %>
+}
+
+NormalWeatherVariant4(NormalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season     </th>  <th> Wet Season     </th> <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Heatwave        </td> <td> Scorching      </td>  <td> Stormy         </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear & Humid   </td> <td> Heatwave       </td>  <td> Rainy          </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Rainy          </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear           </td> <td> Clear & Breezy </td>  <td> Rainy          </td> <td> Frost          </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  </td> <td> Partly Cloudy  </td>  <td> Cloudy         </td> <td> Frost          </td> </tr>
+    </table>
+  %>
+}
+
+DesertWeatherVariant1(DesertWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season &dagger;     </th> <th> Dry Season &dagger;    </th>  <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Clear           </td> <td> Heatwave       </td>  <td> Clouds & Frost   </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Frost            </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Clear            </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Clear & Pleasant </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Cloudy          </td> <td> Partly Cloudy  </td>  <td> Clear & Warmer   </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for a <strong>sandstorm</strong>, reducing visibility and movement rate</small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "sandstorms"
+    EffectSingular = "sandstorm"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+DesertWeatherVariant2(DesertWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season &dagger;     </th> <th> Dry Season &dagger;     </th>  <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Heatwave        </td> <td> Scorching      </td>  <td> Hailstorm        </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear           </td> <td> Heatwave       </td>  <td> Clouds & Frost   </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Frost            </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Clear            </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Clear & Pleasant </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for a <strong>sandstorm</strong>, reducing visibility and movement rate</small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "sandstorms"
+    EffectSingular = "sandstorm"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+DesertWeatherVariant3(DesertWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th>  <th> Dry Season  &dagger;    </th>  <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td>  <td> Scorching      </td>  <td> Icestorm         </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td>  <td> Heatwave       </td>  <td> Freezing         </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td>  <td> Clear & Hot    </td>  <td> Clear & Cold     </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td>  <td> Clear          </td>  <td> Clear            </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td>  <td> Clear & Breezy </td>  <td> Clear & Pleasant </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for a <strong>sandstorm</strong>, reducing visibility and movement rate</small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "sandstorms"
+    EffectSingular = "sandstorm"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+DesertWeatherVariant4(DesertWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th>  <th> Dry Season  &dagger;    </th>  </tr>
+
+    <tr> <td> <strong> 2     </strong> </td>  <td> Scorcher       </td>  </tr>
+    <tr> <td> <strong> 3-4   </strong> </td>  <td> Heatwave       </td>  </tr>
+    <tr> <td> <strong> 5-9   </strong> </td>  <td> Clear          </td>  </tr>
+    <tr> <td> <strong> 10-11 </strong> </td>  <td> Clear & Breezy </td>  </tr>
+    <tr> <td> <strong> 12    </strong> </td>  <td> Clear & Windy  </td>  </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for a <strong>sandstorm</strong>, reducing visibility and movement rate</small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "sandstorms"
+    EffectSingular = "sandstorm"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+DesertWeatherVariant5(DesertWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season &dagger;     </th> <th> Dry Season &dagger;     </th>  <th> Cold Season    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Heatwave        </td> <td> Scorching      </td>  <td> Hailstorm      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear           </td> <td> Heatwave       </td>  <td> Frost          </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Clear          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Partly Cloudy  </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Cloudy         </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for a <strong>sandstorm</strong>, reducing visibility and movement rate</small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "sandstorms"
+    EffectSingular = "sandstorm"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+TropicalWeatherVariant1(TropicalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th>  <th> Dry Season     </th>  <th> Wet Season &dagger;  </th> </tr>
+
+    <tr> <td> <strong> 2     </strong> </td>  <td> Heatwave      </td>  <td> Thunderstorms   </td>  </tr>
+    <tr> <td> <strong> 3-4   </strong> </td>  <td> Cloudy         </td>  <td> Stormy         </td>  </tr>
+    <tr> <td> <strong> 5-9   </strong> </td>  <td> Clear          </td>  <td> Rainy          </td>  </tr>
+    <tr> <td> <strong> 10-11 </strong> </td>  <td> Partly Cloudy  </td>  <td> Foggy          </td>  </tr>
+    <tr> <td> <strong> 12    </strong> </td>  <td> Breezy         </td>  <td> Cloudy         </td>  </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>flood</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "floods"
+    EffectSingular = "flood"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+TropicalWeatherVariant2(TropicalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th>  <th> Dry Season     </th>  <th> Wet Season &dagger; </th> </tr>
+
+    <tr> <td> <strong> 2     </strong> </td>  <td> Stormy         </td>  <td> Superstorm     </td>  </tr>
+    <tr> <td> <strong> 3-4   </strong> </td>  <td> Rainy          </td>  <td> Stormy         </td>  </tr>
+    <tr> <td> <strong> 5-9   </strong> </td>  <td> Cloudy & Humid </td>  <td> Rainy          </td>  </tr>
+    <tr> <td> <strong> 10-11 </strong> </td>  <td> Clear & Humid  </td>  <td> Rainy          </td>  </tr>
+    <tr> <td> <strong> 12    </strong> </td>  <td> Clear          </td>  <td> Foggy          </td>  </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>flood</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "floods"
+    EffectSingular = "flood"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+TropicalWeatherVariant3(TropicalWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th>  <th> Dry Season     </th>  <th> Wet Season &dagger; </th> </tr>
+
+    <tr> <td> <strong> 2     </strong> </td>  <td> Thunderstorms  </td>  <td> Thunderstorms  </td>  </tr>
+    <tr> <td> <strong> 3-4   </strong> </td>  <td> Stormy         </td>  <td> Stormy         </td>  </tr>
+    <tr> <td> <strong> 5-9   </strong> </td>  <td> Rainy          </td>  <td> Rainy          </td>  </tr>
+    <tr> <td> <strong> 10-11 </strong> </td>  <td> Cloudy         </td>  <td> Foggy          </td>  </tr>
+    <tr> <td> <strong> 12    </strong> </td>  <td> Clear          </td>  <td> Cloudy         </td>  </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>flood</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "floods"
+    EffectSingular = "flood"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+ArcticWeatherVariant1(ArcticWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> All Seasons &dagger;   </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Blizzard       </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Frost          </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Foggy          </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+ArcticWeatherVariant2(ArcticWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> All Seasons &dagger;   </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Heavy Snow     </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Fog & Frost    </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Freezing       </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+ArcticWeatherVariant3(ArcticWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> All Seasons  &dagger;  </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Blizzard       </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Frost & Wind   </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Frost & Fog    </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Freezing       </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+MountainWeatherVariant1(MountainWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season  &dagger;   </th>  <th> Wet Season &dagger;&dagger;    </th> <th> Cold Season &dagger;&dagger;&dagger;   </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Rainy           </td> <td> Heatwave       </td>  <td> Thunderstorms  </td> <td> Blizzard       </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Foggy           </td> <td> Cloudy         </td>  <td> Stormy         </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Rainy          </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Partly Cloudy   </td> <td> Partly Cloudy  </td>  <td> Foggy          </td> <td> Frost          </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Cloudy          </td> <td> Breezy         </td>  <td> Cloudy         </td> <td> Foggy          </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>rockslide</strong></small>
+    <small>&dagger;&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>landslide</strong></small>
+    <small>&dagger;&dagger;&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor1 @ WeatherRumor {
+    EffectPlural = "rockslides"
+    EffectSingular = "rockslide"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+  Rumor2 @ WeatherRumor {
+    EffectPlural = "landslides"
+    EffectSingular = "landslide"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+  Rumor3 @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+MountainWeatherVariant2(MountainWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> Warm Season     </th> <th> Dry Season  &dagger;   </th>  <th> Wet Season &dagger;&dagger;    </th> <th> Cold Season &dagger;&dagger;&dagger;   </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Partly Cloudy   </td> <td> Clear          </td>  <td> Stormy         </td> <td> Blizzard      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Clear           </td> <td> Clear          </td>  <td> Rain & Wind    </td> <td> Snowstorm     </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Clear           </td> <td> Clear & Breezy </td>  <td> Rainy          </td> <td> Snowy         </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Clear & Breezy  </td> <td> Clear & Breezy </td>  <td> Drizzling      </td> <td> Fog & Frost   </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Clear & Breezy  </td> <td> Partly Cloudy  </td>  <td> Cloudy         </td> <td> Frost         </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>rockslide</strong></small>
+    <small>&dagger;&dagger; There's a <strong>1-in-6</strong> chance once a week for a <strong>landslide</strong></small>
+    <small>&dagger;&dagger;&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor1 @ WeatherRumor {
+    EffectPlural = "rockslides"
+    EffectSingular = "rockslide"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+  Rumor2 @ WeatherRumor {
+    EffectPlural = "landslides"
+    EffectSingular = "landslide"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+  Rumor3 @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+MountainWeatherVariant3(MountainWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> All Seasons    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Blizzard       </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Frost          </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Foggy          </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor3 @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+MountainWeatherVariant4(MountainWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> All Seasons    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Snowstorm      </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Heavy Snow     </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Fog & Frost    </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Freezing       </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor3 @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}
+
+MountainWeatherVariant5(MountainWeather) {
+  Description! ~ <%
+    <table class='condensed'>
+    <tr> <th> 2d6   </th> <th> All Seasons    </th </tr>
+
+    <tr> <td> <strong> 2     </strong> </td> <td> Blizzard       </td> </tr>
+    <tr> <td> <strong> 3-4   </strong> </td> <td> Snowy          </td> </tr>
+    <tr> <td> <strong> 5-9   </strong> </td> <td> Frost & Wind   </td> </tr>
+    <tr> <td> <strong> 10-11 </strong> </td> <td> Frost & Fog    </td> </tr>
+    <tr> <td> <strong> 12    </strong> </td> <td> Freezing       </td> </tr>
+    </table>
+    <small>&dagger; There's a <strong>1-in-6</strong> chance once a day for an <strong>avalanche</strong></small>
+  %>
+  HexRegion = :Region.Name
+  Rumor3 @ WeatherRumor {
+    EffectPlural = "avalanches"
+    EffectSingular = "avalanche"
+    Region = &HexRegion
+    Details = "{{Desc}}"
+  }
+}

@@ -1,0 +1,273 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+faction_classes = [
+    *(x1) Cult
+    *(x1) Militia
+    *(x1) Syndicate
+]
+
+FactionName {
+  Full! ~ <%
+    The {{title(Name_Prefix)}} {{title(Name_Suffix)}}
+  %>
+}
+
+DummyFactionRumor {
+  Postfix = ""
+}
+
+FactionAssociationRumor(RealmRumor) {
+  QuestFolk = none
+  QuestLink = none
+  QuestFaction = none
+  Postfix @ [
+    * is behaving quite suspiciously
+    * is up to something
+    * is very secretive recently
+  ]
+  | RealmRumor
+}
+
+
+FactionMember {
+  Member ? Character {
+    FactionName = &FactionName
+    FactionUUID = &FactionUUID
+    Association = <%
+        <li>
+        {{begin_spoiler()}}
+        Member of the
+        <a href="{{sandbox()}}/faction/{{FactionUUID}}">
+        <strong>{{FactionName.Full}}</strong>
+        </a>.
+        {{end_spoiler()}}
+        </li>
+    %>
+    Alignment = &AcceptedAlignment
+  }
+  Rumor @@ [
+    *(x1) FactionAssociationRumor
+    *(x5) DummyFactionRumor
+  ]~{
+          QuestFolk = *Member
+          Details = <%
+          {% if not QuestFolk %}
+            Something evil is coming this way.
+          {% else %}
+          {{QuestFolk.LinkedName}}
+            {{Postfix}}.
+          {% endif %}
+          %>
+  }
+  Details! ~ <%{% if Member %}
+    {{Member.LinkedName}}
+      {% if Member.Class %}
+      The {{Member.Class}}
+      {% else %}
+      {%if Member.Profession%}
+      {%if Member.Profession%}
+      The {{capitalize(Member.Profession)}}
+      {%endif%}
+      {% else %}
+      {% if Member.OwnerTitle and Member.OwnerTitle %}
+      {{Member.OwnerTitle}}
+      {%endif%}
+      {%endif%}
+      {%endif%}
+      {%if Member.SettlementName%} from {{capitalize(Member.SettlementName)}}{%endif%}
+  {% endif %}%>
+}
+
+FactionCollaborator {
+  Collaborator ? Character {
+    FactionName = &FactionName
+    FactionUUID = &FactionUUID
+    Association = <%
+        <li>
+        {{begin_spoiler()}}
+        Collaborates with the
+        <a href="{{sandbox()}}/faction/{{FactionUUID}}">
+        <strong>{{FactionName.Full}}</strong>.
+        </a>
+        {{end_spoiler()}}
+        </li>
+    %>
+  }
+  Details! ~ <%{% if Collaborator %}
+    {{Collaborator.LinkedName}}
+      {%if Collaborator.Profession%}
+      {%if Collaborator.Profession%}
+      {{Collaborator.Profession}}
+      {%endif%}
+      {%endif%}
+      {%if Collaborator.SettlementName%} from {{capitalize(Collaborator.SettlementName)}}{%endif%}
+  {% endif %}%>
+}
+
+
+
+Faction {
+  ^ $faction_classes
+
+  Version = 2
+
+  Title! ` "{{FactionName.Full}}"
+  LinkedTitle! ~  <%<a href="{{sandbox()}}/faction/{{uuid}}">{{Title}}</a>%>
+
+  PurposeRumor @ RealmRumor {
+    FactionName := *FactionName
+    FactionUUID := &uuid
+    FactionVerb := &Verb
+    FactionPurpose := &Purpose
+    Details = <%
+    <strong>{{FactionName.Full}}</strong> are {{FactionVerb}} <strong>{{FactionPurpose}}</strong>.
+    %>
+  }
+
+  [3..5 Collaborators] @ FactionCollaborator {
+    FactionName := &FactionName
+    FactionUUID := &uuid
+    AcceptedAlignment := &AcceptedAlignment
+  }
+
+  [10..20 Members] @ FactionMember {
+    FactionName := &FactionName
+    FactionUUID := &uuid
+    AcceptedAlignment := &AcceptedAlignment
+  }
+
+  LeaderSpecialInterest @ FactionLeaderInterest
+
+  Details! ~ <%
+    <p>
+    The {{class | lower}} leader is a {{Leader.Description}}
+    {%if LeaderSpecialInterest.Details!=""%}
+        {{capitalize(Leader.Name.First)}} {{Leader.Gender.Possession}}
+        a special interest of an unknown nature in
+        {{LeaderSpecialInterest.Details}}.
+    {%endif%}
+    </p>
+
+    <strong>{{Leader.Name.Full}}</strong>
+    (Level {{Leader.Level}} {{Leader.Class}})
+
+    <hr/>
+
+    <a class="npc-anchor" name="{{Leader.uuid}}"></a>{{Leader.Stats}}
+
+    <hr/>
+
+    <h4> Members </h4>
+
+    {{ Members | map(attribute="Details") | select("!=","") | bulletize('9726') }}
+
+    <h4> Collaborators </h4>
+
+    {{ Collaborators | map(attribute="Details") | select("!=","") | bulletize('9726') }}
+
+  %>
+
+  IndexRef @ IndexedEntity {
+    Render = "FactionName"
+    Link = &uuid
+    Type = "faction"
+    Full = ""
+    Search = "{{Full}}"
+    Icon = "users"
+  }
+  RealmUUID = :Realm.uuid
+  RealmType = :Realm.RealmType
+  RealmName = :Realm.Name
+  Realm = <% {{RealmName.Title}} %>
+  Breadcrumbs ~ <%
+    <span class="breadcrumbs">
+      {{sandbox_breadcrumb()}}
+      {{toc_breadcrumb()}}
+      <a href="{{sandbox()}}/realm/{{RealmUUID}}"> {{Realm}} </a>
+    </span>
+   %>
+  Header! ~ <%
+    <div hidden id="doc-title">
+    {{FactionName.Full}} ({{class}}) from {{RealmName.Title}}
+    </div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="Full" data-entity="{{FactionName.uuid}}">{{FactionName.Full}}</span>
+    {{Breadcrumbs}}
+    </h4>
+    %>
+
+    <metadata%
+      {{Coords}}
+    %metadata>
+
+    <header%
+      {{Header}}
+    %header>
+
+    <body%
+      {{Brief}}
+      {{Details}}
+    %body>
+
+    $TocEntry @ TocEntry {
+      Type = Faction
+      Title = *FactionName
+      UUID = &uuid
+    }
+}
+
+FactionLeaderInterest {
+    ^ [
+        *(x2) FactionLeaderHasNoSpecialIterest
+        *(x1) FactionLeaderNPCInterest
+        *(x1) FactionLeaderItemInterest
+    ]
+}
+
+
+FactionLeaderHasNoSpecialIterest {
+  Details! = ""
+}
+
+
+FactionLeaderNPCInterest {
+  NPC! % Character
+  Details! ~ <% {% if NPC %}{{NPC.LinkedName}} {% endif %}%>
+}
+
+
+FactionLeaderItemInterest {
+
+  LostItem % LostItemMagical
+
+  Details! ~ <%
+    {%if LostItem %}
+      <a href="{{sandbox()}}/location/{{LostItem.FolkLocationUUID}}/npc/{{LostItem.FolkUUID}}">{{LostItem.Folk.Full}}’s</a>
+      <strong>{{LostItem.Appearance}}</strong>
+    {%endif%}
+  %>
+}
+

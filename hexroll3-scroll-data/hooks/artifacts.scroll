@@ -1,0 +1,92 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+Shard {
+  HexCoords! = none
+  HexUUID! = none
+  Region! = none
+  Name! @ [
+    * Blue Meteor Shards 
+    * Blood Crystal Shards
+    * Lightning Stone
+  ]
+  HexDescription! =<%
+    There's a <strong>2 in 6</strong> chance of finding a <strong>{{Name}}</strong>
+    reservoir when searching minerals here. %>
+  Findable! = false
+}
+
+Plant {
+  HexCoords! = none
+  HexUUID! = none
+  Region! = none
+  PrefixPartA1 @ [
+    * Orcish
+    * Dragon's
+    * Ogre's
+    * Elven
+    * Highlands
+  ]
+
+  PrefixPartA2 @ [
+    * Black
+    * Spell
+    * Pale
+    * Dark
+    * Deep
+  ]
+  
+  PrefixPartB @ [
+    * night
+    * blood
+    * fire
+    * bolt
+    * blade
+    * wind
+    * death
+  ]
+
+  Suffix @ [
+    * Berry
+    * Root
+    * Cane
+    * Flower
+    * Weed
+    * Moss
+    * Vine
+  ]
+
+  Name! @ [
+    * "{{PrefixPartA1}}-{{PrefixPartB}} {{Suffix}}"
+    * "{{PrefixPartA2}}{{PrefixPartB}} {{Suffix}}"
+  ]
+
+  HexDescription! = <%
+    The <strong>{{Name}}</strong> grows here and there's a <strong>2 in 6</strong>
+    chance of finding it when searching. %>
+
+  Findable! = false
+}
+

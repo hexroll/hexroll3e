@@ -1,0 +1,112 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+TempleEncounterTier1 {
+  ^ [
+    *(x2) DungeonEncounterCultists
+    * DungeonEncounterTempleAnimals
+    ]
+}
+
+TempleEncounterTier2 {
+  ^ [
+    * DungeonEncounterMagicalTier2
+    * DungeonEncounterAberrationsTier2
+    ]
+}
+
+TempleEncounterTier3 {
+  ^ [
+    *(x4) DungeonEncounterMagicalTier3
+    *(x4) DungeonEncounterAberrationsTier3
+    * DungeonEncounterMimic
+    ]
+}
+
+TempleEncounterTier4 {
+  ^ [
+    *(x3) DungeonEncounterDragonsTier3
+    * DungeonEncounterDragonsTier4
+    ]
+}
+
+TempleFeatureTier1 {
+  ^ [
+    *(x3) TempleEncounterTier1
+    * DungeonTreasureTier1
+    * DungeonRemains
+    * DungeonPool
+    ]
+}
+
+TempleFeatureTier2 {
+  ^ [
+    *(x2) TempleEncounterTier2
+    * DungeonTreasureTier2
+    * DungeonRemains
+    * DungeonPool
+    ]
+}
+
+TempleFeatureTier3 {
+  ^ [
+    *(x2) TempleEncounterTier3
+    * DungeonTreasureTier3
+    * DungeonRemains
+    * DungeonPool
+    ]
+}
+
+TempleFeatureTier4 {
+  ^ [
+    *(x10) TempleEncounterTier4
+    * DungeonTreasureTier4
+    ]
+}
+
+Temple(Dungeon) {
+  Name! @ TempleName
+  HexLink! = :Hex.uuid
+  Coords! = <%
+    <a class="map-coords" hex="{{HexLink}}" x="0" y="0" zoom="7"> </a>
+  %>
+  FactionLair @ FactionLair {
+    DungeonUUID = &uuid
+    Name = *Name
+    HexLink = &HexLink
+    Coords = &Coords
+  }
+
+ | Dungeon
+
+  DungeonFeatureTier1 = TempleFeatureTier1
+  DungeonFeatureTier2 = TempleFeatureTier2
+  DungeonFeatureTier3 = TempleFeatureTier3
+  DungeonFeatureTier4 = TempleFeatureTier4
+  # TODO: add a dungeon map
+  # map @ DungeonMap
+
+  WanderingMonsters @ DungeonWanderingMonsters
+}

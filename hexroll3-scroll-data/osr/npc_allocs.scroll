@@ -1,0 +1,197 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+EntourageChiefCommander {
+  ^ [
+      * FighterLevel10
+      * FighterLevel11
+      * DwarfLevel10
+      * ElfLevel9
+  ]
+}
+
+EntourageCleric {
+  ^ [
+    * ClericLevel10
+    * ClericLevel11
+  ]
+}
+
+EntourageSage {
+  ^ [
+      * MagicuserLevel10
+      * MagicuserLevel11
+      * ElfLevel9
+  ]
+}
+
+EntourageConfidant {
+  ^ [
+      * HalflingLevel7
+      * DwarfLevel10
+      * ElfLevel9
+      * ThiefLevel10
+      * ThiefLevel11
+  ]
+}
+
+NobleRuler {
+  ^ [
+    * FighterLevel12
+    * FighterLevel13
+    * ElfLevel10
+    * DwarfLevel11
+    * HalflingLevel8
+  ]
+}
+
+BishopRuler {
+  ^ [
+    * ClericLevel12
+    * ClericLevel13
+  ]
+}
+
+MonarchRuler {
+  ^ [
+    * FighterLevel12
+    * FighterLevel13
+    * ElfLevel10
+    * DwarfLevel11
+    * HalflingLevel8
+  ]
+}
+
+WarexpertRuler {
+  ^ [
+    * FighterLevel12
+    * FighterLevel13
+    * ElfLevel10
+    * DwarfLevel11
+    * HalflingLevel8 
+  ]
+}
+
+NecromancerRuler {
+  ^ [
+   * MagicuserLevel12
+   * MagicuserLevel13 
+  ]
+}
+
+CultLeader {
+  ^ [
+    * MagicuserLevel6
+    * MagicuserLevel7
+    * MagicuserLevel8
+    * MagicuserLevel9
+    * ClericLevel6
+    * ClericLevel7
+    * ClericLevel8
+    * ClericLevel9
+  ]
+}
+
+MilitiaLeader {
+  ^ [
+    * FighterLevel6
+    * FighterLevel7
+    * FighterLevel8
+    * FighterLevel9
+    * FighterLevel10
+  ]
+}
+
+SyndicateLeader {
+  ^ [
+    * ThiefLevel6
+    * ThiefLevel7
+    * ThiefLevel8
+    * ThiefLevel9
+    * ThiefLevel10
+  ]
+}
+
+ArenaJudge {
+  ^ [
+    * FighterLevel6
+    * FighterLevel7
+    * HalflingLevel6
+    * HalflingLevel7
+  ]
+}
+
+ArenaContestant {
+  ^ [
+    * FighterLevel3
+    * FighterLevel4
+    * FighterLevel5
+  ]
+}
+
+CastleResident {
+  ^ [
+    * FighterLevel4
+    * FighterLevel5
+    * FighterLevel6
+    * FighterLevel7
+    * FighterLevel8
+    * FighterLevel9
+    * FighterLevel10
+    * FighterLevel11
+  ]
+}
+
+MagicAcademyMedium {
+  ^ [
+    * MagicuserLevel1
+    * MagicuserLevel2
+  ]
+}
+
+MagicLaboratoryAssistant {
+  ^ [
+    * MagicuserLevel1
+    * MagicuserLevel2
+  ]
+}
+
+WizardTowerResident {
+  ^ [
+    * MagicuserLevel11
+    * MagicuserLevel12
+  ]
+}
+
+PirateShipCaptain {
+  ^ [
+    * FighterLevel5
+    * FighterLevel6
+    * HalflingLevel5
+    * HalflingLevel6
+    * ElfLevel5
+    * ElfLevel6
+  ]
+}

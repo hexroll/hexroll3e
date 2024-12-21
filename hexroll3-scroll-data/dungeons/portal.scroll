@@ -1,0 +1,59 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+DungeonPortalDestination {
+  AreaUUID! = none
+  Portal = none
+  Origin = none
+  OriginUUID = none
+  RoomNumber = :AreaDescription.RoomNumber
+  Location! = <{{RoomNumber}}>
+  Active! = false
+}
+
+DungeonPortal {
+  Title = <magical portal>
+  Portal @ [
+      * <strong>painting of a door</strong> on the wall
+      * stained old <strong>full-size mirror</strong> on the wall
+      * stone-carved <strong>demon face</strong> on the wall with a large gaping mouth
+    ]
+  Destination ? DungeonPortalDestination {
+        Portal = &Portal
+        Origin = &Origin
+        OriginUUID = &OriginUUID
+        Active = <%
+            {{capitalize(articlize(Portal))}} is a magical portal.
+            Anyone stepping into the portal will be magically teleported into
+            <a href="{{sandbox()}}/location/{{OriginUUID}}"><strong>area {{Origin}}</strong></a>
+        %>
+  }
+  Description! = <%
+    {{capitalize(articlize(Portal))}} is a magical portal.
+    Anyone stepping into the portal will be magically teleported
+    into <a href="{{sandbox()}}/location/{{Destination.AreaUUID}}"><strong>area {{Destination.Location}}</strong></a>
+    %>
+}
+

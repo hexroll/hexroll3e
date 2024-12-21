@@ -1,0 +1,172 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+TownDistrict(District) {
+  Title = Town District
+  CostFactor = 1.0
+  << Advert
+  << LocalRumor
+  [12..34 shops!] @ TownShops
+  | District
+}
+
+Town(Settlement) {
+  | Settlement
+
+  Title! = "town of {{title(NamePart)}}"
+
+  Prefix! = ""
+
+  PopulationMultiplier! @ 2d4+1
+  Connector! @ [
+    * stands secure on high grounds
+    * sits behind a wall
+  ]
+
+  Castle @ Castle
+  District? @ TownDistrict
+  Population? = "{{int(District.Population) * PopulationMultiplier}}"
+  GAlignment @ [
+    *(x5) Lawful
+    *(x1) Neutral
+  ]
+  [2..3 Guards?] @ Guard {
+     Alignment = &GAlignment
+     HostingEntity := &uuid
+     Profession = "guard"
+     URLExt = "/location/{{HostingEntity}}/npc/{{uuid}}"
+  }
+
+  Overview? ~ <%
+    <p>
+      Population: {{Population}} townsfolk
+    </p>
+    {{Castle.Desc}}
+    <h5>Town Shops & Services</h5>
+    {{District.Index}}
+    {% if Guards %}
+    <h5>Guards</h5>
+    {% for g in Guards %}
+    <a class="npc-anchor" id="{{g.uuid}}"></a>
+    <p>
+    {{reroller(g, "", False)}} {{g.Description}}
+    {{g.Stats}}
+    {% if g.Association %}
+    <ul>
+    {{g.Association}}
+    </ul>
+    {% endif %}
+    <hr/>
+    </p>
+    {% endfor %}
+    {% endif %}
+  %>
+
+  Supplemental! = ""
+
+  Brief? = <%
+    {{Overview}}
+  %>
+
+  <metadata%
+    <a class="map-coords" hex="{{HexLink}}" x="0" y="0" zoom="4"> </a>
+  %metadata>
+
+  <header%
+    <div hidden id="doc-title"> {{capitalize(Title)}} from {{Realm}}</div>
+    <h4 id="title">
+    <span id="editable-title" data-attr="NamePart" data-map-label="true">{{NamePart}}</span>
+    {{Breadcrumbs}}
+    </h4>
+  %header>
+
+  <body%
+    {{Brief}}
+  %body>
+}
+
+TownShops {
+  ^ [
+    * Bakery
+    * GeneralGoods
+    * Bookstore
+    * Grocer
+    * PetShop
+    * Herbalist
+    * Jeweler
+    * Bunkhouse
+    * Carpenter
+    * Stables
+    *(x3) ArmorWeapons
+    * Hatter
+    * Butchery
+    * Clothing
+    * Blacksmith
+    * Barber
+    * Liquor
+    * Craft
+    * Music
+    * Salon
+    * Spice
+    * Bathhouse
+    * AnimalSupplies
+    * Brewery
+    * Distillery
+    * Flower
+    * Cobbler
+    * Tinkerer
+    * Weaver
+    * Veterinarian
+    * Brothel
+    *(x0) Bank
+    * GlassBlower
+    * Leatherworker
+    * Physician
+    * Barracks
+    * School
+    * Daycare
+    * Library
+    * Lawyer
+    * TinWorker
+    * FishMarket
+    * Tailor
+    * Prison
+    * PostOffice
+    * Mill
+    * Smokehouse
+    * GameShop
+    * Witch
+    * PrintingPress
+    * AnimalPound
+    * Mortician
+    * Tanner
+    * Registry
+    * TradePost
+    * VehicleMaker
+    * FortuneTeller
+    * Matchmaker
+ ]
+}
+

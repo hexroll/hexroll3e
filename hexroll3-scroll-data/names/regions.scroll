@@ -1,0 +1,102 @@
+#
+# Copyright (C) 2020-2025 Pen, Dice & Paper
+#
+# This program is dual-licensed under the following terms:
+#
+# Option 1: (Non-Commercial) GNU Affero General Public License (AGPL)
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Option 2: Commercial License
+# For commercial use, you are required to obtain a separate commercial
+# license. Please contact ithai at pendicepaper.com
+# for more information about commercial licensing terms.
+#
+
+kRegionNames = [
+  * Hell Pit
+  * Stargazer
+  * Dark Storm
+  * Ironhammer
+  * Nightshard
+  * Pantheon
+  * Goblinchaser
+  * Vazul's Spear
+  * Watermaze
+  * Dragon's Flame
+  * Goldseeker's
+  * Bonecrusher
+  * Blood Blade
+  * Battleworn
+  * Demon's Fork
+  * Devil's Eye
+  * Holloweye
+  * Gem of Elderia
+  * Dragon Fury
+  * Revenger
+  * Karla's Hammer
+  * Heart of Avaya
+  * Black Shield
+  * Dark Armor
+  * Nightmare
+  * Spiderweb
+  * Vicious
+  * Javelin
+  * Heartseeker
+  * Thousand Shrines
+  * Blackapple
+  * Redfeather
+  * Ragthorn
+  * Crimsonblade
+  * Nightshadow
+  * Halfmoon
+  * Howling Wolves
+  * Hell's Gate
+  * Aurora
+  * Sunbreak
+  * Goldmass
+  * Dragonclaw
+  * Moonwatcher
+  * Fallen Star
+  * Crater
+  * Savage
+  * Demonskull
+  * Wyvern's Sting
+  * Axe of Sal'zazoo
+  * Vortex
+  * Spiral
+  * Bloodborn
+  * Bloodforged
+  * Fireforged
+  * Iceforged
+  * Fireborn
+  * Iceborn
+  * Wintercry
+  * Summerwave
+  * Firefly
+  * Alvania
+  * Fearless
+  * Thunderwave
+  * Lifeless
+  * Arrowpoint
+  * Retribution
+  * Light of Valor
+  * Goldenswan
+  * Emerald
+  * Darkfall
+  * Grey Mist
+]
+
+RegionName {
+  Value! @ $kRegionNames
+}
