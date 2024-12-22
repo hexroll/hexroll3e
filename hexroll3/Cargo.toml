@@ -1,11 +1,12 @@
 [package]
 name = "hexroll3"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Pen, Dice & Paper"]
 description = "HEXROLL3 - the OSR sandbox generator"
 license-file = "../LICENSE"
 repository = "https://github.com/hexroll/hexroll3"
 homepage = "https://hexroll.app"
+readme = "../README.md"
 edition = "2021"
 
 [dependencies]
