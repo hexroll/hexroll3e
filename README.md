@@ -21,10 +21,11 @@ cargo run --release
 
 This should open up the testbed where you can generate your first sandbox:
 
-(screenshot)
+![testbed-screenshot](https://raw.githubusercontent.com/hexroll/hexroll3/master/hexroll3-testbed/assets/screenshot.png)
 
 ## License
 
+```text
 Copyright (C) 2020-2025 Pen, Dice & Paper
 
 This program is dual-licensed under the following terms:
@@ -51,3 +52,4 @@ for more information about commercial licensing terms.
 HEXROLL3 contains Open Game Content, subject to the Open Game License,
 released under the Open Game License, Version 1.0a (enclosed in the LICENSE
 file), as described in Section 1(d) of the License.
+```
