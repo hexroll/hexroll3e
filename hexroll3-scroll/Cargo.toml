@@ -25,8 +25,12 @@
 [package]
 name = "hexroll3-scroll"
 version = "0.1.0"
+authors = ["Pen, Dice & Paper"]
+description = "HEXROLL3 Scroll - the sandbox content generator"
+license = "AGPL-3.0 OR Commercial"
+repository = "https://github.com/hexroll/hexroll3"
+homepage = "https://hexroll.app"
 edition = "2021"
-opt-level = 3
 
 [features]
 zstd = ["dep:zstd"]

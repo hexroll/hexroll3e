@@ -27,3 +27,4 @@ members = [
   "hexroll3-scroll",
   "hexroll3-testbed"
 ]
+resolver = "2"

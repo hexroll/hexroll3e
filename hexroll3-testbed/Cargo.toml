@@ -25,6 +25,11 @@
 [package]
 name = "hexroll3-testbed"
 version = "0.1.0"
+authors = ["Pen, Dice & Paper"]
+description = "HEXROLL3 Testbed - an egui testbed app for HEXROLL3"
+license = "AGPL-3.0 OR Commercial"
+repository = "https://github.com/hexroll/hexroll3"
+homepage = "https://hexroll.app"
 edition = "2021"
 
 [dependencies]
@@ -46,10 +51,3 @@ serde = "1.0.216"
 serde_json = "1.0.133"
 wasm-bindgen = "0.2.99"
 web-sys = { version = "0.3.76", features = ["Window", "Document", "HtmlElement", "Text"] }
-
-[profile.release]
-strip = true
-opt-level = "z"
-lto = true
-codegen-units = 1
-panic = "abort"
