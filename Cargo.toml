@@ -23,7 +23,8 @@
 # for more information about commercial licensing terms.
 #
 [workspace]
-members = [
+members = [ "hexroll3",
+  "hexroll3",
   "hexroll3-scroll",
   "hexroll3-testbed"
 ]

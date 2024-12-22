@@ -7,6 +7,7 @@ This is the new work-in-progress version of HEXROLL (https://hexroll.app) - the 
 - hexroll3-scroll: the core content generator
 - hexroll3-scroll-data: the new data model, based on the hexroll2e model
 - hexroll3-testbed: an egui application for testing and messing around
+- hexroll3: placeholder for the full app
 
 You can look at each part to see how it all works.
 
