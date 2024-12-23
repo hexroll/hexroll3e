@@ -98,7 +98,11 @@ impl Default for HexrollTestbedApp {
             left_sidebar_expanded: true,
             center_view_mode: CenterViewMode::Preview,
             file: egui_file_dialog::FileDialog::new()
-                .initial_directory(dirs::document_dir().unwrap())
+                .initial_directory(
+                    dirs::document_dir()
+                        .or_else(dirs::home_dir)
+                        .unwrap_or_else(|| std::env::current_dir().unwrap()),
+                )
                 .add_file_filter(
                     "H3",
                     Arc::new(|path| path.extension().unwrap_or_default() == "h3"),
