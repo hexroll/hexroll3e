@@ -1,0 +1,9 @@
+[package]
+name = "hexroll3-map"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = {version = "0.15.0", features=["ktx2", "zstd"]}
+bevy_panorbit_camera = "0.21.2"
+hexx = "0.19.1"

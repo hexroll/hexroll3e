@@ -25,6 +25,7 @@
 [workspace]
 members = [ "hexroll3",
   "hexroll3",
+  "hexroll3-map",
   "hexroll3-scroll",
   "hexroll3-testbed"
 ]
